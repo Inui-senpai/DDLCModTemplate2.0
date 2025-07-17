@@ -1,5 +1,5 @@
 from zipfile import ZipFile, ZIP_DEFLATED
-from zipper_env import PY3, EXTRAS
+from build.zipper_env import PY3, EXTRAS
 import sys
 import os
 
@@ -7,6 +7,7 @@ PRIMARY_NAME = "DDLCModTemplate-"
 EXCLUDE_LIST = [
     ".github",
     ".git",
+    ".venv",
     ".gitattributes",
     ".gitignore",
     "requirements.txt",
@@ -15,6 +16,9 @@ EXCLUDE_LIST = [
     "zipper.py",
     "zipper_env.py",
     "__pycache__",
+    "tests",
+    "tests.py",
+    "build"
 ]
 
 
@@ -47,7 +51,7 @@ def main():
         ZIP_DEFLATED,
         compresslevel=5,
     ) as main_template:
-        for src, dirs, files in os.walk("."):
+        for src, dirs, files in os.walk(".."):
             for f in files:
                 path = os.path.join(src, f)
                 validLocation = True

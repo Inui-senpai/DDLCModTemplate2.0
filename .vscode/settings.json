@@ -1,9 +1,10 @@
 {
-    "python.formatting.provider": "black",
     "files.exclude": {
         "**/*.rpyc": true,
         "**/*.rpa": true,
         "**/*.rpymc": true,
         "**/cache/": true
-    }
+    },
+    "python.testing.unittestEnabled": true,
+    "python.testing.pytestEnabled": false
 }

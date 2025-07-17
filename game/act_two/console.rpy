@@ -1,67 +1,24 @@
-## console.rpy
+# This file contains the Ren'Py code for Monika's console in DDLC.
 
-# This file defines the Monika Console contents that appears in the game when
-# Monika deletes characters.
+# The logic for the console has been changed drastically compared to the original
+# game to allow for better management of console inputs and outputs and display.
+# It separates the Python logic from the display code, which is now in `py/console_ren.py`.
 
-# This file has heavily changed from DDLC to provide better access to call the 
-# console than via labels. To call, do $ run_input(input="Text", output="Output").
-# To only show, the console, just do `show screen console_screen`.
-# Thank you Lezalith for assistance in making this new console!
+# To show the console, just do `$ console.show_screen()` or `show screen console_screen(console)`.
+
+# For the Python code, see `console_ren.py` in the `py` directory.
 
 init -1:
+    default console = Console(console_delay=0.5, console_cps=30, max_log_history=5)
 
-    # None or tuple with (input, output).
-    default new_input = None
-
-    # List with outputs.
-    default console_history = []
-
-    # Not to be changed midgame.
-    # Delay after input has finished showing, before output is displayed.
-    define console_delay = 0.5
-
-    define console_cps = 30
-
-init python:
-
-    # Make the console display the given input and output.
-    def run_input(input, output):
-        global new_input
-
-        new_input = (input, output)
-
-        if renpy.get_screen("console_screen"):
-            renpy.hide_screen("console_screen")
-        renpy.call_screen("console_screen", finish=True)
-        renpy.show_screen("console_screen")
-
-    # Add the output to history.
-    def add_to_history(input):
-        global console_history
-
-        console_history.insert(0, input[1])
-        if len(console_history) > 5:
-            console_history.pop(5)
-
-    # Add the output to history after code is done
-    def input_finished():
-        global new_input
-
-        add_to_history(new_input)
-        new_input = None
-        
-        renpy.restart_interaction()
-
-    def clear_history():
-        global console_history
-
-        console_history = []
-
-screen console_screen(finish=False):
+screen console_screen(console, input_text, output_text):
+    """
+    This screen shows the console in-game.
+    """
 
     style_prefix "console_screen"
 
-    default finish_actions = [Function(input_finished), SetScreenVariable("in_progress", False), Return()]
+    default finish_actions = [SetScreenVariable("in_progress", False), Return()]
 
     # String of input to show.
     # It is put outside of the new_input variable so it doesn't
@@ -76,16 +33,14 @@ screen console_screen(finish=False):
 
         $ new_input_code = "_"
 
-        # If a new_input is available, set it as code to display.
-        if store.new_input:
-
+        if input_text:
             $ in_progress = True
-            $ new_input_code = store.new_input[0]
+            $ new_input_code = input_text
 
     # New code is showing.
     if in_progress:
 
-        timer ( float(len(renpy.filter_text_tags(new_input_code, deny = []))) / float(console_cps) + console_delay ) action finish_actions
+        timer ( float(len(renpy.filter_text_tags(new_input_code, deny = []))) / float(console.console_cps) + console.console_delay ) action finish_actions
 
     frame:
 
@@ -100,8 +55,9 @@ screen console_screen(finish=False):
             vbox:
                 xpos 26 ypos 30 
                 spacing 5
-                for x in store.console_history:
-                    text x
+                
+                for output in history.values():
+                    text output
 
 style console_screen_frame:
     background Frame(Transform(Solid("#333"), alpha=0.75))
@@ -117,7 +73,11 @@ style console_screen_text:
 
 # This label clears all console history and commands from the console in-game.
 # Decided to keep this for now as it just pauses stuff.
+# This assumes the default console is used from the above init python import.
 label updateconsole_clearall(text="", history=""):
+    if config.developer:
+        $ renpy.notify("This label call is deprecated. Use `console.clear_history()` instead.")
+    $ console.clear_history()
     $ pause(len(text) / 30.0 + 0.5)
     $ pause(0.5)
     return

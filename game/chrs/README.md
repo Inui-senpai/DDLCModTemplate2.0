@@ -1,13 +1,8 @@
-# Contents
+# Contents of the `chrs` folder
 
-## monika.chr
-Monika's character file. Technically just a PNG.
-
-## natsuki.chr
-Natsuki's character file. Technically just a JPEG.
-
-## sayori.chr
-Sayori's character file. Technically just Sayo-nara's OGG file.
-
-## yuri.chr
-Yuri's character file. Technically just a poem in a text file.
+## Files
+- **README.md**: This file, which provides an overview of the contents of the `chrs` folder.
+- **monika.chr**: Monika's character file. Technically its just a PNG file.
+- **natsuki.chr**: Natsuki's character file. Technically its just a JPEG file.
+- **sayori.chr**: Sayori's character file. Technically its just a OGG file of the "Sayo-nara" track.
+- **yuri.chr**: Yuri's character file. Technically its just a text file containing a poem.

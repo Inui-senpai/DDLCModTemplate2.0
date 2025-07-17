@@ -13,3 +13,5 @@ errors.txt
 *.pyc
 __pycache__
 ZIPs
+.venv
+.vscode
