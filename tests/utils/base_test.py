@@ -49,3 +49,50 @@ class DDLCTest(TestCase):
         """
         from game.act_two.py.glitchtext_ren import glitchtext
         return glitchtext(length)
+    
+    def create_poem_words_db(self):
+        """
+        Helper method to create a PoemWordsDB instance for testing.
+        
+        :return: An instance of PoemWordsDB.
+        """
+        from game.poem_game.py.poemwords_ren import PoemWordDB
+        return PoemWordDB()
+    
+    def create_chibi_db(self):
+        """
+        Helper method to create a ChibiDB instance for testing.
+        
+        :return: An instance of ChibiDB.
+        """
+        from game.poem_game.py.poemgame_chibi_ren import ChibiDB
+        return ChibiDB()
+    
+    def create_chibi(self, name: str):
+        """
+        Helper method to create a Chibi character for testing.
+        
+        :param name: Name of the Chibi character.
+        :return: An instance of Chibi.
+        """
+        from game.poem_game.py.poemgame_chibi_ren import Chibi
+        return Chibi(name)
+    
+    def create_chibi_transform(self):
+        """
+        Helper method to create a ChibiTransform instance for testing.
+        
+        :return: An instance of ChibiTransform.
+        """
+        from game.poem_game.py.poemgame_chibi_ren import ChibiTransform
+        return ChibiTransform()
+    
+    def create_poem_game(self):
+        """
+        Helper method to create a PoemGame instance for testing.
+        
+        :param testing: If True, bypasses Ren'Py functions and screens for testing purposes.
+        :return: An instance of PoemGame.
+        """
+        from game.poem_game.py.poemgame_ren import PoemGame
+        return PoemGame(testing=True)
