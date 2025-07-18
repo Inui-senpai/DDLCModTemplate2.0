@@ -1530,8 +1530,17 @@ default s_poemappeal = [0, 0, 0]
 default y_poemappeal = [0, 0, 0]
 default m_poemappeal = [0, 0, 0]
 
-# This variable keeps tracks on which person won the poem session after each day.
-default poemwinner = ['sayori', 'sayori', 'sayori']
+default poemwinner = {
+    1: "sayori",
+    2: "sayori",
+    3: "sayori",
+}
+
+default poemappeal = {
+    "sayori": {1: 0, 2: 0, 3: 0},
+    "natsuki": {1: 0, 2: 0, 3: 0},
+    "yuri": {1: 0, 2: 0, 3: 0},
+}
 
 # These variables keep track on who has read your poem during poem sharing
 default s_readpoem = False
