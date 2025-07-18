@@ -21,7 +21,7 @@ class Console(object):
     """
 
     def __init__(
-        self, console_delay: float, console_cps: int, max_log_history=5, testing=False
+        self, console_delay: float, console_cps: int, max_log_history: int = 5, testing: bool = False
     ):
         """
         Initializes the console with the given delay and characters per second (cps).
@@ -34,22 +34,19 @@ class Console(object):
         :type console_delay: float
         :type console_cps: int
         :type max_log_history: int
+        :type testing: bool
         """
-        if not isinstance(console_delay, (int, float)):
-            raise TypeError("console_delay must be an int or float.")
-        if not isinstance(console_cps, int):
-            raise TypeError("console_cps must be an int.")
 
         self.console_delay = console_delay
         self.console_cps = console_cps
         self.max_log_history = max_log_history
 
         # Initialize the console history as an empty dictionary.
-        self.console_history = {}
+        self.console_history: dict[str, str] = {}
 
         self.testing = testing
 
-    def __call__(self, input_text, output_text):
+    def __call__(self, input_text: str, output_text: str):
         """
         Processes the input and output text for the console.
         If you want specific stuff to happen whilst the input is being displayed,
