@@ -7,19 +7,18 @@
 ## Not included in the game, but used for IDEs to avoid multiple warnings.
 from game.poem_game.py.poemgame_chibi_ren import chibis, chibi_s, chibi_n, chibi_y
 from game.poem_game.py.poemwords_ren import poem_word_db, glitch_word, monika_word
-import random
 import renpy  # type: ignore
 
 poemwinner: dict[int, str] = {
+    0: "sayori",
     1: "sayori",
     2: "sayori",
-    3: "sayori",
 }
 
 poemappeal: dict[str, dict[int, int]] = {
-    "sayori": {1: 0, 2: 0, 3: 0},
-    "natsuki": {1: 0, 2: 0, 3: 0},
-    "yuri": {1: 0, 2: 0, 3: 0},
+    "sayori": {0: 0, 1: 0, 2: 0},
+    "natsuki": {0: 0, 1: 0, 2: 0},
+    "yuri": {0: 0, 1: 0, 2: 0},
 }
 
 """renpy
@@ -73,10 +72,7 @@ class PoemGame:
             random_words: list[str] = []
             for _ in range(10):
                 try:
-                    if self.testing:
-                        word = random.choice(wordList)
-                    else:
-                        word = renpy.random.choice(wordList)
+                    word = renpy.random.choice(wordList)
                 except IndexError:
                     raise IndexError(
                         "Not enough words in the poem word database. Add more words to `poemwords_ren.py`."
@@ -88,7 +84,17 @@ class PoemGame:
 
             # Display the poem game screen with the random words.
             if self.testing:
-                poemword_str = random.choice(random_words)
+                if renpy.store.persistent.playthrough == 2:
+                    act_two_words = random_words[:9]
+                    act_two_words.append(glitch_word.word)
+                    poemword_str = renpy.random.choice(act_two_words)
+                elif renpy.store.persistent.playthrough == 3:
+                    act_three_words = []
+                    for _ in range(10):
+                        act_three_words.append(monika_word.word)
+                    poemword_str = renpy.random.choice(act_three_words)
+                else:
+                    poemword_str = renpy.random.choice(random_words)
             else:
                 poemword_str = renpy.call_screen(
                     "poem_test",
@@ -101,15 +107,10 @@ class PoemGame:
             if poemword_str in poem_word_db.get_words_str():
                 selected_poemword = poem_word_db.get_word(poemword_str)
             else:
-                if not self.testing:
-                    if renpy.store.persistent.playthrough == 2:
-                        selected_poemword = glitch_word
-                    else:
-                        selected_poemword = monika_word
+                if renpy.store.persistent.playthrough == 2:
+                    selected_poemword = glitch_word
                 else:
-                    raise ValueError(
-                        f"Poem word '{poemword_str}' not found in the poem word database. Please check `poemwords_ren.py` for poem word declarations."
-                    )
+                    selected_poemword = monika_word
 
             if not self.testing:
                 if not self.poemgame_glitch:
