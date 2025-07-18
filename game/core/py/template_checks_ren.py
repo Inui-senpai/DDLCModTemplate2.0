@@ -16,7 +16,7 @@ class NotRenPyEight(Exception):
 
 
 class DDLCRPAsMissing(Exception):
-    def __init__(self, archive):
+    def __init__(self, archive: str):
         self.archive = archive
 
     def __str__(self):
