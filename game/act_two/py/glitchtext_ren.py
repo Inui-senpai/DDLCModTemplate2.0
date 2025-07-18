@@ -9,7 +9,7 @@ import random
 init python:
 """
 
-def glitchtext(length: int) -> str:
+def glitchtext(length: int) -> str | ValueError:
     """
     Generates a string of random unicode characters of a specified length.
     
@@ -18,6 +18,8 @@ def glitchtext(length: int) -> str:
     :type length: int
     :return: A string of random unicode characters.
     :rtype: str
+
+    :raises ValueError: If the length is less than or equal to 0.
     """
     if length <= 0:
         return ValueError("Length must be greater than 0.")
@@ -38,7 +40,7 @@ def glitchtext(length: int) -> str:
     ])
 
     ## Generate a string of random unicode characters
-    result = []
+    result: list[str] = []
     while len(result) < length:
         # Randomly select a range from the text_ranges
         for start, end in text_ranges:
