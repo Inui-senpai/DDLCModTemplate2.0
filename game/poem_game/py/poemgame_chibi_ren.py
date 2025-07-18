@@ -39,7 +39,7 @@ class ChibiTransform(object):
         self.charOffset = 0
         self.charZoom = 1
 
-    def randomPauseTime(self, trans, st, at):
+    def randomPauseTime(self, st):
         """
         Randomly pauses the character animation based on the specified time.
         """
@@ -48,7 +48,7 @@ class ChibiTransform(object):
             return None
         return 0
 
-    def randomMoveTime(self, trans, st, at):
+    def randomMoveTime(self, trans, st):
         """
         Randomly moves the character based on the specified time.
         """
@@ -98,7 +98,6 @@ class Chibi(ChibiTransform):
 
         self.charPointTotal = 0
         self.appeal = 0
-        self.win = False
 
     def reset(self):
         """
@@ -136,7 +135,6 @@ class Chibi(ChibiTransform):
         if self.charPointTotal < self.poem_dislike_threshold:
             return -1
         elif self.charPointTotal > self.poem_like_threshold:
-            self.win = True
             return 1
         return 0
     
