@@ -1,6 +1,8 @@
 # This file contains the transform code for the Chibi animations in the DDLC poem game.
 
 # The code is designed to work with Ren'Py 8 and uses the `_ren.py` approach for Python code.
+
+## Not included in the original game, but used for IDEs to avoid multiple warnings.
 import renpy  # type: ignore
 
 """renpy

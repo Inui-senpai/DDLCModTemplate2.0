@@ -2,12 +2,14 @@
 
 # The code logic has been rewritten to use the Ren'Py `_ren.py` approach for Python code.
 
+# For the Ren'Py code, see `script-poemgame.rpy` in the `poem_game` directory.
+
+## Not included in the game, but used for IDEs to avoid multiple warnings.
 from game.poem_game.py.poemgame_chibi_ren import chibis, chibi_s, chibi_n, chibi_y
 from game.poem_game.py.poemwords_ren import poem_word_db, glitch_word, monika_word
 import random
 import renpy  # type: ignore
 
-## Not included in the original game, but used for IDEs to avoid multiple warnings.
 poemwinner: dict[int, str] = {
     1: "sayori",
     2: "sayori",
