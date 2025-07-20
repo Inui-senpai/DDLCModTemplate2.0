@@ -120,7 +120,80 @@ class _FakeRenpyRandom:
 
     def random(self):
         return random.random()
+    
+class _FakeRenpyEasy:
+    """
+    A fake easy module to mimic Ren'Py's easy behavior.
+    """
+    
+    @staticmethod
+    def displayable_or_none(displayable):
+        """
+        Mock implementation of renpy.easy.displayable_or_none.
+        
+        :param displayable: The displayable to check.
+        :return: The displayable if valid, None otherwise.
+        """
+        if displayable is None:
+            return None
+        # Return a simple mock object instead of None
+        return _FakeRenpyDisplayable(displayable)
 
+class _FakeRenpyDisplayable:
+    """
+    A fake displayable to mimic Ren'Py's displayable behavior.
+    """
+    
+    def __init__(self, path):
+        self.path = path
+
+class _FakeRenpyNull:
+    """
+    A fake Null displayable to mimic Ren'Py's Null behavior.
+    """
+    
+    def __init__(self):
+        self.path = "null"
+
+class _FakeRenpyTextTextText:
+    """
+    A fake Ren'Py Text class to mimic the behavior of renpy.text.text.Text.
+    This is used to simulate text display in tests.
+    """
+
+    def __init__(self, text, style=None, **kwargs):
+        self._text = text
+        self.style = style
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+    @property
+    def text(self):
+        return self._text
+    
+    @text.setter
+    def text(self, value):
+        self._text = value
+
+    def __repr__(self):
+        return f"<FakeRenpyTextText: {self.text}>"
+
+def _fake_renpy_(s):
+    """
+    A fake Ren'Py function to mimic the behavior of `renpy._()` for translations.
+    This is used to simulate the translation of text in tests.
+
+    :param s: The string to translate.
+    :return: The translated string (in this case, just the original string).
+    """
+    return s
+
+def _fake_renpy_window_hide():
+    """
+    Mock method to simulate hiding the window.
+    """
+    print("Window hidden.")
+    pass
 
 def _fake_get_store_module(name):
     """
@@ -186,8 +259,13 @@ _fake_renpy_store.persistent = _FakeRenpyPersistent()  # type: ignore
 _fake_renpy_store.store = sys.modules["store"]  # type: ignore
 
 # Declare fake Ren'Py store variables.
+_fake_renpy_store._ = _fake_renpy_  # type: ignore
+
 _fake_renpy_store.chapter = 0  # type: ignore
 _fake_renpy_store.ch1_choice = "sayori"  # type: ignore
+_fake_renpy_store.skipping = None  # type: ignore
+_fake_renpy_store._skipping = False  # type: ignore
+_fake_renpy_store.dissolve = None  # type: ignore
 
 # Declare fake Ren'Py persistent variables.
 _fake_renpy_store.persistent.playthrough = 0  # type: ignore

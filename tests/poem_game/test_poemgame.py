@@ -1,9 +1,7 @@
-from unittest import mock
 from game.poem_game.py.poemgame_ren import PoemGame
 from tests.utils.base_test import DDLCTest
 from tests.utils.mocks import (
     _fake_renpy_store,
-    _fake_renpy_random,
 )
 
 
@@ -26,8 +24,6 @@ class PoemGameTest(DDLCTest):
 
         self.end_test_time()
 
-    @mock.patch("renpy.random", new=_fake_renpy_random)
-    @mock.patch("renpy.store", new=_fake_renpy_store)
     def test_poemgame(self):
         """
         Test starting the PoemGame.
@@ -47,8 +43,6 @@ class PoemGameTest(DDLCTest):
 
         self.end_test_time()
 
-    @mock.patch("renpy.random", new=_fake_renpy_random)
-    @mock.patch("renpy.store", new=_fake_renpy_store)
     def test_poemgame_start_act_one(self):
         """
         Test starting the PoemGame in Act One.
@@ -76,8 +70,6 @@ class PoemGameTest(DDLCTest):
 
         self.end_test_time()
 
-    @mock.patch("renpy.random", new=_fake_renpy_random)
-    @mock.patch("renpy.store", new=_fake_renpy_store)
     def test_poemgame_start_act_two(self):
         """
         Test starting the PoemGame in Act Two.
@@ -104,8 +96,6 @@ class PoemGameTest(DDLCTest):
         poem_game.finish()
         self.assertEqual(poem_game.poem_progress, 21)
 
-    @mock.patch("renpy.random", new=_fake_renpy_random)
-    @mock.patch("renpy.store", new=_fake_renpy_store)
     def test_poemgame_start_act_three(self):
         """
         Test starting the PoemGame in Act Three.
@@ -114,15 +104,13 @@ class PoemGameTest(DDLCTest):
 
         # Setup
         poem_game = self.create_poem_game()
-        _fake_renpy_store.persistent.playthrough = 3 # type: ignore
+        _fake_renpy_store.persistent.playthrough = 3  # type: ignore
 
         # Test
         poem_game.start()
         poem_game.finish()
         self.assertEqual(poem_game.poem_progress, 21)
 
-    @mock.patch("renpy.random", new=_fake_renpy_random)
-    @mock.patch("renpy.store", new=_fake_renpy_store)
     def test_poemgame_reset(self):
         """
         Test resetting the PoemGame.

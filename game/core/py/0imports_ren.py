@@ -22,3 +22,6 @@ import os
 # For BSOD
 import subprocess
 import platform
+
+# For Poem Responses
+import typing
