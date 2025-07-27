@@ -4,12 +4,12 @@
 > This branch of the Python 3 DDLC Mod Template is a work in progress. Use at your own risk!
 
 <p align="center">
-  <img src="./game/mod_assets/DDLCModTemplateLogo.png" width=250px/>
+  <img src=".github/IMAGES/ddlcmt-open-graph.png"/>
 </p>
 
-<p align="center">
+<!-- <p align="center">
   <img src=".github/IMAGES/Logos/SmallBronyaLogo.png" width=250px/>
-</p>
+</p> -->
 
 <p align="center">
    <a href="https://ko-fi.com/K3K22K8SU">
@@ -20,13 +20,13 @@
    </a>
 </p>
 
-The **new** Python 3 DDLC Mod Template is a mod template made by Azariel Del Carmen (bronya_rand) for the **original** Doki Doki Literature Club that adheres to [Team Salvato's IP Guidelines](http://teamsalvato.com/ip-guidelines/) for fan mods on Ren'Py 8.
+The **new** Python 3 DDLC Mod Template is a mod template made by Azariel Del Carmen (bronya_rand) for the **original** Doki Doki Literature Club that adheres to [Team Salvato's IP Guidelines](http://teamsalvato.com/ip-guidelines/) for fan mods on Ren'Py 8.X.
 
 > [!NOTE] 
 > For Ren'Py 6-7 support, see the [Python 2](https://github.com/Bronya-Rand/DDLCModTemplate2.0/tree/python-2) branch of the mod template.
 
 > [!IMPORTANT]
- > The template code/files are designed for original DDLC fan games and mods that use DDLC assets with Ren'Py. It is not meant for non-DDLC projects. The DDLC Mod Template is not afilliated in anyway with Team Salvato. You may not use the template to make unofficial DDLC patchers, fixes, etc.
+ > **The DDLC Mod Template is not afilliated in anyway with Team Salvato.** The template code/files are designed for original DDLC fan games and mods that use DDLC assets *using the Ren'Py engine*. It is not meant for non-DDLC projects. You may not use the template to make unofficial DDLC patchers, fixes, etc.
 
 ### **Credit Requirements**
 > [!IMPORTANT]
@@ -50,18 +50,18 @@ The **new** Python 3 DDLC Mod Template is a mod template made by Azariel Del Car
 > [!NOTE]
 Linux users must run your mod via `LinuxLauncher.sh`. For Android, if your mod uses more complex code or non-mobile friendly features, it may require some adjustments and changes to get working. See _Android Mod Guide.pdf_ or visit the DDMC Discord for additional help.
 
-5. Xcode Support! Open this project in Xcode and you can edit, build, and run your mod without opening the Ren'Py Launcher ever again!
+<!-- 5. Xcode Support! Open this project in Xcode and you can edit, build, and run your mod without opening the Ren'Py Launcher ever again!
 > [!NOTE]
-> You need to change your `RENPY_TOOL` location and the Ren'Py app location in the target scheme for Xcode. [Learn more &rsaquo;](XCODE.md)
-6. Uncensored Mode and Let's Play Mode! - Allow more "sensitive" content to be shown in-game and protect your IRL information while streaming/recording!
-7. Automatic GUI Coloring and Different Menu Button Colors! - Color the GUI and/or menu buttons in the game to whatever you like without editing the asset files themselves!
-8. Terra's in-depth Poem Game guide!
-9. NVL Support thanks to Yagamirai01!
-10. Patches for several Ren'Py releases and Windows features.
-11. Python 3 support and code now in use!
-12. Dynamic Super Resolution/Dynamic Super Positions (DSR/DSP) and Custom Resolutions! - Scale positions and/or your assets higher than they usually can go and display DDLC in different resolution modes. The DDLC Mod Template is now a universal X resolution template!
-13. Player Name Change! - Did you wrongly typed your name or want to change it? You can now do so very easily!
-14. New Monika Console and Poem Responses! - Enjoy a easier console to type commands in and a cleaner, easier poem response!
+> You need to change your `RENPY_TOOL` location and the Ren'Py app location in the target scheme for Xcode. [Learn more &rsaquo;](XCODE.md) -->
+
+5. Uncensored Mode and Let's Play Mode! - Allow more "sensitive" content to be shown in-game and protect your IRL information while streaming/recording!
+6. Automatic GUI Coloring and Different Menu Button Colors! - Color the GUI and/or menu buttons in the game to whatever you like without editing the asset files themselves!
+7. Terra's in-depth Poem Game guide!
+8. NVL Support thanks to Yagamirai01!
+9. Patches for several Ren'Py releases and Windows features.
+10. Dynamic Super Resolution/Dynamic Super Positions (DSR/DSP) and Custom Resolutions! - Scale positions and/or your assets higher than they usually can go and display DDLC in different resolution modes. The DDLC Mod Template is now a universal X resolution template!
+11. Player Name Change! - Did you wrongly typed your name or want to change it? You can now do so very easily!
+12. New Monika Console and Poem Responses! - Enjoy a easier console to type commands in and a cleaner, easier poem response!
 
 In addition to these base features, the template comes with additional optional features you can use such as
 
@@ -130,6 +130,6 @@ Thanks to the following people for their contributions to the DDLC Mod Template:
 - Tulkas (Android Gestures)
 - FiT (Weiss Chibi Branding Icon Design)
 
-Copyright © 2019-2025 Azariel "Bronya Rand" Del Carmen (bronya_rand). All rights reserved.
-
-Doki Doki Literature Club, the Doki Doki Literature Club code, is the property of Team Salvato (Dan Salvato LLC). Copyright © 2017 Team Salvato. All rights reserved.
+<p align="center">
+   <b>Copyright © 2019-2025 Azariel "Bronya Rand" Del Carmen (bronya_rand). All rights reserved. Doki Doki Literature Club, the Doki Doki Literature Club code, is the property of Team Salvato. Copyright © 2017 Team Salvato. All rights reserved.</b>
+</p>
