@@ -152,7 +152,7 @@ class Poem(renpy.text.text.Text):
 
     def show(
         self,
-        paper_sound: str | None = renpy.audio.page_turn,
+        paper_sound: str | None = renpy.store.audio.page_turn,
         music: str | bool = True,
         from_current: bool = True,
         revert_music: bool = True,
@@ -275,8 +275,8 @@ class PoemResponseDB(object):
         """
         self.poems[identifier] = Poem(
             author=author,
-            title=renpy._(title) if translate in ["all", "title"] else title,
-            text=renpy._(text) if translate in ["all", "text"] else text,
+            title=renpy.store._(title) if translate in ["all", "title"] else title,
+            text=renpy.store._(text) if translate in ["all", "text"] else text,
             style=style,
             paper=paper,
             separate_title_from_text=separate_title_from_text,
@@ -299,6 +299,15 @@ class PoemResponseDB(object):
             return self.poems[identifier]
         raise ValueError(f"Poem with identifier '{identifier}' not found.")
 
+    def get_poems(self) -> list[str]:
+        """
+        Returns a list of all poems in the database.
+
+        :return: A list of all poems.
+        :rtype: list[Poem]
+        """
+        return list(self.poems.keys())
+
     def show_poem(self, identifier: str, **kwargs):
         """
         Displays a poem from the database by its identifier.
@@ -318,10 +327,10 @@ class PoemResponseDB(object):
 # Initialize the Poem database and authors.
 poem_db = PoemResponseDB()
 
-author_s = PoemAuthor("sayori", music=renpy.audio.tsayori)
-author_n = PoemAuthor("natsuki", music=renpy.audio.tnatsuki)
-author_y = PoemAuthor("yuri", music=renpy.audio.tyuri)
-author_m = PoemAuthor("monika", music=renpy.audio.tmonika)
+author_s = PoemAuthor("sayori", music=renpy.store.audio.tsayori)
+author_n = PoemAuthor("natsuki", music=renpy.store.audio.tnatsuki)
+author_y = PoemAuthor("yuri", music=renpy.store.audio.tyuri)
+author_m = PoemAuthor("monika", music=renpy.store.audio.tmonika)
 
 ## Yuri's Poems
 poem_db.add_poem(
