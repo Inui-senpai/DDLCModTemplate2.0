@@ -1,46 +1,16 @@
-## definitions.rpy
-
 # This file defines important stuff for DDLC and your mod!
 
-# This variable declares if the mod is a demo or not.
-# Leftover from DDLC.
+# This variable declares if the mod is a demo or not. A leftover from DDLC.
 define persistent.demo = False
 
-# This variable declares whether the mod is in the 'steamapps' folder.
+# This variable declares whether the mod is in the 'steamapps' folder (Steam Version of DDLC)
 define persistent.steam = ("steamapps" in config.basedir.lower())
 
-# This variable declares whether Developer Mode is on or off in the mod.
+# This variable declares whether to enable Developer Tools from Ren'Py.
 define config.developer = False
 
-# This python statement starts singleton to make sure only one copy of the mod
-# is running.
-python early:
-    import singleton
-    me = singleton.SingleInstance()
-
-init -3 python:
-    ## Dynamic Super Position (DSP)
-    # DSP is a feature in where the game upscales the positions of assets 
-    # with higher resolutions (1080p).
-    # This is just simple division from Adobe, implemented in Python.
-    def dsp(orig_val):
-        ceil = not isinstance(orig_val, float)
-        dsp_scale = config.screen_width / 1280.0 
-        if ceil: return math.ceil(orig_val * dsp_scale)
-        # since `absolute * float` -> `float`
-        # we wanna keep the same type
-        return type(orig_val)(orig_val * dsp_scale)
-    
-    # This makes evaluating the value faster
-    renpy.pure(dsp)
-
-    ## Dynamic Super Resolution
-    # DSR is a feature in where the game upscales asset sizes to higher
-    # resolutions (1080p) and sends back a modified transform.
-    # (Recommend that you just make higher res assets than upscale lower res ones)
-    def dsr(path):
-        img_bounds = renpy.image_size(path)
-        return Transform(path, size=(dsp(img_bounds[0]), dsp(img_bounds[1])))
+# Whether to allow underfilled grids in the game.
+define config.allow_underfull_grids = True
 
 ## Android Gestures (provided by Tulkas)
 ## These gestures allow players to access different settings using the touch screen.
@@ -50,91 +20,11 @@ init -3 python:
 # Swipe Right - Skip Dialogue
 define config.gestures = { "n" : 'game_menu', "s" : "hide_windows", "e" : 'toggle_skip', "w" : "history" }
 
-# This init python statement sets up the functions, keymaps and channels
-# for the game.
 init python:
     ## More Android Gestures
-    # This variable makes a keymap for the history screen.
+    # Create a keymap for the history screen.
     if renpy.android:
         config.underlay.append(renpy.Keymap(history = ShowMenu("history"))) 
-
-        # These commented variables sets all keybinds from Rollback to History.
-        # config.keymap["rollback"] = []
-        # config.keymap["history"] = [ 'K_PAGEUP', 'repeat_K_PAGEUP', 'K_AC_BACK', 'mousedown_4' ]
-
-    # These variable declarations adjusts the mapping for certain actions in-game.
-    config.keymap['game_menu'].remove('mouseup_3')
-    config.keymap['hide_windows'].append('mouseup_3')
-    config.keymap['self_voicing'] = []
-    config.keymap['clipboard_voicing'] = []
-    config.keymap['toggle_skip'] = []
-
-    # This variable declaration registers the music poem channel for the poem sharing music.
-    renpy.music.register_channel("music_poem", mixer="music", tight=True)
-    
-    # This function gets the postition of the music playing in a given channel.
-    def get_pos(channel='music'):
-        pos = renpy.music.get_pos(channel=channel)
-        if pos: return pos
-        return 0
-
-    # This function deletes all the saves made in the mod.
-    def delete_all_saves():
-        for savegame in renpy.list_saved_games(fast=True):
-            renpy.unlink_save(savegame)
-
-    # This function deletes a given character name from the characters folder.
-    def delete_character(name):
-        if renpy.android:
-            try: os.remove(os.environ['ANDROID_PUBLIC'] + "/characters/" + name + ".chr")
-            except: pass
-        else:
-            try: os.remove(config.basedir + "/characters/" + name + ".chr")
-            except: pass
-
-    # These functions restores all the character CHR files to the characters folder 
-    # given the playthrough number in the mod and list of characters to restore.
-    def restore_character(names):
-        if not isinstance(names, list):
-            raise Exception("'names' parameter must be a list. Example: [\"monika\", \"sayori\"].")
-
-        for x in names:
-            if renpy.android:
-                try: renpy.file(os.environ['ANDROID_PUBLIC'] + "/characters/" + x + ".chr")
-                except: open(os.environ['ANDROID_PUBLIC'] + "/characters/" + x + ".chr", "wb").write(renpy.file("chrs/" + x + ".chr").read())
-            else:
-                try: renpy.file(config.basedir + "/characters/" + x + ".chr")
-                except: open(config.basedir + "/characters/" + x + ".chr", "wb").write(renpy.file("chrs/" + x + ".chr").read())
-
-    def restore_all_characters():
-        if persistent.playthrough == 0:
-            restore_character(["monika", "sayori", "natsuki", "yuri"])
-        elif persistent.playthrough == 1 or persistent.playthrough == 2:
-            restore_character(["monika", "natsuki", "yuri"])
-        elif persistent.playthrough == 3:
-            restore_character(["monika"])
-        else:
-            restore_character(["sayori", "natsuki", "yuri"])
-    
-    # This function is obsolete as all characters now restores only
-    # relevant characters to the characters folder.
-    def restore_relevant_characters():
-        restore_all_characters()
-
-    # This function pauses the time for a certain amount of time or indefinite.
-    def pause(time=None):
-        global _windows_hidden
-
-        if not time:
-            _windows_hidden = True
-            renpy.ui.saybehavior(afm=" ")
-            renpy.ui.interact(mouse='pause', type='pause', roll_forward=None)
-            _windows_hidden = False
-            return
-        if time <= 0: return
-        _windows_hidden = True
-        renpy.pause(time)
-        _windows_hidden = False
 
 ## Music
 # This section declares the music available to be played in the mod.
@@ -1489,7 +1379,11 @@ default persistent.seen_ghost_menu = None
 default seen_eyes_this_chapter = False
 default persistent.anticheat = 0
 default persistent.clear = [False, False, False, False, False, False, False, False, False, False]
-default persistent.special_poems = None
+default persistent.special_poems = {
+    0: None,
+    1: None,
+    2: None,
+}
 default persistent.clearall = None
 default persistent.menu_bg_m = None
 default persistent.first_load = None

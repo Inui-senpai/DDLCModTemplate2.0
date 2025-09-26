@@ -1,56 +1,4 @@
-## splash.rpy
-
 # This is where the splashscreen, disclaimer and menu code reside in.
-
-# This python statement checks that 'audio.rpa', 'fonts.rpa' and 'images.rpa'
-# are in the game folder and if the project is in a cloud folder (OneDrive).
-# Note: For building a mod for PC/Android, you must keep the DDLC RPAs 
-# and decompile them for the builds to work.
-init -100 python:
-    if not renpy.android:
-        for archive in ['audio','images','fonts']:
-            if archive not in config.archives:
-                raise DDLCRPAsMissing(archive)
-
-        if renpy.windows:
-            onedrive_path = os.environ.get("OneDrive")
-            if onedrive_path is not None:
-                if onedrive_path in config.basedir:
-                    raise IllegalModLocation
-
-## Splash Message
-# This python statement is where the splash messages reside in.
-init python:
-    # This variable is the default splash message that people will see when
-    # the game launches.
-    splash_message_default = "This game is an unofficial fan game that is unaffiliated with Team Salvato."
-    # This array variable stores different kinds of splash messages you can use
-    # to show to the player on startup.
-    splash_messages = [
-        "Please support Doki Doki Literature Club.",
-        "Monika is watching you code."
-    ]
-
-    ### New in 3.0.0
-    ## This recolor function allows you to recolor the GUI of DDLC easily without replacing
-    ## the in-game assets.
-    ##
-    ## Syntax to use: recolorize("path/to/your/image", "#color1hex", "#color2hex", contrast value)
-    ## Example: recolorize("gui/menu_bg.png", "#bdfdff", "#e6ffff", 1.25)
-    def recolorize(path, blackCol="#ffbde1", whiteCol="#ffe6f4", contr=1.29):
-        return im.MatrixColor(im.MatrixColor(im.MatrixColor(path, im.matrix.desaturate() * im.matrix.contrast(contr)), 
-            im.matrix.colorize("#00f", "#fff") * im.matrix.saturation(120)), im.matrix.desaturate() * im.matrix.colorize(blackCol, whiteCol))
-
-    def process_check(stream_list):
-        if not renpy.windows:
-            for index, process in enumerate(stream_list):
-                stream_list[index] = process.replace(".exe", "")
-        
-        for x in stream_list:
-            for y in process_list:
-                if re.match(r"^" + x + r"\b", y):
-                    return True
-        return False
 
 # This image text shows the splash message when the game loads.
 image splash_warning = ParameterizedText(style="splash_text", xalign=0.5, yalign=0.5)
@@ -265,18 +213,6 @@ image warning:
     "white" with Dissolve(0.5, alpha=True)
     0.5
 
-## This init python statement checks if the character files are present in-game
-## and writes them to the characters folder depending on the playthrough.
-init python:
-    if not persistent.do_not_delete:
-        if renpy.android:
-            if not os.path.exists(os.path.join(os.environ['ANDROID_PUBLIC'], "characters")):
-                os.mkdir(os.path.join(os.environ['ANDROID_PUBLIC'], "characters"))
-        else:
-            if not os.path.exists(os.path.join(config.basedir, "characters")):
-                os.mkdir(os.path.join(config.basedir, "characters"))
-        restore_all_characters()
-
 ## These images are the background images shown in-game during the disclaimer.
 image tos = "bg/warning.png"
 image tos2 = "bg/warning2.png"
@@ -287,38 +223,9 @@ default persistent.has_chosen_language = False
 ## This sets the first run variable to False to show the disclaimer.
 default persistent.first_run = False
 
-## This sets the lockdown check variable to False to show the warning for developers.
-default persistent.lockdown_warning = False
-
 ## Startup Disclaimer
 ## This label calls the disclaimer screen that appears when the game starts.
 label splashscreen:
-    ## This python statement grabs the username and process list of the PC.
-    python:
-        process_list = []
-        currentuser = ""
-
-        if renpy.windows:
-            try: process_list = subprocess.run("wmic process get Description", check=True, shell=True, stdout=subprocess.PIPE).stdout.lower().decode("utf-8").replace("\r", "").replace(" ", "").strip().split("\n")
-            except subprocess.CalledProcessError:
-                try:
-                    process_list = subprocess.run("powershell (Get-Process).ProcessName", check=True, shell=True, stdout=subprocess.PIPE).stdout.lower().decode("utf-8").replace("\r", "").strip().split("\n") # For W10/11 builds > 22000
-                    
-                    for i, x in enumerate(process_list):
-                        process_list[i] = x + ".exe"
-                except: 
-                    pass            
-        else:
-            try: process_list = subprocess.run("ps -A --format cmd", check=True, shell=True, stdout=subprocess.PIPE).stdout.decode("utf-8").strip().split("\n") # Linux
-            except subprocess.CalledProcessError: process_list = subprocess.run("ps -A -o command", check=True, shell=True, stdout=subprocess.PIPE).stdout.decode("utf-8").strip().split("\n") # MacOS
-                
-            process_list.pop(0)
-
-        for name in ('LOGNAME', 'USER', 'LNAME', 'USERNAME'):
-            user = os.environ.get(name)
-            if user:
-                currentuser = user
-
     ## This if statement checks if we have passed the disclaimer and that the
     ## current version of the mod equals the old one or the autoload is set to 
     ## the post-credit loop.
@@ -337,12 +244,6 @@ label splashscreen:
                     renpy.utter_restart()
             "No, continue where I left off.":
                 $ restore_relevant_characters()
-
-    if not persistent.lockdown_warning:
-        if config.developer:
-            call lockdown_check
-        else:
-            $ persistent.lockdown_warning = True
 
     if not persistent.first_run:
         $ quick_menu = False
