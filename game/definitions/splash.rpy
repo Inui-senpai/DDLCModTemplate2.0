@@ -464,7 +464,7 @@ label warningscreen:
 
 ## This label checks if the save loaded matches the anti-cheat stored in the save.
 label after_load:
-    $ restore_all_characters()
+    $ restore_characters()
     $ config.allow_skipping = allow_skipping
     $ _dismiss_pause = config.developer
     $ persistent.ghost_menu = False

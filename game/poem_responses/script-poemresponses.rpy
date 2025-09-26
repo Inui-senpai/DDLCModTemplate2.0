@@ -35,13 +35,6 @@ label poemresponse_start:
 
     label poemresponse_start2:
         $ skip_poem = False
-        
-        # This if/else statement checks if we are in Act 2 to show Act 2 specific
-        # poems.
-        if persistent.playthrough == 2:
-            $ pt = "2"
-        else:
-            $ pt = ""
 
         # This if/else statement determines what MC will say in the poem selection
         # menu depending on how many poems you have read.
@@ -66,7 +59,7 @@ label poemresponse_start:
                     "I'm definitely most comfortable sharing it with Sayori first."
                     "She's my good friend, after all."
                 # This call statement calls Sayori's poem response script.
-                call poemresponse_sayori
+                call poemresponse_callback("sayori")
 
             # This will show Natsuki as a menu option IF you haven't shared your
             # poem to her.
@@ -75,7 +68,7 @@ label poemresponse_start:
                 if chapter == 1 and poemsread == 0:
                     "I told Natsuki I was interested in her poems yesterday."
                     "It's probably only fair if I shared mine with her first."
-                call poemresponse_natsuki
+                call poemresponse_callback("natsuki")
 
             # This will show Yuri as a menu option IF you haven't shared your
             # poem to her and she didn't run away from you in Act 2.
@@ -84,14 +77,14 @@ label poemresponse_start:
                 if chapter == 1 and poemsread == 0:
                     "Yuri seems the most experienced, so I should start with her."
                     "I can trust her opinion to be fair."
-                call poemresponse_yuri
+                call poemresponse_callback("yuri")
 
             "Monika" if not m_readpoem:
                 $ m_readpoem = True
                 if chapter == 1 and poemsread == 0:
                     "I should start with Monika."
                     "Yesterday she seemed eager to read my poem, and I want her to know I'm putting in effort."
-                call poemresponse_monika
+                call poemresponse_callback("monika")
 
         # This variable increases the poems read by 1.
         $ poemsread += 1
@@ -109,104 +102,64 @@ label poemresponse_start:
     $ poemsread = 0
     return
 
-# These labels calls each characters' poem response result given how much they
+# This label calls each characters' poem response result given how much they
 # liked your poem.
-label poemresponse_sayori:
+label poemresponse_callback(character):
     scene bg club_day
-    show sayori 1a zorder 2 at t11
-    with wipeleft_scene
-    # This variable sets the default opinion to OK.
-    $ poemopinion = "med"
     
-    # This if/elif statement checks if Sayori's opinion of your poem was bad
-    # or good.
-    if s_poemappeal[chapter - 1] < 0:
-        $ poemopinion = "bad"
-    elif s_poemappeal[chapter - 1] > 0:
-        $ poemopinion = "good"
-    
-    # These variables sets the next scene chapter to be called based off the
-    # chapter and poem opinion and calls it.
-    $ nextscene = "ch" + pt + str(chapter) + "_s_" + poemopinion
-    call expression nextscene
-    
-    # This if statement checks if we are not skipping the poems to call the
-    # end of the poem responses for Sayori depending on the chapter.
-    if not skip_poem:
-        $ nextscene = "ch" + pt + str(chapter) + "_s_end"
-        call expression nextscene
-    return
-
-label poemresponse_natsuki:
-    scene bg club_day
-    show natsuki 1c zorder 2 at t11
-    with wipeleft_scene
-    # This variable sets the default opinion to OK.
-    $ poemopinion = "med"
-    
-    # This if/elif statement checks if Natsuki's opinion of your poem was bad
-    # or good.
-    if n_poemappeal[chapter - 1] < 0:
-        $ poemopinion = "bad"
-    elif n_poemappeal[chapter - 1] > 0:
-        $ poemopinion = "good"
-
-    # These variables sets the next scene chapter to be called based off the
-    # chapter and poem opinion and calls it.
-    $ nextscene = "ch" + pt + str(chapter) + "_n_" + poemopinion
-    call expression nextscene
-
-    # This if statement checks if we are not skipping the poems to call the
-    # end of the poem responses for Natsuki depending on the chapter.
-    if not skip_poem:
-        $ nextscene = "ch" + pt + str(chapter) + "_n_end"
-        call expression nextscene
-    return
-
-label poemresponse_yuri:
-    scene bg club_day
-    show yuri 1a zorder 2 at t11
+    if character == "sayori":
+        show sayori 1a zorder 2 at t11
+    elif character == "natsuki":
+        show natsuki 1a zorder 2 at t11
+    elif character == "yuri":
+        show yuri 1a zorder 2 at t11
+    elif character == "monika":
+        show monika 1a zorder 2 at t11
     with wipeleft_scene
 
     $ poemopinion = "med"
+    python:
+        if persistent.playthrough == 2:
+            nextscene = f"ch2{chapter}_"
+        else:
+            nextscene = f"ch{chapter}_"
+
+        startscene = nextscene
+        endscene = nextscene
+
+    if character == "monika":
+        # Monika doesn't use the same poem logic as the others.
+        $ startscene += "m_start"
+        $ endscene += "m_end"
+    else:
+        if character == "sayori":
+            $ appeal = s_poemappeal[chapter - 1]
+        elif character == "natsuki":
+            $ appeal = n_poemappeal[chapter - 1]
+        elif character == "yuri":
+            $ appeal = y_poemappeal[chapter - 1]
+        else:
+            python:
+                raise Exception("Invalid character for poemresponse_callback.")
+        
+        if appeal < 0:
+            $ poemopinion = "bad"
+        elif appeal > 0:
+            $ poemopinion = "good"
+
+        $ startscene += character[0] + "_" + poemopinion
+        $ endscene += character[0] + "_end"
     
-    if y_poemappeal[chapter - 1] < 0:
-        $ poemopinion = "bad"
-    elif y_poemappeal[chapter - 1] > 0:
-        $ poemopinion = "good"
-
-    $ nextscene = "ch" + pt + str(chapter) + "_y_" + poemopinion
-    call expression nextscene
+    call expression startscene
 
     if not skip_poem:
-        $ nextscene = "ch" + pt + str(chapter) + "_y_end"
-        call expression nextscene
-    return
-
-# NOTE: Monika does not use the good/bad/med poem opinion. Instead she just uses
-# 'chX_m_start' and 'chX_m_end' instead.
-label poemresponse_monika:
-    scene bg club_day
-    show monika 1a zorder 2 at t11
-    with wipeleft_scene
-
-    if m_poemappeal[chapter - 1] < 0:
-        $ poemopinion = "bad"
-    elif m_poemappeal[chapter - 1] > 0:
-        $ poemopinion = "good"
-
-    $ nextscene = "ch" + pt + str(chapter) + "_m_start"
-    call expression nextscene
-
-    if not skip_poem:
-        $ nextscene = "ch" + pt + str(chapter) + "_m_end"
-        call expression nextscene
+        call expression endscene
     return
 
 ## Poem End Labels 
 # These labels define the end result of the poem sharing mini-game with the girls.
 label ch1_y_end:
-    call showpoem (poem_y1, img="yuri 3t")
+    $ poem_db.show_poem("poem_y1", img="yuri 3t")
     y 3t "..."
     y "I...I'm sorry I have such terrible handwriting!"
     mc "What??"
@@ -265,7 +218,7 @@ label ch1_y_end:
     return
 
 label ch2_y_end:
-    call showpoem (poem_y2)
+    $ poem_db.show_poem("poem_y2")
     y 2m "Um..."
     y "I was a little more daring with this one than yesterday's..."
     mc "I can see that."
@@ -340,7 +293,7 @@ label ch3_y_end:
     # special poem instead.
     if chibi_y.appeal >= 3:
         jump ch3_y_end_special
-    call showpoem (poem_y3, img="yuri 2v")
+    $ poem_db.show_poem("poem_y3", img="yuri 2v")
     y "Um..."
     y "I'm aware that the beach is kind of an inane thing to write about."
     y "But I did my best to take a metaphorical approach to it."
@@ -382,7 +335,7 @@ label ch3_y_end:
     return
 
 label ch3_y_end_special:
-    call showpoem (poem_y3b, img="yuri 4b")
+    $ poem_db.show_poem("poem_y3b", img="yuri 4b")
     "Finishing the poem, I start to hand it back to Yuri."
     "But instead of taking it from me, she looks away."
     y "..."
@@ -435,7 +388,7 @@ label ch3_y_end_special:
     return
 
 label ch1_n_end:
-    call showpoem (poem_n1, img="natsuki 2s")
+    $ poem_db.show_poem("poem_n1", img="natsuki 2s")
     n 2q "Yeah..."
     n "I told you that you weren't gonna like it."
     mc "I like it."
@@ -469,7 +422,7 @@ label ch1_n_end:
     return
 
 label ch2_n_end:
-    call showpoem (poem_n2)
+    $ poem_db.show_poem("poem_n2")
     n 2a "Not bad, right?"
     mc "It's quite a bit longer than yesterday's."
     n 2w "Yesterday's was way too short..."
@@ -544,7 +497,7 @@ label ch3_n_end:
 
     if chibi_n.appeal >= 3:
         jump ch3_n_end_special
-    call showpoem (poem_n3)
+    $ poem_db.show_poem("poem_n3")
     n 2a "Yeah..."
     n "I felt like I kept writing about negative things, so I wanted to write something with a nice message for once."
     n 2z "Besides...the beach is awesome!"
@@ -578,7 +531,7 @@ label ch3_n_end:
     return
 
 label ch3_n_end_special:
-    call showpoem (poem_n3b)
+    $ poem_db.show_poem("poem_n3b")
     n 1q "..."
     n "...Why are you looking at me like that?"
     n "If you don't like it, then just say it."
@@ -634,7 +587,7 @@ label ch3_n_end_special:
     return
 
 label ch1_s_end:
-    call showpoem (poem_s1)
+    $ poem_db.show_poem("poem_s1")
     mc "Sayori..."
     mc "This is just a guess, but..."
     mc "Did you wait until this morning to write this?"
@@ -668,7 +621,7 @@ label ch1_s_end:
     return
 
 label ch2_s_end:
-    call showpoem (poem_s2)
+    $ poem_db.show_poem("poem_s2")
     mc "Holy crap..."
     mc "Sayori, did you really write this?"
     s 2j "Of course I did!"
@@ -705,7 +658,7 @@ label ch3_s_end:
     return
 
 label ch1_m_end:
-    call showpoem (poem_m1)
+    $ poem_db.show_poem("poem_m1")
 
 label ch1_m_end2:
     m 1a "So...what do you think?"
@@ -737,7 +690,7 @@ label ch1_m_end2:
     return
 
 label ch2_m_end:
-    call showpoem (poem_m2)
+    $ poem_db.show_poem("poem_m2")
     mc "Hm..."
     mc "It's even more abstract than your last one, huh?"
     m 5 "Ahaha..."
@@ -770,7 +723,7 @@ label ch2_m_end:
     return
 
 label ch3_m_end:
-    call showpoem (poem_m3)
+    $ poem_db.show_poem("poem_m3")
     m 1a "You know..."
     m "I feel like learning and looking for answers are the sorts of things that give life meaning."
     m 1e "Not to get too philosophical or anything..."

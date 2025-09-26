@@ -7,7 +7,7 @@ define persistent.demo = False
 define persistent.steam = ("steamapps" in config.basedir.lower())
 
 # This variable declares whether to enable Developer Tools from Ren'Py.
-define config.developer = False
+define config.developer = True
 
 # Whether to allow underfilled grids in the game.
 define config.allow_underfull_grids = True

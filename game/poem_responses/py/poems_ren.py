@@ -10,6 +10,7 @@
 ## one warning than multiple.
 import re
 import typing
+from game.definitions.py.core_ren import pause, persistent, store
 import renpy  # type: ignore
 
 """renpy
@@ -152,7 +153,9 @@ class Poem(renpy.text.text.Text):
 
     def show(
         self,
-        paper_sound: str | None = renpy.store.audio.page_turn,
+        img: str | None = None,
+        at_list: list = [store.i11],
+        paper_sound: str | None = store.audio.page_turn,
         music: str | bool = True,
         from_current: bool = True,
         revert_music: bool = True,
@@ -179,7 +182,7 @@ class Poem(renpy.text.text.Text):
             if paper_sound is not None:
                 renpy.sound.play(paper_sound, channel="page_turn", loop=False)
 
-            renpy._window_hide()
+            _window_hide()  # type: ignore # noqa: F821
 
             if music is True:
                 poem_track = self.music or None
@@ -196,19 +199,27 @@ class Poem(renpy.text.text.Text):
                 renpy.music.play(music, channel="poem", loop=True, fadeout=0.5)
                 renpy.music.stop(fadeout=2.0)
 
-            renpy.store.allow_skipping = renpy.config.allow_skipping
+            store.allow_skipping = renpy.config.allow_skipping
             renpy.config.allow_skipping = False
-            renpy.store.skipping = renpy.store._skipping
-            renpy.store._skipping = False
+            store.skipping = store._skipping
+            store._skipping = False
 
-            renpy.transition(renpy.store.dissolve)
+            renpy.transition(store.dissolve)
             renpy.show_screen("poem", self)
-            renpy.pause()
-            renpy.hide_screen("poem")
-            renpy.transition(renpy.store.dissolve)
+            pause()
 
-            renpy.config.allow_skipping = renpy.store.allow_skipping
-            renpy.store._skipping = renpy.store.skipping
+            if img:
+                if isinstance(self.author, PoemAuthor):
+                    renpy.hide(self.author.name)
+                else:
+                    renpy.hide(self.author)
+                renpy.show(img, at_list=at_list)
+
+            renpy.hide_screen("poem")
+            renpy.transition(store.dissolve)
+
+            renpy.config.allow_skipping = store.allow_skipping
+            store._skipping = store.skipping
 
             if poem_track and revert_music:
                 if previous_music:
@@ -223,8 +234,8 @@ class Poem(renpy.text.text.Text):
 
             renpy._window_auto = True
 
-        if not renpy.persistent.first_poem:
-            renpy.persistent.first_poem = True
+        if not persistent.first_poem:
+            persistent.first_poem = True
 
 
 class PoemResponseDB(object):
@@ -275,8 +286,8 @@ class PoemResponseDB(object):
         """
         self.poems[identifier] = Poem(
             author=author,
-            title=renpy.store._(title) if translate in ["all", "title"] else title,
-            text=renpy.store._(text) if translate in ["all", "text"] else text,
+            title=store._(title) if translate in ["all", "title"] else title,
+            text=store._(text) if translate in ["all", "text"] else text,
             style=style,
             paper=paper,
             separate_title_from_text=separate_title_from_text,
@@ -308,7 +319,7 @@ class PoemResponseDB(object):
         """
         return list(self.poems.keys())
 
-    def show_poem(self, identifier: str, **kwargs):
+    def show_poem(self, identifier: str, img: str | None = None, **kwargs):
         """
         Displays a poem from the database by its identifier.
 
@@ -319,7 +330,7 @@ class PoemResponseDB(object):
         """
         poem = self.get_poem(identifier)
         if poem:
-            poem.show(**kwargs)
+            poem.show(img=img, **kwargs)
         else:
             raise ValueError(f"Poem with identifier '{identifier}' not found.")
 
@@ -327,10 +338,10 @@ class PoemResponseDB(object):
 # Initialize the Poem database and authors.
 poem_db = PoemResponseDB()
 
-author_s = PoemAuthor("sayori", music=renpy.store.audio.tsayori)
-author_n = PoemAuthor("natsuki", music=renpy.store.audio.tnatsuki)
-author_y = PoemAuthor("yuri", music=renpy.store.audio.tyuri)
-author_m = PoemAuthor("monika", music=renpy.store.audio.tmonika)
+author_s = PoemAuthor("sayori", music=store.audio.tsayori)
+author_n = PoemAuthor("natsuki", music=store.audio.tnatsuki)
+author_y = PoemAuthor("yuri", music=store.audio.tyuri)
+author_m = PoemAuthor("monika", music=store.audio.tmonika)
 
 ## Yuri's Poems
 poem_db.add_poem(

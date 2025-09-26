@@ -5,6 +5,9 @@ import renpy  # type: ignore
 """renpy
 init -3 python:
 """
+# These are used so that IDEs don't report errors and Python code can access Ren'Py's store and persistent.
+persistent = renpy.store.persistent
+store = renpy.store
 
 # The default splash message for the game that players will see when launching your mod.
 splash_message_default = (
@@ -49,10 +52,11 @@ def restore_character(characters: list[str]):
     characters_folder = get_characters_folder()
     if characters_folder:
         for character in characters:
+            character_file_path = os.path.join(characters_folder, f"{character}.chr")
             try:
-                renpy.open_file(os.path.join(characters_folder, f"{character}.chr"))
+                renpy.open_file(character_file_path)
             except OSError:
-                open(os.path.join(characters_folder, f"{character}.chr"), "w").write(
+                open(character_file_path, "wb").write(
                     renpy.open_file(os.path.join("chrs", f"{character}.chr")).read()
                 )
 
@@ -61,11 +65,14 @@ def restore_characters():
     """
     Restores all characters depending on the current playthrough.
     """
-    if renpy.persistent.playthrough == 0:
+    if renpy.store.persistent.playthrough == 0:
         restore_character(["monika", "natsuki", "sayori", "yuri"])
-    elif renpy.persistent.playthrough == 1 or renpy.persistent.playthrough == 2:
+    elif (
+        renpy.store.persistent.playthrough == 1
+        or renpy.store.persistent.playthrough == 2
+    ):
         restore_character(["monika", "natsuki", "yuri"])
-    elif renpy.persistent.playthrough == 3:
+    elif renpy.store.persistent.playthrough == 3:
         restore_character(["monika"])
     else:
         restore_character(["natsuki", "sayori", "yuri"])

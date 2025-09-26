@@ -7,6 +7,7 @@
 ## Not included in the game, but used for IDEs to avoid multiple warnings.
 from game.poem_game.py.poemgame_chibi_ren import chibis, chibi_s, chibi_n, chibi_y
 from game.poem_game.py.poemwords_ren import poem_word_db, glitch_word, monika_word
+from game.definitions.py.core_ren import persistent, store
 import renpy  # type: ignore
 
 poemwinner: dict[int, str] = {
@@ -24,6 +25,9 @@ poemappeal: dict[str, dict[int, int]] = {
 """renpy
 init python:
 """
+
+POEM_CLICK_GLITCH_SOUND = store.audio.t4g
+POEM_CLICK_SOUND = store.gui.activate_sound
 
 
 class PoemGame:
@@ -116,14 +120,14 @@ class PoemGame:
                 if not self.poemgame_glitch:
                     if selected_poemword.glitch_word:
                         self.poemgame_glitch = True
-                        renpy.music.play(renpy.audio.t4g)
+                        renpy.music.play(POEM_CLICK_GLITCH_SOUND)
                         renpy.show("white")
                         # renpy.show("y_sticker_glitch", at_list=[sticker_glitch], zorder=10)
-                    elif renpy.persistent.playthrough != 3:
-                        renpy.play(renpy.gui.activate_sound)
+                    elif persistent.playthrough != 3:
+                        renpy.play(POEM_CLICK_SOUND)
 
                         # Act 1
-                        if renpy.persistent.playthrough == 0:
+                        if persistent.playthrough == 0:
                             if selected_poemword.sPoint >= 3:
                                 renpy.show("s_sticker hop")
                             elif selected_poemword.nPoint >= 3:
@@ -133,8 +137,8 @@ class PoemGame:
                         else:
                             # Act 2
                             if (
-                                renpy.persistent.playthrough == 2
-                                and renpy.store.chapter == 2
+                                persistent.playthrough == 2
+                                and store.chapter == 2
                                 and renpy.random.randint(0, 10) == 0
                             ):
                                 renpy.show(
@@ -145,18 +149,15 @@ class PoemGame:
                                     "n_sticker hop"
                                 )  # In Act 2, Natsuki hops if she has more points than Yuri.
                             elif (
-                                renpy.persistent.playthrough == 2
-                                and not renpy.persistent.seen_sticker
+                                persistent.playthrough == 2
+                                and not persistent.seen_sticker
                                 and renpy.random.randint(0, 100) == 0
                             ):
                                 renpy.show(
                                     "y_sticker hopg"
                                 )  # "y_sticker_2g.png". 1/100 chance to see it, if we haven't seen it already.
                                 renpy.persistent.seen_sticker = True
-                            elif (
-                                renpy.persistent.playthrough == 2
-                                and renpy.store.chapter == 2
-                            ):
+                            elif persistent.playthrough == 2 and store.chapter == 2:
                                 renpy.show(
                                     "y_sticker_cut hop"
                                 )  # Yuri's cut arms sticker
@@ -170,7 +171,7 @@ class PoemGame:
                         renpy.play("gui/sfx/baa.ogg")
                         self.played_baa = True
                     elif r <= 5:
-                        renpy.play(renpy.gui.activate_sound_glitch)
+                        renpy.play(store.gui.activate_sound_glitch)
 
             chibi_s.add_points(selected_poemword.sPoint)
             chibi_n.add_points(selected_poemword.nPoint)
@@ -182,34 +183,36 @@ class PoemGame:
         Finishes the poem game.
         This method should be called to conclude the poem game logic.
         """
+        chapter = store.chapter
+
         # Act 1 Calculations
-        if renpy.persistent.playthrough == 0:
+        if persistent.playthrough == 0:
             # Add 5 points to whoever we side with in Act 1 - Chapter 1.
-            if renpy.store.chapter == 1:
-                chibi = chibis.get_chibi(renpy.store.ch1_choice)
+            if chapter == 1:
+                chibi = chibis.get_chibi(store.ch1_choice)
                 chibi.add_points(5)
 
-            poemwinner[renpy.store.chapter] = max(
+            poemwinner[chapter] = max(
                 chibis.chibis, key=lambda c: c.charPointTotal
             ).name
         else:
             # Act 2 Calculations
             if chibi_n.charPointTotal > chibi_y.charPointTotal:
-                poemwinner[renpy.store.chapter] = "natsuki"
+                poemwinner[chapter] = "natsuki"
             else:
-                poemwinner[renpy.store.chapter] = "yuri"
+                poemwinner[chapter] = "yuri"
 
         # Add appeal point based on poem winner.
-        poemwinner_chibi = chibis.get_chibi(poemwinner[renpy.store.chapter])
+        poemwinner_chibi = chibis.get_chibi(poemwinner[chapter])
         poemwinner_chibi.add_appeal()
 
         # Set poem appeal
-        poemappeal["sayori"][renpy.store.chapter] = chibi_s.calculate_appeal()
-        poemappeal["natsuki"][renpy.store.chapter] = chibi_n.calculate_appeal()
-        poemappeal["yuri"][renpy.store.chapter] = chibi_y.calculate_appeal()
+        poemappeal["sayori"][chapter] = chibi_s.calculate_appeal()
+        poemappeal["natsuki"][chapter] = chibi_n.calculate_appeal()
+        poemappeal["yuri"][chapter] = chibi_y.calculate_appeal()
 
         # Poem winner alway has appeal of 1.
-        poemappeal[poemwinner_chibi.name][renpy.store.chapter] = 1
+        poemappeal[poemwinner_chibi.name][chapter] = 1
 
 
 poem_game = PoemGame()
