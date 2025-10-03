@@ -217,6 +217,28 @@ def process_check(stream_list: list[str]):
                 return True
     return False
 
+def is_user_streaming() -> bool:
+    """
+    Checks if any known streaming applications are currently running.
+
+    :return: True if a streaming application is running, False otherwise.
+    :rtype: bool
+    """
+    # List of common streaming application process names
+    streaming_apps = [
+        "obs.exe",
+        "obs64.exe",
+        "streamlabsobs.exe",
+        "xsplit.core.exe",
+        "xsplit.broadcaster.exe",
+        "twitchstudio.exe",
+        "elgato.streamdeck.exe",
+        "nvidia.share.exe",  # NVIDIA ShadowPlay
+        "amd.raptr.exe",     # AMD ReLive
+        "zoom.exe",          # Zoom (for video conferencing)
+        "teams.exe",         # Microsoft Teams (for video conferencing)
+    ]
+    return process_check(streaming_apps)
 
 def get_user_account_name():
     """
@@ -225,6 +247,10 @@ def get_user_account_name():
     :return: The username of the current user or None if it cannot be determined.
     :rtype: str | None
     """
+    # Reject if streaming to protect privacy
+    if is_user_streaming():
+        return None
+    
     if renpy.windows:
         # `whoami` and split name (DOMAIN\Username -> Username)
         return (
