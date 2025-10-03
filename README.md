@@ -81,8 +81,8 @@ Classic DDLC features restored and improved:
 ### Installation Steps
 
 1. **Extract Ren'Py** to a folder of your choice.
-   > [!WARNING]
-   > Do not extract Ren'Py to a cloud storage folder (e.g. Google Drive, OneDrive, etc.) as it will cause issues when testing your mod.
+> [!WARNING]
+> Do not extract Ren'Py to a cloud storage folder (e.g. Google Drive, OneDrive, etc.) as it will cause issues when testing your mod.
 
 2. **Create a new folder** in the `renpy-8.X.X-sdk` folder and extract the DDLC Mod Template ZIP into it.
 
