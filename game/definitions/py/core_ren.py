@@ -1,5 +1,7 @@
 import os
 import subprocess
+import sys
+import platform
 import renpy  # type: ignore
 
 """renpy
@@ -269,6 +271,39 @@ def get_user_account_name():
             or None
         )
 
+def get_windows_version() -> tuple[int, int, int] | None:
+    """
+    Retrieves the current Windows version.
+
+    :return: The Windows version or None if it cannot be determined or not on Windows.
+    :rtype: tuple[int, int, int] | None
+    """
+    if not renpy.windows:
+        return None
+    
+    version = sys.getwindowsversion()
+    return (version.major, version.minor, version.build)
+
+def get_macos_version() -> tuple[int, int, int] | None:
+    """
+    Retrieves the current macOS version.
+
+    :return: A tuple containing the major, minor, and patch version numbers or None if it cannot be determined or not on macOS.
+    :rtype: tuple[int, int, int] | None
+    """
+    if not renpy.macintosh:
+        return None
+    
+    release, _, _ = platform.mac_ver()
+    if release != "":
+        version_parts = release.split(".")
+        if len(version_parts) >= 2:
+            major = int(version_parts[0])
+            minor = int(version_parts[1])
+            patch = int(version_parts[2]) if len(version_parts) > 2 else 0
+            return (major, minor, patch)    
+        
+    return None # Unknown or unsupported version
 
 currentuser = get_user_account_name()
 
