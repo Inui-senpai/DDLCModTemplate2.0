@@ -113,6 +113,8 @@ def delete_all_saves():
     """
     for savegame in renpy.list_saved_games(fast=True):
         renpy.unlink_save(savegame)
+    renpy.loadsave.location.unlink_persistent()
+    renpy.persistent.should_save_persistent = False
 
 
 def get_pos(channel: str = "music"):
