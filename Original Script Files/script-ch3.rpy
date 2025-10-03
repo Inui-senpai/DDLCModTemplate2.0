@@ -188,11 +188,11 @@ label ch3_main:
 
 
 
-    if chibi_n.appeal == 0 and chibi_y.appeal == 0:
+    if get_appeal("natsuki") == 0 and get_appeal("yuri") == 0:
         jump ch3_start_none
-    elif chibi_n.appeal > 1:
+    elif get_appeal("natsuki") > 1:
         jump ch3_start_natsuki
-    elif chibi_y.appeal > 1:
+    elif get_appeal("yuri") > 1:
         jump ch3_start_yuri
     elif poemwinner[1] == "natsuki":
         jump ch3_start_natsuki
