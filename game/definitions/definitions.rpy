@@ -1374,7 +1374,6 @@ default hes_capital = hes.capitalize()
 ## Extra Settings Variables
 # This section controls whether the mod is censored or is in let's play mode.
 default persistent.uncensored_mode = False
-default persistent.lets_play = False
 
 ## Variables
 # This section declares variables when the mod runs for the first time on all saves.

@@ -1227,12 +1227,6 @@ screen template_preferences():
                         yes_action=[Hide("confirm"), ToggleField(persistent, "uncensored_mode")],
                         no_action=Hide("confirm")
                     ))
-                textbutton _("Let's Play Mode") action If(persistent.lets_play, 
-                    ToggleField(persistent, "lets_play"),
-                    [ToggleField(persistent, "lets_play"), Show("dialog", 
-                        message="You have enabled Let's Play Mode.\nThis mode allows you to skip content that\ncontains sensitive information or apply alternative\nstory options.\n\nThis setting will be dependent on the modder\nif they programmed these checks in their story.", 
-                        ok_action=Hide("dialog")
-                    )])
         
         vbox:
             style_prefix "name"
@@ -2088,7 +2082,7 @@ screen choose_language():
 
                 textbutton renpy.translate_string(_("{#in language font}Select"), local_lang):
                     style "confirm_button"
-                    action [Language(chosen_lang), Return()]
+                    action [Language(chosen_lang), SetField(persistent, "has_chosen_language", True), Return()]
 
 translate None strings:
     old "{#language name and font}"
