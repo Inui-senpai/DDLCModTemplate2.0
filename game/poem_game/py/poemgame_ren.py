@@ -247,7 +247,17 @@ def get_exclusive_scene(chapter: int) -> str:
     :rtype: str
     """
     winner = chibis.get_chibi(poemwinner[chapter])
-    exclusive_scene = f"{winner.name}_exclusive_{get_appeal(winner.name)}"
+    name = winner.name
+
+    # Normally in DDLC Act II, Sayori code redirects to
+    # Yuri so we do it here.
+    if persistent.playthrough == 2 and winner.name == "sayori":
+        name = "yuri"
+
+    exclusive_scene = f"{name}_exclusive"
+    if persistent.playthrough == 2:
+        exclusive_scene += "2"
+    exclusive_scene += f"_{get_appeal(name)}"
     return exclusive_scene
 
 
@@ -261,5 +271,13 @@ def get_monika_scene(chapter: int) -> str:
     :rtype: str
     """
     winner = chibis.get_chibi(poemwinner[chapter])
-    monika_scene = f"m_{winner.name}_{get_appeal(winner.name)}"
+    monika_scene = "m"
+
+    name = winner.name
+    if persistent.playthrough == 2:
+        monika_scene += "2"
+        if winner.name == "sayori":
+            name = "yuri"
+
+    monika_scene += f"_{name}_{get_appeal(name)}"
     return monika_scene

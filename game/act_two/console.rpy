@@ -11,7 +11,7 @@
 init -1:
     default console = Console(console_delay=0.5, console_cps=30, max_log_history=5)
 
-screen console_screen(console, input_text, output_text):
+screen console_screen(console, input_text=None, output_text=None):
     """
     This screen shows the console in-game.
     """
@@ -55,8 +55,8 @@ screen console_screen(console, input_text, output_text):
             vbox:
                 xpos 26 ypos 30 
                 spacing 5
-                
-                for output in history.values():
+
+                for output in console.console_history.values():
                     text output
 
 style console_screen_frame:

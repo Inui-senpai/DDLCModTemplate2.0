@@ -21,7 +21,11 @@ class Console(object):
     """
 
     def __init__(
-        self, console_delay: float, console_cps: int, max_log_history: int = 5, testing: bool = False
+        self,
+        console_delay: float,
+        console_cps: int,
+        max_log_history: int = 5,
+        testing: bool = False,
     ):
         """
         Initializes the console with the given delay and characters per second (cps).
@@ -67,7 +71,7 @@ class Console(object):
                 renpy.hide_screen("console_screen")
             renpy.call_screen(
                 "console_screen",
-                history=self.console_history,
+                console=self,
                 input_text=input_text,
                 output_text=output_text,
             )

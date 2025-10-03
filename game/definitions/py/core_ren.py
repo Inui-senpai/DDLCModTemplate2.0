@@ -115,7 +115,7 @@ def delete_all_saves():
         renpy.unlink_save(savegame)
 
 
-def get_music_pos(channel: str = "music"):
+def get_pos(channel: str = "music"):
     """
     Returns the current position of the specified music channel.
 
