@@ -16,6 +16,16 @@
    </a>
 </p>
 
+## Table of Contents
+- [📖 Overview](#-overview) 
+- [📋 Credit Requirements (Important)](#-credit-requirements) 
+- [✨ Features](#-features) 
+- [🚀 Quick Start](#-quick-start) 
+- [📦 Building & Distribution](#-building--distribution)
+- [🎯 Platform-Specific Guides](#-platform-specific-guides)
+- [📚 Additional Resources](#-additional-resources)
+- [👏 Credits](#-credits)
+
 ## 📖 Overview
 
 The DDLC Mod Template 2.0 is a comprehensive mod template for **Doki Doki Literature Club** that fully adheres to [Team Salvato's IP Guidelines](http://teamsalvato.com/ip-guidelines/). Built for Ren'Py 8.X by Azariel Del Carmen (bronya_rand), this template provides everything you need to create fan-made, cross-platform DDLC mods with modern features and optimized code.
