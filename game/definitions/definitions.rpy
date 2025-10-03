@@ -1411,24 +1411,9 @@ default n_name = "Natsuki"
 default y_name = "Yuri"
 
 # Poem Variables
-# This section records how much each character likes your poem in-game.
-# Syntax:
-#   -1 - Bad
-#   0 - Neutral
-#   1 - Good
-# To add a new poem person, make a poem array like in this example:
-#   default e_poemappeal = [0, 0, 0]
-
-default n_poemappeal = [0, 0, 0]
-default s_poemappeal = [0, 0, 0]
-default y_poemappeal = [0, 0, 0]
-default m_poemappeal = [0, 0, 0]
-
-default poemwinner = {
-    0: "sayori",
-    1: "sayori",
-    2: "sayori",
-}
+# This section stores a character's appeal towards the player's poem and poem winner.
+# For DDLC, since there are three poems written, each character has three values
+# representing each respective chapter poem as well as the person who likes the poem the most.
 
 default poemappeal = {
     "sayori": {0: 0, 1: 0, 2: 0},
@@ -1436,11 +1421,18 @@ default poemappeal = {
     "yuri": {0: 0, 1: 0, 2: 0},
 }
 
-# These variables keep track on who has read your poem during poem sharing
-default s_readpoem = False
-default n_readpoem = False
-default y_readpoem = False
-default m_readpoem = False
+default poemwinner = {
+    0: "sayori",
+    1: "sayori",
+    2: "sayori",
+}
+
+default readpoem = {
+    "sayori": False,
+    "natsuki": False,
+    "yuri": False,
+    "monika": False
+}
 
 # This variable keeps track on how many people have read your poem.
 default poemsread = 0

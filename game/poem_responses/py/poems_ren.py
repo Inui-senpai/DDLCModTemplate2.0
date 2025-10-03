@@ -199,9 +199,9 @@ class Poem(renpy.text.text.Text):
                 renpy.music.play(music, channel="poem", loop=True, fadeout=0.5)
                 renpy.music.stop(fadeout=2.0)
 
-            store.allow_skipping = renpy.config.allow_skipping
+            allow_skipping = renpy.config.allow_skipping
             renpy.config.allow_skipping = False
-            store.skipping = store._skipping
+            skipping = store._skipping
             store._skipping = False
 
             renpy.transition(store.dissolve)
@@ -218,8 +218,8 @@ class Poem(renpy.text.text.Text):
             renpy.hide_screen("poem")
             renpy.transition(store.dissolve)
 
-            renpy.config.allow_skipping = store.allow_skipping
-            store._skipping = store.skipping
+            renpy.config.allow_skipping = allow_skipping
+            store._skipping = skipping
 
             if poem_track and revert_music:
                 if previous_music:

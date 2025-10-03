@@ -185,13 +185,15 @@ class PoemGame:
         """
         chapter = store.chapter
 
-        # Act 1 Calculations
         if persistent.playthrough == 0:
             # Add 5 points to whoever we side with in Act 1 - Chapter 1.
             if chapter == 1:
                 chibi = chibis.get_chibi(store.ch1_choice)
                 chibi.add_points(5)
 
+        # Determine the poem winner.
+        if persistent.playthrough == 0:
+            # Act 1 Calculations
             poemwinner[chapter] = max(
                 chibis.chibis, key=lambda c: c.charPointTotal
             ).name
@@ -204,15 +206,60 @@ class PoemGame:
 
         # Add appeal point based on poem winner.
         poemwinner_chibi = chibis.get_chibi(poemwinner[chapter])
-        poemwinner_chibi.add_appeal()
 
         # Set poem appeal
-        poemappeal["sayori"][chapter] = chibi_s.calculate_appeal()
-        poemappeal["natsuki"][chapter] = chibi_n.calculate_appeal()
-        poemappeal["yuri"][chapter] = chibi_y.calculate_appeal()
+        if persistent.playthrough == 0 and poemwinner_chibi.name != "sayori":
+            poemappeal["sayori"][chapter] += chibi_s.calculate_appeal()
+        if poemwinner_chibi.name != "natsuki":
+            poemappeal["natsuki"][chapter] += chibi_n.calculate_appeal()
+        if poemwinner_chibi.name != "yuri":
+            poemappeal["yuri"][chapter] += chibi_y.calculate_appeal()
 
-        # Poem winner alway has appeal of 1.
-        poemappeal[poemwinner_chibi.name][chapter] = 1
+        # Poem winner always gets +1 appeal.
+        poemappeal[poemwinner_chibi.name][chapter] += 1
 
 
 poem_game = PoemGame()
+
+
+def get_appeal(chibi_name: str) -> int:
+    """
+    Returns the appeal of the specified character.
+    :param chibi_name: The name of the character.
+    :type chibi_name: str
+    :return: The appeal of the character.
+    :rtype: int
+    """
+    chibi = chibis.get_chibi(chibi_name)
+    appeal = 0
+    for a in poemappeal[chibi.name].values():
+        appeal += a
+    return appeal
+
+
+def get_exclusive_scene(chapter: int) -> str:
+    """
+    Returns the exclusive scene string based on the poem winner and their appeal.
+
+    :param chapter: The current chapter number.
+    :type chapter: int
+    :return: The exclusive scene string.
+    :rtype: str
+    """
+    winner = chibis.get_chibi(poemwinner[chapter])
+    exclusive_scene = f"{winner.name}_exclusive_{get_appeal(winner.name)}"
+    return exclusive_scene
+
+
+def get_monika_scene(chapter: int) -> str:
+    """
+    Returns the Monika scene string based on the chapter number.
+
+    :param chapter: The current chapter number.
+    :type chapter: int
+    :return: The Monika scene string.
+    :rtype: str
+    """
+    winner = chibis.get_chibi(poemwinner[chapter])
+    monika_scene = f"m_{winner.name}_{get_appeal(winner.name)}"
+    return monika_scene

@@ -3,6 +3,7 @@
 # The code is designed to work with Ren'Py 8 and uses the `_ren.py` approach for Python code.
 
 ## Not included in the original game, but used for IDEs to avoid multiple warnings.
+from typing import Literal
 import renpy  # type: ignore
 
 """renpy
@@ -15,7 +16,7 @@ class ChibiTransform(object):
     This class handles the transform animations for the Chibi characters in the poem game.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Initializes the animation of the Poem Game Chibi characters.
         """
@@ -24,13 +25,13 @@ class ChibiTransform(object):
         self.charOffset: float = 0
         self.charZoom: float = 1
 
-    def produce_random(self):
+    def produce_random(self) -> float:
         """
         Produces a random time for the character animation.
         """
         return renpy.random.random() * 4 + 4
 
-    def reset_trans(self):
+    def reset_trans(self) -> None:
         """
         Resets the character animation to its initial state.
         """
@@ -39,7 +40,7 @@ class ChibiTransform(object):
         self.charOffset = 0
         self.charZoom = 1
 
-    def randomPauseTime(self, trans, st, at):
+    def randomPauseTime(self, trans, st, at) -> Literal[None, 0]:
         """
         Randomly pauses the character animation based on the specified time.
         """
@@ -48,7 +49,7 @@ class ChibiTransform(object):
             return None
         return 0
 
-    def randomMoveTime(self, trans, st, at):
+    def randomMoveTime(self, trans, st, at) -> Literal[None, 0]:
         """
         Randomly moves the character based on the specified time.
         """
@@ -79,7 +80,7 @@ class Chibi(ChibiTransform):
 
     def __init__(
         self, name: str, poem_dislike_threshold: int = 29, poem_like_threshold: int = 45
-    ):
+    ) -> None:
         """
         Initializes the Chibi character
 
@@ -97,16 +98,15 @@ class Chibi(ChibiTransform):
         self.poem_like_threshold = poem_like_threshold
 
         self.charPointTotal = 0
-        self.appeal = 0
 
-    def reset(self):
+    def reset(self) -> None:
         """
         Resets the Chibi character's point total and animation state.
         """
         self.charPointTotal = 0
         self.reset_trans()
 
-    def add_points(self, points: int):
+    def add_points(self, points: int) -> None:
         """
         Adds points to the Chibi character's total.
 
@@ -115,13 +115,7 @@ class Chibi(ChibiTransform):
         """
         self.charPointTotal += points
 
-    def add_appeal(self):
-        """
-        Adds appeal to the Chibi character based on their point total.
-        """
-        self.appeal += 1
-
-    def calculate_appeal(self):
+    def calculate_appeal(self) -> Literal[-1, 0, 1]:
         """
         Calculates the appeal of the Chibi character based on their point total.
 
@@ -138,7 +132,7 @@ class Chibi(ChibiTransform):
             return 1
         return 0
 
-    def __call__(self):
+    def __call__(self) -> str:
         """
         Returns the name of the Chibi character.
         """
@@ -150,13 +144,13 @@ class ChibiDB(object):
     This class defines a database of Chibi characters used in the poem game.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Initializes the ChibiDB instance with an empty list of characters.
         """
         self.chibis: list[Chibi] = []
 
-    def add_chibi(self, name: str):
+    def add_chibi(self, name: str) -> None:
         """
         Adds a Chibi character to the database.
 
@@ -183,7 +177,7 @@ class ChibiDB(object):
 
         raise ValueError(f"Chibi character '{name}' not found in the database.")
 
-    def reset(self):
+    def reset(self) -> None:
         """
         Resets all Chibi characters in the database.
         """

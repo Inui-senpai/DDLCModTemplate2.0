@@ -1,4 +1,5 @@
 import sys
+import random
 import types
 from unittest import mock
 from .mocks import (
@@ -24,6 +25,8 @@ class RenPyMock:
         self.easy = _FakeRenpyEasy()
         self.store = _fake_renpy_store
         self.persistent = _fake_renpy_store.persistent
+        self.windows = random.choice([True, False])
+        self.pure = mock.MagicMock()
 
         # Create a mock for the renpy.text.text.Text class
         self.text = mock.MagicMock()
@@ -50,6 +53,7 @@ class RenPyMock:
 
         self.store.audio = mock.MagicMock()  # type: ignore
         self.store.config = self.config  # type: ignore
+        self.store.gui = mock.MagicMock()  # type: ignore
 
     def __getattr__(self, name):
         # Try to get attribute from self first

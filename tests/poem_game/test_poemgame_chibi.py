@@ -49,24 +49,6 @@ class ChibiTest(DDLCTest):
 
         self.end_test_time()
 
-    def test_chibi_add_appeal(self):
-        """
-        Test adding appeal to a Chibi character.
-        """
-        self.start_test_time()
-
-        # Setup
-        chibi = self.create_chibi("bronya")
-        initial_appeal = chibi.appeal
-
-        # Test
-        chibi.add_appeal()
-
-        # Assert
-        self.assertEqual(chibi.appeal, initial_appeal + 1)
-
-        self.end_test_time()
-
     def test_positive_appeal(self):
         """
         Test the appeal calculation for a Chibi character.
@@ -130,14 +112,12 @@ class ChibiTest(DDLCTest):
         # Setup
         chibi = self.create_chibi("bronya")
         chibi.add_points(10)
-        chibi.add_appeal()
 
         # Test
         chibi.reset()
 
         # Assert
         self.assertEqual(chibi.charPointTotal, 0)
-        self.assertEqual(chibi.appeal, 1)  # Appeal should not reset, only points should
 
         self.end_test_time()
 
@@ -225,7 +205,6 @@ class ChibiDBTest(DDLCTest):
         carlotta = chibi_db.get_chibi("carlotta")
         bronya.add_points(10)
         carlotta.add_points(20)
-        bronya.add_appeal()
 
         # Test
         chibi_db.reset()
@@ -233,8 +212,6 @@ class ChibiDBTest(DDLCTest):
         # Assert
         self.assertEqual(len(chibi_db.chibis), 2)
         self.assertEqual(bronya.charPointTotal, 0)
-        self.assertEqual(bronya.appeal, 1)  # Appeal should not reset
         self.assertEqual(carlotta.charPointTotal, 0)
-        self.assertEqual(carlotta.appeal, 0)
 
         self.end_test_time()
