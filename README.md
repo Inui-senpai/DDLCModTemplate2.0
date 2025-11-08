@@ -28,7 +28,9 @@
 
 ## 📖 Overview
 
-The DDLC Mod Template 2.0 is a comprehensive mod template for **Doki Doki Literature Club** that fully adheres to [Team Salvato's IP Guidelines](http://teamsalvato.com/ip-guidelines/). Built for Ren'Py 8.X by Azariel Del Carmen (bronya_rand), this template provides everything you need to create fan-made, cross-platform DDLC mods with modern features and optimized code.
+The DDLC Mod Template 2.0 is a comprehensive mod template for **Doki Doki Literature Club** that fully adheres to [Team Salvato's IP Guidelines](http://teamsalvato.com/ip-guidelines/). 
+
+Built for Ren'Py 8.X by Azariel Del Carmen (bronya_rand), this template provides everything you need to create fan-made, cross-platform DDLC mods with modern features and optimized code.
 
 **Perfect for:**
 - First-time mod creators looking for a solid foundation.
@@ -36,10 +38,10 @@ The DDLC Mod Template 2.0 is a comprehensive mod template for **Doki Doki Litera
 - Developers seeking cross-platform compatibility (Windows x64, macOS, Linux, Android).
 
 > [!NOTE]
-> **The DDLC Mod Template is not affiliated in any way with Team Salvato nor is it designed for the sequel "Doki Doki Literature Club Plus".**
+> **The DDLC Mod Template is not affiliated in any way with Team Salvato nor is it designed for the sequel "Doki Doki Literature Club Plus". Do not use the template nor its code for unofficial DDLC patches, fixes, etc.**
 
 > [!NOTE] 
-> For legacy Ren'Py support (Ren'Py 6.99-7.8.X), see the [Python 2](https://github.com/Bronya-Rand/DDLCModTemplate2.0/tree/python-2) branch of the mod template.
+> For legacy Ren'Py support (Ren'Py 6.99-7.8.7), see the [Python 2](https://github.com/Bronya-Rand/DDLCModTemplate2.0/tree/python-2) branch of the mod template.
 
 ---
 
@@ -116,7 +118,7 @@ When you're ready to release your mod:
 
 1. Open the **Ren'Py Launcher**.
 2. Click on **Build Distributions**.
-3. **Uncheck all options** and check **Ren'Py 8 DDLC Compliant Mod**.
+3. **Uncheck all options** in `Build Packages` and check **Ren'Py 8 DDLC Compliant Mod**.
 4. Click **Build**.
 
 This creates a cross-platform mod package ZIP file (marked with `-Renpy8-DDLCMod` in the filename) containing your mod files ready for distribution.
