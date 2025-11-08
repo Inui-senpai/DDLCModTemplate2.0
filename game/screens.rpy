@@ -1172,7 +1172,7 @@ screen ddlc_preferences():
                     
                     null width 5
                 
-                    text str(round(preferences.get_volume("music") * 100)) style "value_text"
+                    text str(round(preferences.get_mixer("music") * 100)) style "value_text"
 
                 hbox:
                     bar value Preference("music volume")
@@ -1184,7 +1184,7 @@ screen ddlc_preferences():
                     
                     null width 5
                 
-                    text str(round(preferences.get_volume("sfx") * 100)) style "value_text"
+                    text str(round(preferences.get_mixer("sfx") * 100)) style "value_text"
 
                 hbox:
                     bar value Preference("sound volume")
@@ -1198,7 +1198,7 @@ screen ddlc_preferences():
                     
                     null width 5
                 
-                    text str(round(preferences.get_volume("voice") * 100)) style "value_text"
+                    text str(round(preferences.get_mixer("voice") * 100)) style "value_text"
 
                 hbox:
                     bar value Preference("voice volume")
