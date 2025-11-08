@@ -1,11 +1,5 @@
 # This file defines important stuff for DDLC and your mod!
 
-# This variable declares if the mod is a demo or not. A leftover from DDLC.
-define persistent.demo = False
-
-# This variable declares whether the mod is in the 'steamapps' folder (Steam Version of DDLC)
-define persistent.steam = ("steamapps" in config.basedir.lower())
-
 # This variable declares whether to enable Developer Tools from Ren'Py.
 define config.developer = True
 
@@ -1371,7 +1365,7 @@ default persistent.playername = ""
 default player = persistent.playername
 default persistent.playthrough = 0
 default persistent.yuri_kill = 0
-default persistent.seen_eyes = None
+default persistent.seen_eyes = False
 default persistent.seen_sticker = None
 default persistent.ghost_menu = None
 default persistent.seen_ghost_menu = None

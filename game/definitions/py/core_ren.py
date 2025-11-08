@@ -305,6 +305,15 @@ def get_macos_version() -> tuple[int, int, int] | None:
         
     return None # Unknown or unsupported version
 
+def ddlc_under_steam() -> bool:
+    """
+    Checks if the game is running through Steam.
+    
+    :return: True if running through Steam, False otherwise.
+    :rtype: bool
+    """
+    return "steamapps" in renpy.config.basedir.lower()
+
 currentuser = get_user_account_name()
 
 ## Template Functions
