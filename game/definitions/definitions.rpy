@@ -1366,9 +1366,9 @@ default player = persistent.playername
 default persistent.playthrough = 0
 default persistent.yuri_kill = 0
 default persistent.seen_eyes = False
-default persistent.seen_sticker = None
-default persistent.ghost_menu = None
-default persistent.seen_ghost_menu = None
+default persistent.seen_sticker = False
+default persistent.ghost_menu = False
+default persistent.seen_ghost_menu = False
 default seen_eyes_this_chapter = False
 default persistent.anticheat = 0
 default persistent.clear = [False, False, False, False, False, False, False, False, False, False]
@@ -1377,12 +1377,12 @@ default persistent.special_poems = {
     1: None,
     2: None,
 }
-default persistent.clearall = None
-default persistent.menu_bg_m = None
-default persistent.first_load = None
-default persistent.first_poem = None
-default persistent.seen_colors_poem = None
-default persistent.monika_back = None
+default persistent.clearall = False
+default persistent.menu_bg_m = False
+default persistent.first_load = False
+default persistent.first_poem = False
+default persistent.seen_colors_poem = False
+default persistent.monika_back = False
 
 default in_sayori_kill = None
 default in_yuri_kill = None
@@ -1450,8 +1450,8 @@ default ch1_choice = "sayori"
 default n_poemearly = False
 
 # These variables track whether we tried to help Monika or Sayori during Day 3's ending.
-default help_sayori = None
-default help_monika = None
+default help_sayori = False
+default help_monika = False
 
 # These variables track which route Day 4 will play and who is their name.
 default ch4_scene = "yuri"
@@ -1461,4 +1461,4 @@ default ch4_name = "Yuri"
 default sayori_confess = True
 
 # This variable tracks whether we read Natsuki's 3rd poem in Act 2.
-default natsuki_23 = None
+default natsuki_23 = False

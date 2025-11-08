@@ -689,7 +689,7 @@ label ch3_end_sayori:
             call ch3_end_natsuki
         "Yuri.":
             call ch3_end_yuri
-        "Monika." if help_monika == None:
+        "Monika." if not help_monika:
             call ch3_end_monika
     return
 
@@ -783,7 +783,7 @@ label ch3_end_monika:
             call ch3_end_natsuki
         "Yuri.":
             call ch3_end_yuri
-        "Sayori..." if help_sayori == None:
+        "Sayori..." if not help_sayori:
             call ch3_end_sayori
     return
 
