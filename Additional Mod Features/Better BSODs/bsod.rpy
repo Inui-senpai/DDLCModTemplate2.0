@@ -3,8 +3,6 @@
 # This file contains the screen code to display a fake Blue Screen of death.
 
 init python:
-    import secrets
-
     cursor = 0
     purple = False
 
@@ -56,18 +54,37 @@ init python:
 ##     bsodFile (Windows 7 Only) - The fake file name that caused the 
 ##                error. Defaults to libGLESv2.dll if no file name is given.
 ##     rsod (Windows 11 Only) - Swaps the Windows 11 BSOD with a RSOD.
+##               Defaults to False.
+##     hexcodeError (Windows 11 10.0.26100 and above Only) - The hex code error
 ##
 ## Examples:
 ##     show screen bsod("DOKI_DOKI", "renpy32.dll", False) 
 ##     show screen bsod("EILEEN_EXCEPTION_NOT_HANDLED", rsod=True) 
-screen bsod(bsodCode="DDLC_ESCAPE_PLAN_FAILED", bsodFile="libGLESv2.dll", rsod=False):
+##     show screen bsod("NOT_BRONYA_DUMPLING_FRIENDLY", hexcodeError="0x4A")
+screen bsod(bsodCode="DDLC_ESCAPE_PLAN_FAILED", bsodFile="libGLESv2.dll", rsod=False, hexcodeError="0xFA"):
 
     layer "master"
 
     if renpy.windows:
 
         python:
+            # Get Windows version
             os = get_windows_version()
+            
+            # Check Hexcode Error is Hexadecimal
+            if hexcodeError != "":
+                try:
+                    int(hexcodeError, 16)
+
+                    if not hexcodeError.startswith("0x"):
+                        hexcodeError = "0x" + hexcodeError
+                    
+                    # Truncate to 2 bytes (0xFF)
+                    hexcodeError = hexcodeError[:4]
+                except ValueError:
+                    hexcodeError = "0xFA" # Default Hexcode Error
+            else:
+                hexcodeError = "0xFA" # Default Hexcode Error
 
         if os <= (6, 1): # Windows 7 and below
             add Solid("#000082")
@@ -99,7 +116,7 @@ screen bsod(bsodCode="DDLC_ESCAPE_PLAN_FAILED", bsodFile="libGLESv2.dll", rsod=F
                 add DynamicDisplayable(fakePercent, 8)
                 text "If you'd like to know more, you can search online later for this error: " + bsodCode.upper() style "bsod_win8_sub_text"
 
-        else: # Windows 10, 11 and RSOD / Unknown
+        elif os == (10, 0) and os < (10, 0, 26100): # Windows 10, 11 (Before 10.0.26100) and RSOD / Unknown
             if rsod:
                 add Solid("#d40e0eff")
                 python:
@@ -152,6 +169,28 @@ screen bsod(bsodCode="DDLC_ESCAPE_PLAN_FAILED", bsodFile="libGLESv2.dll", rsod=F
                             text "Stop code: " + bsodCode.upper() style "bsod_win10_sub_text"
                             text "What failed: " + bsodFile.lower() style "bsod_win10_sub_text"
         
+        else: # Windows 11 (10.0.26100 and above)
+            add Solid("#000")
+
+            vbox:
+                style_prefix "bsod_win10"
+                xalign 0.5
+                yalign 0.5
+
+                text "Your device ran into a problem and needs to restart."
+
+                vbox:
+                    xalign 0.5
+                    add DynamicDisplayable(fakePercent, 10)
+                
+            vbox:
+                style_prefix "bsod_win10"
+                xalign 0.5
+                yalign 0.95
+                
+                text "Stop code: " + bsodCode.upper() + " (" + hexcodeError + ")" style "bsod_win10_info_text"
+
+
     elif renpy.macintosh:
 
         python:
