@@ -1,8 +1,18 @@
+# Copyright 2019-2025 Azariel Del Carmen (bronya_rand). All rights reserved.
+# This file contains the Python code for the Gallery Menu.
+# The code is designed to work with Ren'Py 8 and uses the `_ren.py` approach for Python code.
+
+# For the Ren'Py code, see `gallery.rpy` in the `extras` directory.
+
+## Not included in the original game, but used for IDEs to avoid multiple warnings.
 import os
 import renpy  # type: ignore
+from game.definitions.py.core_ren import persistent
+
+persistent.unlocked_gallery_images = []
 
 """renpy
-init -2 python:
+init python:
 """
 
 
@@ -28,10 +38,18 @@ class GalleryBase:
         self.artist = artist
         self.description = description
 
-        self.unlocked = unlock_by_default
+        # Unlock if in persistent or by default.
+        if img in persistent.unlocked_gallery_images or unlock_by_default:
+            if unlock_by_default and img not in persistent.unlocked_gallery_images:
+                persistent.unlocked_gallery_images.append(img)
+            self.unlocked = True
+        else:
+            self.unlocked = False
+
         self.sprite = sprite
         self.exportable = exportable
 
+        self.img_file = img
         self.img, self.small_img = self._setup_images(img, small_img, sprite, bg)
         self.bg = (
             renpy.store.Transform(
@@ -86,12 +104,15 @@ class GalleryBase:
         Unlocks the gallery image for viewing.
         """
         self.unlocked = True
+        persistent.unlocked_gallery_images.append(self.img)
 
     def lock(self):
         """
         Locks the gallery image, preventing viewing.
         """
         self.unlocked = False
+        if self.img in persistent.unlocked_gallery_images:
+            persistent.unlocked_gallery_images.remove(self.img)
 
     def get_image(self) -> str:
         """
@@ -183,10 +204,13 @@ class GalleryBase:
 
         # Get the image file path.
         try:
-            renpy.open_file(self.img)
-            renpy_img = self.img
-        except IOError:
-            renpy_img = renpy.display.image.images.get(self.img).filename
+            renpy.open_file(self.img_file)
+            renpy_img = self.img_file
+        except FileNotFoundError:
+            img_filename = self.img_file
+            if not isinstance(img_filename, tuple):
+                img_filename = tuple(img_filename.split())
+            renpy_img = renpy.display.image.images.get(img_filename).filename
         if not renpy_img:
             renpy.show_screen(
                 "dialog",
@@ -195,6 +219,7 @@ class GalleryBase:
             )
             return
 
+        # Determine export filename.
         original_ext = os.path.splitext(renpy_img)[1]
 
         export_filename = None
@@ -213,6 +238,7 @@ class GalleryBase:
             )
             return
 
+        # Export the image file.
         img_export_file = os.path.join(export_dir, export_filename)
         if os.path.exists(img_export_file):
             renpy.show_screen(
@@ -223,7 +249,21 @@ class GalleryBase:
             return
 
         with open(img_export_file, "wb") as outfile:
-            outfile.write(renpy.open_file(renpy_img).read())
+            try:
+                outfile.write(renpy.open_file(renpy_img).read())
+            except FileNotFoundError:
+                try:
+                    # For RPA access? Seems to work for images in images.rpa compared to open_file.
+                    outfile.write(
+                        renpy.loader.load(renpy_img, directory="images").read()
+                    )
+                except Exception as e:
+                    renpy.show_screen(
+                        "dialog",
+                        message=f"Failed to export image: {str(e)}",
+                        ok_action=renpy.store.Hide(),
+                    )
+                    return
 
         renpy.show_screen(
             "dialog",
@@ -341,17 +381,32 @@ class GalleryDB:
         self.alt_index: int = 0
 
     def add_image(self, image: GalleryImage) -> None:
+        """
+        Adds a gallery image to the database.
+        :param image: The GalleryImage to add.
+        """
         self.images.append(image)
 
     def set_image_index(self, index: int) -> None:
+        """
+        Sets the current image index.
+        :param index: The index of the image to set.
+        """
         if 0 <= index < len(self.images):
             self.image_index = index
             self.alt_index = 0
 
     def get_alt_image_index(self) -> int:
+        """
+        Returns the current alternative image index for the current gallery image.
+        """
         return self.alt_index
 
     def set_alt_image_index(self, index: int) -> None:
+        """
+        Sets the alternative image index for the current gallery image.
+        :param index: The index of the alternative image to set.
+        """
         try:
             image = self.get_image()
             if 0 <= index < len(image.alts):
@@ -360,6 +415,9 @@ class GalleryDB:
             raise IndexError("Invalid image index; cannot set alternative image index.")
 
     def get_image(self) -> GalleryImage:
+        """
+        Returns the current gallery image.
+        """
         if len(self.images) == 0:
             raise IndexError("No gallery images available.")
         try:
@@ -368,6 +426,9 @@ class GalleryDB:
             raise IndexError("Invalid image index.")
 
     def get_alt_image(self) -> GalleryAltImage:
+        """
+        Returns the current alternative image for the current gallery image.
+        """
         image = self.get_image()
         if len(image.alts) == 0:
             raise IndexError("No alternative images available for this gallery image.")
@@ -377,9 +438,15 @@ class GalleryDB:
             raise IndexError("Invalid alternative image index.")
 
     def has_next_image(self) -> bool:
+        """
+        Checks if there is a next image after the current image.
+        """
         return len(self.images) > 0 and self.image_index < len(self.images) - 1
 
     def has_prev_image(self) -> bool:
+        """
+        Checks if there is a previous image before the current image.
+        """
         return len(self.images) > 0 and self.image_index > 0
 
     def has_next_alt_image(self) -> bool:
@@ -521,17 +588,29 @@ class GalleryDB:
             self.alt_index = prev_index
 
     def reset_navigation(self) -> None:
+        """
+        Resets the navigation indices to the beginning.
+        """
         self.image_index = 0
         self.alt_index = 0
 
     def get_images(self) -> list[GalleryImage]:
+        """
+        Returns the list of gallery images.
+        """
         return self.images
 
     def get_image_count(self) -> int:
+        """
+        Returns the total number of gallery images.
+        """
         return len(self.images)
 
 
+## Initialize the global gallery database
 gallery_db = GalleryDB()
+
+## Example Images - Replace or extend these as needed.
 residential = GalleryImage("bg residential_day", unlock_by_default=True)
 s1a = GalleryImage("sayori 1", sprite=True, unlock_by_default=True)
 m1a = GalleryImage("monika 1", name="Monika", artist="Satchely", sprite=True)
@@ -539,7 +618,3 @@ m1a = GalleryImage("monika 1", name="Monika", artist="Satchely", sprite=True)
 gallery_db.add_image(residential)
 gallery_db.add_image(s1a)
 gallery_db.add_image(m1a)
-
-for img in gallery_db.get_images():
-    if img.is_unlocked():
-        img.small_img

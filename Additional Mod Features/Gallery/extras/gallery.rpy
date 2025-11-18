@@ -1,6 +1,9 @@
-## Copyright 2019-2025 Azariel Del Carmen (bronya_rand). All rights reserved.
-## Based similarly on ExGallery by Retronika
+# Copyright 2019-2025 Azariel Del Carmen (bronya_rand). All rights reserved.
+# This file contains the screen code for the Gallery Menu.
+# The code is designed to work with Ren'Py 8 and uses the `_ren.py` approach for Python code.
 
+# For the Python code, see `gallery_ren.py` in the `py` directory.
+default persistent.unlocked_gallery_images = []
 default persistent.full_image_view = False
 
 screen gallery:
