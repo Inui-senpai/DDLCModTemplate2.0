@@ -1,8 +1,5 @@
 # Welcome to the **New** Modification Club!
 
-> [!WARNING]
-> This branch of the Python 3 DDLC Mod Template is a work in progress. Use at your own risk!
-
 <p align="center">
   <img src=".github/IMAGES/ddlcmt-open-graph.png"/>
 </p>
@@ -30,7 +27,7 @@
 
 The DDLC Mod Template 2.0 is a comprehensive mod template for **Doki Doki Literature Club** that fully adheres to [Team Salvato's IP Guidelines](http://teamsalvato.com/ip-guidelines/). 
 
-Built for Ren'Py 8.X by Azariel Del Carmen (bronya_rand), this template provides everything you need to create fan-made, cross-platform DDLC mods with modern features and optimized code.
+Built for Ren'Py 8.X.X by Azariel Del Carmen (bronya_rand), this template provides everything you need to create fan-made, cross-platform DDLC mods with modern features and optimized code.
 
 **Perfect for:**
 - First-time mod creators looking for a solid foundation.
@@ -41,7 +38,7 @@ Built for Ren'Py 8.X by Azariel Del Carmen (bronya_rand), this template provides
 > **The DDLC Mod Template is not affiliated in any way with Team Salvato nor is it designed for the sequel "Doki Doki Literature Club Plus". Do not use the template nor its code for unofficial DDLC patches, fixes, etc.**
 
 > [!NOTE] 
-> For legacy Ren'Py support (Ren'Py 6.99-7.8.7), see the [Python 2](https://github.com/Bronya-Rand/DDLCModTemplate2.0/tree/python-2) branch of the mod template.
+> For legacy Ren'Py support (Ren'Py 6.99.12 - 7.8.7), see the deprecated [Python 2](https://github.com/Bronya-Rand/DDLCModTemplate2.0/tree/python-2) branch of the mod template.
 
 ---
 
@@ -141,7 +138,7 @@ Making your mod work on Android requires additional considerations, especially f
 
 ### Linux
 
-Linux users must run mods using the included launcher script:
+Linux users must run mods using the included launcher script (at least once):
 
 ```bash
 ./LinuxLauncher.sh
@@ -215,6 +212,7 @@ Thanks to the following people for their contributions to the DDLC Mod Template:
 - RS/6000 (New Mod Template Logo (4.2.1+))
 - Tulkas (Android Gestures)
 - FiT (Weiss Chibi Branding Icon Design)
+- Retronika (Supplemental code for the Gallery system)
 
 ---
 
