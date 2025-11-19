@@ -1,3 +1,4 @@
+# Copyright 2019-2025 Azariel Del Carmen (bronya_rand). All rights reserved.
 # This file contains the Python code of assigning words to characters in the poem game of DDLC.
 
 # This file replaces the original `poemwords.txt` file and defines the words used in the poem game

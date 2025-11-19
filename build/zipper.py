@@ -18,8 +18,9 @@ EXCLUDE_LIST = [
     "__pycache__",
     "tests",
     "tests.py",
-    "build"
+    "build",
     ".vscode",
+    "__init__.py",
 ]
 
 

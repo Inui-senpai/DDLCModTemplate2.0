@@ -1,6 +1,5 @@
-## effects.rpy
-
-# This file defines all the effects in DDLC used in Act 2.
+# Copyright 2019-2025 Azariel Del Carmen (bronya_rand). All rights reserved.
+# This file defines all the effects in DDLC used in Act 2 and beyond.
 
 init python:
     # This function returns the size of a 16:9 screenshot surface.

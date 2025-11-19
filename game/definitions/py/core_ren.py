@@ -1,3 +1,9 @@
+# Copyright 2019-2025 Azariel Del Carmen (bronya_rand). All rights reserved.
+# This file contains the major Python code for DDLC and the Mod Template + Features.
+# Altering this file may break the game or mod functionality.
+
+## This import is not used when the game is running, but exists so IDEs reports
+## one warning than multiple.
 import os
 import subprocess
 import sys

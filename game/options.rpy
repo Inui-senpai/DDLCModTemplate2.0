@@ -1,4 +1,4 @@
-﻿## This template version is 4.2.4. When asked to provide the template version
+﻿## This template version is 5.0.0. When asked to provide the template version
 ## you are using, give them this version number. 
 ### DO NOT REMOVE OR CHANGE THE ABOVE COMMENT. ###
 
