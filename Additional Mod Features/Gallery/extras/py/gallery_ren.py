@@ -615,6 +615,11 @@ residential = GalleryImage("bg residential_day", unlock_by_default=True)
 s1a = GalleryImage("sayori 1", sprite=True, unlock_by_default=True)
 m1a = GalleryImage("monika 1", name="Monika", artist="Satchely", sprite=True)
 
+n2a = GalleryAltImage("natsuki 2", sprite=True, unlock_by_default=True)
+n3a = GalleryAltImage("natsuki 3", sprite=True)
+n1a = GalleryImage("natsuki 1", sprite=True, unlock_by_default=True, alts=[n2a, n3a])
+
 gallery_db.add_image(residential)
 gallery_db.add_image(s1a)
 gallery_db.add_image(m1a)
+gallery_db.add_image(n1a)

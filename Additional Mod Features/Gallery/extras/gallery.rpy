@@ -54,20 +54,26 @@ screen gallery:
 screen preview_gallery_image():
     tag menu
 
-    python:
-        img_data = gallery_db.get_image()
-        yoffs = 0 if persistent.full_image_view else 40
-
     default gallery_zoom = 1.0
     default gallery_offsx = 0
     default gallery_offsy = 0
+    default display_alt = False
+
+    python:
+        img_data = gallery_db.get_image()
+
+        alt_img_data = None
+        if display_alt and img_data.has_alt_images():
+            alt_img_data = gallery_db.get_alt_image()
+
+        yoffs = 0 if persistent.full_image_view else 40
     
     if img_data.get_image_background():
         add img_data.get_image_background()
-    if gallery_db.get_alt_image_index() == 0:
+    if not display_alt:
         add img_data.get_image() yoffset yoffs fit "cover" xsize config.screen_width ysize config.screen_height
     else:
-        add img_data.get_alt_image() yoffset yoffs fit "cover" xsize config.screen_width ysize config.screen_height 
+        add alt_img_data.get_image() yoffset yoffs fit "cover" xsize config.screen_width ysize config.screen_height
     
     if not persistent.full_image_view:
         hbox:
@@ -76,7 +82,7 @@ screen preview_gallery_image():
         hbox:
             ypos 0.005
             xalign 0.5 
-            text img_data.get_image_name(): 
+            text "[img_data.get_image_name() if not display_alt or not img_data.has_alt_images() else alt_img_data.get_image_name()]":
                 color "#000"
                 outlines[]
                 size 24
@@ -87,11 +93,11 @@ screen preview_gallery_image():
             if img_data.get_image_artist():
                 textbutton "?":
                     text_style "navigation_button_text"
-                    action Show("dialog", message="Artist: " + img_data.get_image_artist(), ok_action=Hide("dialog"))
+                    action Show("dialog", message="Artist: " + img_data.get_image_artist() if not display_alt or not img_data.has_alt_images() else alt_img_data.get_image_artist(), ok_action=Hide("dialog"))
 
             textbutton "E":
-                    text_style "navigation_button_text"
-                    action Function(img_data.export_image)
+                text_style "navigation_button_text"
+                action Function(img_data.export_image)
 
             textbutton "X":
                 text_style "navigation_button_text"
@@ -136,10 +142,9 @@ screen preview_gallery_image():
                 textbutton "<": 
                     text_style "navigation_button_text"
                     action Function(gallery_db.prev_alt_image)
-                text "Alt":
-                    font "mod_assets/gui/fonts/Orbitron-Bold.ttf"
-                    color "#fff"
-                    outlines [(4, text_outline_color, 0, 0), (2, text_outline_color, 2, 2)]
+                textbutton "Alt":
+                    text_style "navigation_button_text"
+                    action SetScreenVariable("display_alt", not display_alt)
                 textbutton ">": 
                     text_style "navigation_button_text"
                     action Function(gallery_db.next_alt_image)
@@ -199,3 +204,4 @@ screen preview_gallery_image():
         text_style "navigation_button_text"
 
     on "replaced" action With(Dissolve(0.5))
+    
