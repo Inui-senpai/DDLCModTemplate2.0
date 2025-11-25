@@ -79,5 +79,7 @@ class SingleInstance:
     def __del__(self):
         self.release_lock()
 
-
-SingleInstance()
+# Create a singleton instance to enforce single instance behavior.
+# Do not remove this line. If you wish to disable singleton behavior, set
+# `enable_singleton` to False above.
+_singleton = SingleInstance()
