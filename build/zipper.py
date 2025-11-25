@@ -1,5 +1,5 @@
 from zipfile import ZipFile, ZIP_DEFLATED
-from zipper_env import PY3, EXTRAS
+from zipper_env import EXTRAS
 import sys
 import os
 
@@ -7,6 +7,7 @@ PRIMARY_NAME = "DDLCModTemplate-"
 EXCLUDE_LIST = [
     ".github",
     ".git",
+    ".venv",
     ".gitattributes",
     ".gitignore",
     "requirements.txt",
@@ -15,6 +16,11 @@ EXCLUDE_LIST = [
     "zipper.py",
     "zipper_env.py",
     "__pycache__",
+    "tests",
+    "tests.py",
+    "build",
+    ".vscode",
+    "__init__.py",
 ]
 
 
@@ -27,18 +33,13 @@ def main():
     if len(tuple(version.strip().split("."))) != 3:
         raise Exception('Invalid version number. Valid version number is "X.X.X".')
 
-    if PY3:
-        print("We building Py3 tonight.\n")
-    else:
-        print("We building Py2 tonight.\n")
+    print(f"Building DDLC Mod Template {version} (Python 3)\n")
 
     # Create ZIP Directory
     if not os.path.exists("./ZIPs"):
         os.makedirs("./ZIPs")
 
-    main_zip_name = str(PRIMARY_NAME + version)
-    if PY3:
-        main_zip_name += "-Py3"
+    main_zip_name = f"{PRIMARY_NAME}{version}"
 
     print("Creating Template ZIP file.")
     with ZipFile(
@@ -47,7 +48,8 @@ def main():
         ZIP_DEFLATED,
         compresslevel=5,
     ) as main_template:
-        for src, dirs, files in os.walk("."):
+        base_path = os.path.abspath("..")
+        for src, dirs, files in os.walk(".."):
             for f in files:
                 path = os.path.join(src, f)
                 validLocation = True
@@ -55,17 +57,15 @@ def main():
                     if x in path:
                         validLocation = False
                 if validLocation:
-                    main_template.write(path)
+                    # Get relative path from base to avoid .. in ZIP
+                    arcname = os.path.relpath(path, base_path)
+                    main_template.write(path, arcname)
 
     print("Finished writing the Mod Template ZIP package.\n")
 
     if EXTRAS:
         print("Creating Extra Template content ZIP file.")
-        extras_zip_name = str(PRIMARY_NAME + version)
-        if PY3:
-            extras_zip_name += "-Py3Extras"
-        else:
-            extras_zip_name += "-Extras"
+        extras_zip_name = f"{PRIMARY_NAME}{version}-Extras"
 
         with ZipFile(
             os.path.join(".", "ZIPs", extras_zip_name + ".zip"),
@@ -73,11 +73,14 @@ def main():
             ZIP_DEFLATED,
             compresslevel=5,
         ) as extras_template:
-            for src, dirs, files in os.walk("."):
+            base_path = os.path.abspath("..")
+            for src, dirs, files in os.walk(".."):
                 for f in files:
                     path = os.path.join(src, f)
                     if "Additional Mod Features" in path:
-                        extras_template.write(path)
+                        # Get relative path from base to avoid .. in ZIP
+                        arcname = os.path.relpath(path, base_path)
+                        extras_template.write(path, arcname)
 
         print("Finished writing the Mod Template Extras ZIP package.\n")
 

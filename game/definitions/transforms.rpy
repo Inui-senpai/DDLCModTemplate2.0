@@ -1,5 +1,4 @@
-## transforms.rpy
-
+# Copyright 2019-2025 Azariel Del Carmen (bronya_rand). All rights reserved.
 # This file defines the placements and animations in DDLC.
 
 # This transform sizes the character properly at the given X position.

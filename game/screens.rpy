@@ -808,7 +808,7 @@ screen about():
                 ## Do not touch/remove these unless the © or – symbol isn't available in your font.
                 ## You may add things above or below it.
                 ## If you are not going with a splashscreen option, this first line MUST stay in the mod.
-                text "Made with bronya_rand's {a=https://github.com/GanstaKingofSA/DDLCModTemplate2.0}DDLC Mod Template 2.0{/a}\nCopyright © 2019-" + str(datetime.date.today().year) + " Azariel Del Carmen (bronya_rand). All rights reserved.\n"
+                text "Made with bronya_rand's {a=https://github.com/Bronya-Rand/DDLCModTemplate2.0}DDLC Mod Template 2.0{/a}\nCopyright © 2019-" + str(datetime.date.today().year) + " Azariel Del Carmen (bronya_rand). All rights reserved.\n"
                 text "Doki Doki Literature Club. Copyright © 2017 Team Salvato. All rights reserved.\n"
                 text _("Made with {a=https://www.renpy.org/}Ren'Py{/a} [renpy.version_only].\n[renpy.license!t]")
 
@@ -1172,7 +1172,7 @@ screen ddlc_preferences():
                     
                     null width 5
                 
-                    text str(round(preferences.get_volume("music") * 100)) style "value_text"
+                    text str(round(preferences.get_mixer("music") * 100)) style "value_text"
 
                 hbox:
                     bar value Preference("music volume")
@@ -1184,7 +1184,7 @@ screen ddlc_preferences():
                     
                     null width 5
                 
-                    text str(round(preferences.get_volume("sfx") * 100)) style "value_text"
+                    text str(round(preferences.get_mixer("sfx") * 100)) style "value_text"
 
                 hbox:
                     bar value Preference("sound volume")
@@ -1198,7 +1198,7 @@ screen ddlc_preferences():
                     
                     null width 5
                 
-                    text str(round(preferences.get_volume("voice") * 100)) style "value_text"
+                    text str(round(preferences.get_mixer("voice") * 100)) style "value_text"
 
                 hbox:
                     bar value Preference("voice volume")
@@ -1227,12 +1227,6 @@ screen template_preferences():
                         yes_action=[Hide("confirm"), ToggleField(persistent, "uncensored_mode")],
                         no_action=Hide("confirm")
                     ))
-                textbutton _("Let's Play Mode") action If(persistent.lets_play, 
-                    ToggleField(persistent, "lets_play"),
-                    [ToggleField(persistent, "lets_play"), Show("dialog", 
-                        message="You have enabled Let's Play Mode.\nThis mode allows you to skip content that\ncontains sensitive information or apply alternative\nstory options.\n\nThis setting will be dependent on the modder\nif they programmed these checks in their story.", 
-                        ok_action=Hide("dialog")
-                    )])
         
         vbox:
             style_prefix "name"
@@ -1277,10 +1271,10 @@ screen template_preferences():
                         enable_text = _("Disable")
 
                 textbutton enable_text action [ToggleField(persistent, "enable_discord"), 
-                    If(persistent.enable_discord, Function(RPC.close), Function(RPC.connect, reset=True))]:
+                    If(persistent.enable_discord, Function(RPC.disconnect), Function(RPC.connect))]:
                         text_style "navigation_button_text"
                 if persistent.enable_discord and not RPC.rpc_connected:
-                    textbutton _("Reconnect") action Function(RPC.connect, reset=True):
+                    textbutton _("Reconnect") action Function(RPC.connect):
                         text_style "navigation_button_text"
 
     null height (4 * gui.pref_spacing)
@@ -2088,7 +2082,7 @@ screen choose_language():
 
                 textbutton renpy.translate_string(_("{#in language font}Select"), local_lang):
                     style "confirm_button"
-                    action [Language(chosen_lang), Return()]
+                    action [Language(chosen_lang), SetField(persistent, "has_chosen_language", True), Return()]
 
 translate None strings:
     old "{#language name and font}"
