@@ -125,13 +125,13 @@ screen preview_gallery_image():
             text_style "navigation_button_text"
             xalign 0.0
             yalign 0.5
-            action Function(gallery_db.prev_image)
+            action [SetScreenVariable("display_alt", False), Function(gallery_db.prev_image)]
 
         textbutton ">":
             text_style "navigation_button_text"
             xalign 1.0
             yalign 0.5
-            action Function(gallery_db.next_image)
+            action [SetScreenVariable("display_alt", False), Function(gallery_db.next_image)]
 
         if img_data.has_alt_images():
             hbox:
