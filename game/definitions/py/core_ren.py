@@ -52,22 +52,36 @@ def get_characters_folder():
 
 def restore_character(characters: list[str]):
     """
-    Restores the specified characters to the 'characters' folder.
+    Restores the specified characters to the 'characters' folder
+    and removes any characters not in the list.
 
     :param characters: A list of character names to restore.
     :type characters: list[str]
     """
     characters_folder = get_characters_folder()
-    if characters_folder:
-        for character in characters:
-            character_file_path = os.path.join(characters_folder, f"{character}.chr")
-            try:
-                renpy.open_file(character_file_path)
-            except OSError:
-                open(character_file_path, "wb").write(
-                    renpy.open_file(os.path.join("chrs", f"{character}.chr")).read()
-                )
+    if characters_folder is None:
+        raise FileNotFoundError("Characters folder could not be determined.")
 
+    # Remove existing character files not in the restore list
+    for existing_file in os.listdir(characters_folder):
+        if existing_file.endswith(".chr"):
+            character_name = os.path.splitext(existing_file)[0]
+            if character_name not in characters:
+                try:
+                    os.remove(os.path.join(characters_folder, existing_file))
+                except OSError:
+                    pass  # Ignore if the file does not exist
+    
+    # Restore specified character files
+    for character in characters:
+        character_file_path = os.path.join(characters_folder, f"{character}.chr")
+        if not os.path.exists(character_file_path): 
+            src_path = os.path.join("chrs", f"{character}.chr")
+            
+            src_file = renpy.open_file(src_path)
+            data = src_file.read()
+            with open(character_file_path, "wb") as char_file:
+                char_file.write(data)
 
 def restore_characters():
     """
@@ -94,11 +108,13 @@ def delete_character(name: str):
     :type name: str
     """
     characters_folder = get_characters_folder()
-    if characters_folder:
-        try:
-            os.remove(os.path.join(characters_folder, f"{name}.chr"))
-        except OSError:
-            pass  # Ignore if the file does not exist
+    if characters_folder is None:
+        raise FileNotFoundError("Characters folder could not be determined.")
+
+    try:
+        os.remove(os.path.join(characters_folder, f"{name}.chr"))
+    except OSError:
+        pass  # Ignore if the file does not exist
 
 
 def initialize_characters_folder():
@@ -109,7 +125,10 @@ def initialize_characters_folder():
     :rtype: str
     """
     characters_folder = get_characters_folder()
-    if characters_folder and not os.path.exists(characters_folder):
+    if characters_folder is None:
+        raise FileNotFoundError("Characters folder could not be determined.")
+    
+    if not os.path.exists(characters_folder):
         os.makedirs(characters_folder)
 
     restore_characters()
