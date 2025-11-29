@@ -71,17 +71,18 @@ def restore_character(characters: list[str]):
                     os.remove(os.path.join(characters_folder, existing_file))
                 except OSError:
                     pass  # Ignore if the file does not exist
-    
+
     # Restore specified character files
     for character in characters:
         character_file_path = os.path.join(characters_folder, f"{character}.chr")
-        if not os.path.exists(character_file_path): 
+        if not os.path.exists(character_file_path):
             src_path = os.path.join("chrs", f"{character}.chr")
-            
+
             src_file = renpy.open_file(src_path)
             data = src_file.read()
             with open(character_file_path, "wb") as char_file:
                 char_file.write(data)
+
 
 def restore_characters():
     """
@@ -127,7 +128,7 @@ def initialize_characters_folder():
     characters_folder = get_characters_folder()
     if characters_folder is None:
         raise FileNotFoundError("Characters folder could not be determined.")
-    
+
     if not os.path.exists(characters_folder):
         os.makedirs(characters_folder)
 
@@ -246,6 +247,7 @@ def process_check(stream_list: list[str]):
                 return True
     return False
 
+
 def is_user_streaming() -> bool:
     """
     Checks if any known streaming applications are currently running.
@@ -263,11 +265,12 @@ def is_user_streaming() -> bool:
         "twitchstudio.exe",
         "elgato.streamdeck.exe",
         "nvidia.share.exe",  # NVIDIA ShadowPlay
-        "amd.raptr.exe",     # AMD ReLive
-        "zoom.exe",          # Zoom (for video conferencing)
-        "teams.exe",         # Microsoft Teams (for video conferencing)
+        "amd.raptr.exe",  # AMD ReLive
+        "zoom.exe",  # Zoom (for video conferencing)
+        "teams.exe",  # Microsoft Teams (for video conferencing)
     ]
     return process_check(streaming_apps)
+
 
 def get_user_account_name():
     """
@@ -279,7 +282,7 @@ def get_user_account_name():
     # Reject if streaming to protect privacy
     if is_user_streaming():
         return None
-    
+
     if renpy.windows:
         # `whoami` and split name (DOMAIN\Username -> Username)
         return (
@@ -296,6 +299,7 @@ def get_user_account_name():
             or None
         )
 
+
 def get_windows_version() -> tuple[int, int, int] | None:
     """
     Retrieves the current Windows version.
@@ -305,9 +309,10 @@ def get_windows_version() -> tuple[int, int, int] | None:
     """
     if not renpy.windows:
         return None
-    
+
     version = sys.getwindowsversion()
     return (version.major, version.minor, version.build)
+
 
 def get_macos_version() -> tuple[int, int, int] | None:
     """
@@ -318,7 +323,7 @@ def get_macos_version() -> tuple[int, int, int] | None:
     """
     if not renpy.macintosh:
         return None
-    
+
     release, _, _ = platform.mac_ver()
     if release != "":
         version_parts = release.split(".")
@@ -326,18 +331,20 @@ def get_macos_version() -> tuple[int, int, int] | None:
             major = int(version_parts[0])
             minor = int(version_parts[1])
             patch = int(version_parts[2]) if len(version_parts) > 2 else 0
-            return (major, minor, patch)    
-        
-    return None # Unknown or unsupported version
+            return (major, minor, patch)
+
+    return None  # Unknown or unsupported version
+
 
 def ddlc_under_steam() -> bool:
     """
     Checks if the game is running through Steam.
-    
+
     :return: True if running through Steam, False otherwise.
     :rtype: bool
     """
     return "steamapps" in renpy.config.basedir.lower()
+
 
 currentuser = get_user_account_name()
 
