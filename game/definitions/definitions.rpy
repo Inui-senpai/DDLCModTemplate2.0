@@ -1413,6 +1413,7 @@ default poemappeal = {
     "sayori": {0: 0, 1: 0, 2: 0},
     "natsuki": {0: 0, 1: 0, 2: 0},
     "yuri": {0: 0, 1: 0, 2: 0},
+    "monika": {0: 0, 1: 0, 2: 0},
 }
 
 default poemwinner = {
