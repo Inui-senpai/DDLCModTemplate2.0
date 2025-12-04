@@ -16,8 +16,7 @@ define config.allow_underfull_grids = True
 define config.gestures = { "n" : 'game_menu', "s" : "hide_windows", "e" : 'toggle_skip', "w" : "history" }
 
 init python:
-    ## More Android Gestures
-    # Create a keymap for the history screen.
+    # Creates a keymap for the history screen
     if renpy.android:
         config.underlay.append(renpy.Keymap(history = ShowMenu("history"))) 
 
