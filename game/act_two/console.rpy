@@ -21,8 +21,8 @@ screen console_screen(console, input_text=None, output_text=None, cps=None, dela
     default finish_actions = [SetScreenVariable("in_progress", False), Return()]
 
     python:
-        used_cps = cps if cps is not None and typeof(cps) == int else console.console_cps
-        used_delay = delay if delay is not None and typeof(delay) == float else console.console_delay
+        used_cps = cps if cps is not None and type(cps) == int else console.console_cps
+        used_delay = delay if delay is not None and type(delay) == float else console.console_delay
 
     # String of input to show.
     # It is put outside of the new_input variable so it doesn't
@@ -44,7 +44,7 @@ screen console_screen(console, input_text=None, output_text=None, cps=None, dela
     # New code is showing.
     if in_progress:
 
-        timer ( float(len(renpy.filter_text_tags(new_input_code, deny = []))) / float(used_cps) + used_delay ) action finish_actions
+        timer ( (float(len(renpy.filter_text_tags(new_input_code, deny = []))) / float(used_cps)) + used_delay ) action finish_actions
 
     frame:
 
