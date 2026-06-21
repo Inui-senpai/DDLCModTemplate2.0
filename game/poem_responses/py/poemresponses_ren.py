@@ -1,7 +1,7 @@
-# Copyright 2019-2025 Azariel Del Carmen (bronya_rand). All rights reserved.
-# This file contains code that manages parts of the poem response minigame.
+# Авторские права 2019-наст. вр. Азариель Дель Кармен (bronya_rand). Все права защищены.
+# Этот файл содержит код, управляющий отдельными частями мини-игры про обмен стихотворениями.
 
-## Not included in the game, but used for IDEs to avoid multiple warnings.
+## Не используется в игре. Нужно только для того, чтобы IDE не выдавали кучу предупреждений.
 readpoem: dict[str, bool] = {
     "sayori": False,
     "natsuki": False,
@@ -16,41 +16,41 @@ init python:
 
 def get_read_poem_status(character: str) -> bool:
     """
-    Get the read poem status for a given character.
+    Возвращает статус прочтения стихотворения указанным персонажем.
 
-    :param character: The character's name as a string.
+    :param character: Имя персонажа в виде строки.
     :type character: str
-    :return: The read poem status as a boolean.
+    :return: Статус прочтения в виде логического значения.
     :rtype: bool
 
-    :raises ValueError: If the character is not found in the read poem data.
+    :raises ValueError: Если персонаж не был найден в данных прочитанных стихов.
     """
     character = character.lower()
     if character not in readpoem:
-        raise ValueError(f"Read poem status for character '{character}' not found.")
+        raise ValueError(f"Не удалось найти статус прочтения персонажа '{character}'.")
 
     return readpoem[character]
 
 
 def set_read_poem_status(character: str) -> None:
     """
-    Set the read poem status for a given character to True.
+    Устанавливает статус прочтения стихотворения персонажем как ИСТИНА.
 
-    :param character: The character's name as a string.
+    :param character: Имя персонажа в виде строки.
     :type character: str
 
-    :raises ValueError: If the character is not found in the read poem data.
+    :raises ValueError: Если персонаж не был найден в данных прочитанных стихов.
     """
     character = character.lower()
     if character not in readpoem:
-        raise ValueError(f"Read poem status for character '{character}' not found.")
+        raise ValueError(f"Не удалось найти статус прочтения персонажа '{character}'.")
 
     readpoem[character] = True
 
 
 def reset_read_poem_status() -> None:
     """
-    Resets the read poem status for all characters to False.
+    Сбрасывает статус прочтения у всех персонажей в ЛОЖЬ.
     """
     for character in readpoem.keys():
         readpoem[character] = False

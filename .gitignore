@@ -1,6 +1,7 @@
 *.rpa
 *.rpyb
 *.rpyc
+*.rpymc
 *.psd
 firstrun
 DDLCModTemplate-*.*.*.zip
@@ -15,3 +16,6 @@ __pycache__
 ZIPs
 .venv
 .vscode
+*.bak
+*.docx
+*.docx#

@@ -1,12 +1,12 @@
-# Contents of the `poem_game` folder
+# Содержание папки `poem_game`
 
-## Folders
-- **[py](./py)**: Contains the Python code for the Poem Game in DDLC.
-- **\_\_pycache\_\_**: Contains the compiled Python files for the Poem Game. This should normally not appear in your mod nor in packaged mod templates, but if it exists, ignore it.
+## Папки
+- **[py](./py)**: Содержит скрипты Python для мини-игры про сочинение стихотворений.
+- **\_\_pycache\_\_**: Содержит скомпилированные аналоги вышеописанных скриптов. Как правило, этой папки не должно быть ни в вашей модификации, ни в упакованном мод-шаблоне, но если она есть, не обращайте внимания.
 
-## Files
-- **README.md**: This file, which provides an overview of the contents of the `poem_game` folder.
-- **[script-poemgame.rpy](./script-poemgame.rpy)**: Contains the Ren'Py code for the Poem Game in DDLC.
+## Файлы
+- **README.md**: Файл, который вы сейчас читаете.
+- **[script-poemgame.rpy](./script-poemgame.rpy)**: Содержит код Ren'Py для мини-игры про сочинение стихотворений.
 
-## Moved Files
-- **[poemwords.txt](./py/poemwords_ren.py)**: This file was moved and replaced from the `game/poem_game` folder to the `game/poem_game/py` folder. The wordlist of the poem game now is now stored in a Python file.
+## Перемещённые файлы
+- **[poemwords.txt](./py/poemwords_ren.py)**: Содержимое этого файла было полностью переписано в файл-аналог в папке `game/poem_game/py`. Перечень слов для стихотворения теперь хранится в скрипте Python.

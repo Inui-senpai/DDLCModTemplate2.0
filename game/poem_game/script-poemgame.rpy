@@ -1,28 +1,28 @@
-# Copyright 2019-2025 Azariel Del Carmen (bronya_rand). All rights reserved.
-# This file contains the Ren'Py code for the Poem Game in DDLC.
+# Авторские права 2019-наст. вр. Азариель Дель Кармен (bronya_rand). Все права защищены.
+# Этот файл содержит код Ren'Py для мини-игры про сочинение стихотворений.
 
-# For the Python code, see `poemgame_ren.py` in the `py` directory.
+# Чтобы просмотреть код Python, откройте файл `poemgame_ren.py` в каталоге `py`.
 
 screen poem_test(words, progress, poemgame_glitch):
     default numWords = 20
-    
+
     if progress is not None:
         fixed:
             xpos 810
-            
+
             python:
                 if persistent.playthrough == 2 and chapter == 2:
                     pstring = ""
                     for i in range(progress):
                         pstring += "1"
                 else:
-                    pstring = str(progress)
+                    pstring = f"{progress}"
 
-            text pstring + "/" + str(numWords):
+            text f"{pstring}/{numWords}":
                 style "poemgame_text"
                 ypos 80
 
-        # Two fixed areas for the two sections of poemgame we have
+        # Две фиксированные зоны для двух колонок мини-игры.
         fixed:
             xpos 440
             ypos 160
@@ -34,8 +34,8 @@ screen poem_test(words, progress, poemgame_glitch):
                 for i in range(5):
                     if persistent.playthrough == 3:
                         python:
-                            s = list("Monika")
-                            for k in range(6): # This gives random corruption effects to the "Monika" words.
+                            s = list(__("Моника"))
+                            for k in range(6): # Добавляет случайные искажения к словам «Моника».
                                 if random.randint(0, 4) == 0:
                                     s[k] = ' '
                                 elif random.randint(0, 4) == 0:
@@ -43,12 +43,12 @@ screen poem_test(words, progress, poemgame_glitch):
                             wordString = "".join(s)
                     elif persistent.playthrough == 2 and not poemgame_glitch and chapter >= 1 and progress < numWords and random.randint(0, 400) == 0:
                         python:
-                            wordString = glitchtext(80) # This gives a chance for a random word in Act 2 to be the glitched word.
+                            wordString = glitchtext(80) # Даёт шанс появления искажённого слова во втором акте.
                     else:
                         python:
                             wordString = words[i]
 
-                    textbutton wordString:
+                    textbutton __(wordString):
                         action Return(wordString)
                         text_style "poemgame_text"
 
@@ -63,8 +63,8 @@ screen poem_test(words, progress, poemgame_glitch):
                 for i in range(5):
                     if persistent.playthrough == 3:
                         python:
-                            s = list("Monika")
-                            for k in range(6): # This gives random corruption effects to the "Monika" words.
+                            s = list(__("Моника"))
+                            for k in range(6): # Добавляет случайные искажения к словам «Моника».
                                 if random.randint(0, 4) == 0:
                                     s[k] = ' '
                                 elif random.randint(0, 4) == 0:
@@ -72,54 +72,58 @@ screen poem_test(words, progress, poemgame_glitch):
                             wordString = "".join(s)
                     elif persistent.playthrough == 2 and not poemgame_glitch and chapter >= 1 and progress < numWords and random.randint(0, 400) == 0:
                         python:
-                            wordString = glitchtext(80) # This gives a chance for a random word in Act 2 to be the glitched word.
+                            wordString = glitchtext(80) # Даёт шанс появления искажённого слова во втором акте.
                     else:
                         python:
                             wordString = words[5+i]
 
-                    textbutton wordString:
+                    textbutton __(wordString):
                         action Return(wordString)
                         text_style "poemgame_text"
 
 label poem(transition=True):
     stop music fadeout 2.0
 
-    if persistent.playthrough == 3: #Takes us to the glitched notebook if we're in Just Monika Mode.
+    if persistent.playthrough == 3: # Даёт нам искажённую тетрадь, если мы на третьем акте.
         scene bg notebook-glitch
     else:
         scene bg notebook
-    
+
     if persistent.playthrough == 3: 
-        show m_sticker at sticker_mid #Just Monika.
+        show m_sticker at sticker_mid # Только Моника.
     else:
         if persistent.playthrough == 0:
-            show s_sticker at sticker_left #Only show Sayori's sticker in Act 1.
-        show n_sticker at sticker_mid #Natsuki's sticker
+            show s_sticker at sticker_left # В первом акте будет только стикер Сайори.
+        show n_sticker at sticker_mid # Стикер Нацуки.
         if persistent.playthrough == 2 and chapter == 2:
-            show y_sticker_cut at sticker_right #Replace Yuri's sticker with the "cut arms" sticker..
+            show y_sticker_cut at sticker_right # Заменяет стикер Юри на аналог с порезанными руками.
         else:
-            show y_sticker at sticker_right #Yuri's sticker
+            show y_sticker at sticker_right # Стикер Юри.
         if persistent.playthrough == 2 and chapter == 2:
-            show m_sticker at sticker_m_glitch #Monika's sticker
-        
+            show m_sticker at sticker_m_glitch # Стикер Моники.
+
     if transition:
         with dissolve_scene_full
 
     if persistent.playthrough == 3:
-        play music ghostmenu #Change the music in Just Monika.
+        play music ghostmenu # Меняет музыку на тему «Только Моника».
     else:
         play music t4
 
     $ config.allow_skipping = False
     $ allow_skipping = False
 
-    if persistent.playthrough == 0 and chapter == 0: #Shows the below dialogue the first time the minigame is played.
-        call screen dialog("It's time to write a poem!\n\nPick words you think your favorite club member\nwill like. Something good might happen with\nwhoever likes your poem the most!", ok_action=Return())
-    
+    if persistent.playthrough == 0 and chapter == 0: # Показывает нижеприведённое модальное окно при первом запуске мини-игры.
+        call screen dialog(_p("""Пришло время написать стихотворение!
+
+Выберите слова, которые, по-вашему, подойдут нравящейся вам девушке.{p}
+С той девушкой, которой больше всего понравится ваше стихотворение,{p}
+у вас может произойти что-то хорошее!"""), ok_action=Return())
+
     $ poem_game.start()
     $ poem_game.finish()
 
-    # Call the new poem eye scare label if we are in Act 2 and we yet seen eyes
+    # Если мы во втором акте и ещё не видели жуткий детский рисунок, то он появится с небольшой долей вероятности.
     if persistent.playthrough == 2 and not persistent.seen_eyes and renpy.random.randint(0,5) == 0:
         call poem_eye_scare
 
@@ -133,7 +137,7 @@ label poem(transition=True):
     pause 1.0
     return
 
-## Scare code moved as it's own label
+## Жуткий рисунок «переехал» в отдельный лейбл.
 label poem_eye_scare:
     $ seen_eyes_this_chapter = True
     $ quick_menu = False
@@ -153,7 +157,7 @@ label poem_eye_scare:
     $ quick_menu = True
     return
 
-############ Image definitions start here. #############
+############ Раздел для определения изображений ############
 image bg eyes_move:
     "images/bg/eyes.png"
     parallel:

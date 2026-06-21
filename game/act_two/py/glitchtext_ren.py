@@ -1,7 +1,7 @@
-# This file contains the Python code for the glitched/corrupted text that appears in DDLC during Act 2-4 of DDLC.
+# Этот файл содержит код Python для искажённого текста, который можно было видеть в DDLC во время прохождения Актов 2-4.
 
-# The code logic is the same as the original game, only rewritten to use the Ren'Py's `_ren.py` approach for Python
-# code.
+# Логика осталась той же, что и в оригинальной игре, с той лишь разницей, что она была переписана для использования подхода Ren'Py,
+# предполагающего использование нового файла `_ren.py` для кода Python..
 
 import random
 
@@ -11,41 +11,41 @@ init python:
 
 def glitchtext(length: int) -> str:
     """
-    Generates a string of random unicode characters of a specified length.
-    
-    :param length: The length of the string to generate.
+    Генерирует строку со случайными символами Юникода заданной длины.
+
+    :param length: Длина генерируемой строки.
 
     :type length: int
-    :return: A string of random unicode characters.
+    :return: Строка со случайными символами.
     :rtype: str
     """
     if length <= 0:
         return ""
 
-    ## Set of unicode ranges to use for generating the glitched text that are visible
-    ## This can be expanded with more ranges depending on font compatibility.
+    ## Набор диапазонов символов Юникода для генерации видимого искажённого текста
+    ## Этот набор можно расширить, добавив больше диапазонов в зависимости от совместимости шрифтов.
     text_ranges = [
-        (0x00C0, 0x00FF),  # Latin-1 Supplement (accented characters)
-        (0x0100, 0x017F),  # Latin Extended-A
-        (0x0180, 0x024F),  # Latin Extended-B
-        (0x1E00, 0x1EFF),  # Latin Extended Additional
-        (0x0370, 0x03FF),  # Greek and Coptic
-        (0x0400, 0x04FF),  # Cyrillic
+        (0x00C0, 0x00FF),  # Дополнение латиницы 1 (символы с диакритическими знаками)
+        (0x0100, 0x017F),  # Расширенная латиница А
+        (0x0180, 0x024F),  # Расширенная латиница Б
+        (0x1E00, 0x1EFF),  # Расширенная латиница – Дополнение
+        (0x0370, 0x03FF),  # Греческие и коптские знаки
+        (0x0400, 0x04FF),  # Кириллица
     ]
 
     exclude_chars = set([
-        0x00AD,  # Soft hyphen
+        0x00AD,  # Дефис
     ])
 
-    ## Generate a string of random unicode characters
+    ## Генерирует строку со случайными символами
     result: list[str] = []
     while len(result) < length:
-        # Randomly select a range from the text_ranges
+        # Выбирает случайный диапазон из перечня text_ranges
         for start, end in text_ranges:
             for code_point in range(start, end + 1):
                 if code_point not in exclude_chars and chr(code_point).isprintable():
                     result.append(chr(code_point))
     
-    # Shuffle the result to ensure randomness
+    # Перемешивает результат, чтобы набор символов выглядел как набор символов
     random.shuffle(result)
     return ''.join(result[:length])

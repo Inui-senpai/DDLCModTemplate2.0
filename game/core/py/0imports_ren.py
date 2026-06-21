@@ -1,27 +1,27 @@
-# This file contains the Python imports needed for DDLC and the Mod Template.
+# В этом файле прописаны импорты модулей Python, необходимых для работы DDLC и мод-шаблона.
 
-# These imports are imported at bootstrap prior to any initialization of python code.
+# Эти модули импортируются во время запуска игры в первую очередь.
 
 """renpy
 python early:
 """
 
-# For Effects
+# Для спецэффектов
 import math
 
-# For the Credits Screen
+# Для экрана титров
 import datetime
 
-# For Glitchtext
+# Для искажённого текста
 import random
 
-# For Splash
+# Для заставки
 import re
 import os
 
-# For BSOD
+# Для Синего экрана смерти
 import subprocess
 import platform
 
-# For Poem Responses
+# Для реакций на стихи
 import typing

@@ -1,19 +1,19 @@
-# Copyright 2019-2025 Azariel Del Carmen (bronya_rand). All rights reserved.
-# This file contains the screen code for the Gallery Menu.
-# The code is designed to work with Ren'Py 8 and uses the `_ren.py` approach for Python code.
+# Авторские права 2019-наст. вр. Азариель Дель Кармен (bronya_rand). Все права защищены.
+# Этот файл содержит код экрана Галереи.
+# Код адаптирован под Ren'Py 8 и использует подход `_ren.py` для кода на Python.
 
-# For the Python code, see `gallery_ren.py` in the `py` directory.
+# Чтобы просмотреть код Python, откройте файл `gallery_ren.py` в каталоге `py`.
 default persistent.unlocked_gallery_images = []
 default persistent.full_image_view = False
 
-screen gallery:
+screen gallery():
     tag menu
 
     python:
         gallery_img_count = gallery_db.get_image_count()
         gallery_imgs = gallery_db.get_images()
 
-    use game_menu(_("Gallery")):
+    use game_menu(_("Галерея")):
         fixed:
             vpgrid:
                 id "gallery_list_vpgrid"
@@ -42,13 +42,13 @@ screen gallery:
                         else:
                             imagebutton: 
                                 idle "mod_assets/mod_extra_images/galleryLock.png"
-                                action Show("dialog", message="This image is locked. Continue playing [config.name] to unlock this image.", ok_action=Hide("dialog"))
-                            text "Locked": 
+                                action Show("dialog", message=_("Это изображение закрыто. Продолжайте играть в «[config.name]», чтобы открыть его."), ok_action=Hide("dialog"))
+                            text _("Закрыто"): 
                                 xalign 0.5
                                 color "#999"
                                 outlines []
                                 size 14
-            
+
             vbar value YScrollValue("gallery_list_vpgrid") xalign 0.99 ysize 560
 
 screen preview_gallery_image():
@@ -67,14 +67,14 @@ screen preview_gallery_image():
             alt_img_data = gallery_db.get_alt_image()
 
         yoffs = 0 if persistent.full_image_view else 40
-    
+
     if img_data.get_image_background():
         add img_data.get_image_background()
     if not display_alt:
         add img_data.get_image() yoffset yoffs fit "cover" xsize config.screen_width ysize config.screen_height
     else:
         add alt_img_data.get_image() yoffset yoffs fit "cover" xsize config.screen_width ysize config.screen_height
-    
+
     if not persistent.full_image_view:
         hbox:
             add Solid("#fcf") size(config.screen_width, 40)
@@ -93,23 +93,23 @@ screen preview_gallery_image():
             if img_data.get_image_artist():
                 textbutton "?":
                     text_style "navigation_button_text"
-                    action Show("dialog", message="Artist: " + img_data.get_image_artist() if not display_alt or not img_data.has_alt_images() else alt_img_data.get_image_artist(), ok_action=Hide("dialog"))
+                    action Show("dialog", message=_("Художник: [img_data.get_image_artist() if not display_alt or not img_data.has_alt_images() else alt_img_data.get_image_artist()]"), ok_action=Hide("dialog"))
 
-            textbutton "E":
+            textbutton _("Э"):
                 text_style "navigation_button_text"
                 action Function(img_data.export_image)
 
             textbutton "X":
                 text_style "navigation_button_text"
                 action [ShowMenu("gallery"), Function(gallery_db.reset_navigation)]
-        
+
         if len(img_data.get_image_description()) > 0:
             frame:
                 style "default"
                 xalign 0.5
                 yalign 1.0
-                xmaximum 1000  # Max width before wrapping
-                xpadding 50    # Left and right padding within the frame
+                xmaximum 1000  # Максимальная ширина до переноса
+                xpadding 50    # Отступы слева и справа в рамке
                 ypadding 20
                 background "#eee8"
                 at Transform(yoffset=-20)
@@ -142,7 +142,7 @@ screen preview_gallery_image():
                 textbutton "<": 
                     text_style "navigation_button_text"
                     action Function(gallery_db.prev_alt_image)
-                textbutton "Alt":
+                textbutton _("Альт"):
                     text_style "navigation_button_text"
                     action SetScreenVariable("display_alt", not display_alt)
                 textbutton ">": 
@@ -170,11 +170,11 @@ screen preview_gallery_image():
                     xoffset=gallery_offsx,
                     yoffset=gallery_offsy
                 )
-            
+
             add "black"
             add bg_displayable
             add main_image_displayable
-        
+
         frame:
             background "#0008"
             padding (10, 10)
@@ -183,16 +183,16 @@ screen preview_gallery_image():
 
             vbox:
                 spacing 10
-                textbutton "Z+" action SetScreenVariable("gallery_zoom", gallery_zoom + 0.1)
+                textbutton _("М+") action SetScreenVariable("gallery_zoom", gallery_zoom + 0.1)
                 key "mousedown_4" action SetScreenVariable("gallery_zoom", gallery_zoom + 0.1)
 
-                textbutton "Z-" action SetScreenVariable("gallery_zoom", max(1.0, gallery_zoom - 0.1))
+                textbutton _("М-") action SetScreenVariable("gallery_zoom", max(1.0, gallery_zoom - 0.1))
                 key "mousedown_5" action SetScreenVariable("gallery_zoom", max(1.0, gallery_zoom - 0.1))
 
-                textbutton "Reset" action [SetScreenVariable("gallery_zoom", 1.0), SetScreenVariable("gallery_offsx", 0), SetScreenVariable("gallery_offsy", 0)]
+                textbutton _("Сброс") action [SetScreenVariable("gallery_zoom", 1.0), SetScreenVariable("gallery_offsx", 0), SetScreenVariable("gallery_offsy", 0)]
                 key "mousedown_2" action [SetScreenVariable("gallery_zoom", 1.0), SetScreenVariable("gallery_offsx", 0), SetScreenVariable("gallery_offsy", 0)]
-    
-    textbutton ("View Full Image" if not persistent.full_image_view else "Back") action [
+
+    textbutton (_("Полное изображение") if not persistent.full_image_view else _("Назад")) action [
         ToggleVariable("persistent.full_image_view"),
         SetScreenVariable("gallery_zoom", 1.0),
         SetScreenVariable("gallery_offsx", 0),
@@ -204,4 +204,3 @@ screen preview_gallery_image():
         text_style "navigation_button_text"
 
     on "replaced" action With(Dissolve(0.5))
-    

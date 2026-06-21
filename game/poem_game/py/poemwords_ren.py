@@ -1,8 +1,8 @@
-# Copyright 2019-2025 Azariel Del Carmen (bronya_rand). All rights reserved.
-# This file contains the Python code of assigning words to characters in the poem game of DDLC.
+# Авторские права 2019-наст. вр. Азариель Дель Кармен (bronya_rand). Все права защищены.
+# Этот файл содержит код Python для привязки слов к персонажам в мини-игре про сочинение стихотворений.
 
-# This file replaces the original `poemwords.txt` file and defines the words used in the poem game
-# using a Python class structure alongside Ren'Py 8 `_ren.py` approach for Python code.
+# Данный файл заменяет оригинальный файл `poemwords.txt` и определяет слова, используемые в мини-игре,
+# эксплуатируя структуру классов Python вместе с подходом `_ren.py` в Ren'Py 8 для кода на Python.
 
 """renpy
 init python:
@@ -11,7 +11,7 @@ init python:
 
 class PoemWord:
     """
-    A class to represent a word in the poem game.
+    Класс, представляющий слово в мини-игре.
     """
 
     def __init__(
@@ -23,13 +23,13 @@ class PoemWord:
         glitch_word: bool = False,
     ):
         """
-        Initializes a PoemWord instance.
+        Инициализирует экземпляр класса PoemWord.
 
-        :param word: The word itself.
-        :param sayori_points: The total points the word gives to Sayori.
-        :param yuri_points: The total points the word gives to Yuri.
-        :param natsuki_points: The total points the word gives to Natsuki.
-        :param glitch_word: Whether the word is a glitch word or not.
+        :param word: Само слово.
+        :param sayori_points: Сколько очков это слово даст Сайори.
+        :param yuri_points: Сколько очков это слово даст Юри.
+        :param natsuki_points: Сколько очков это слово даст Нацуки.
+        :param glitch_word: Является ли это слово искажением.
 
         :type word: str
         :type sayori_points: int
@@ -37,17 +37,17 @@ class PoemWord:
         :type natsuki_points: int
         :type glitch_word: bool
 
-        :raises ValueError: If any of the points are negative.
+        :raises ValueError: Если какая-то из прибавок отрицательная.
         """
         self.word = word
 
         if sayori_points < 0 or yuri_points < 0 or natsuki_points < 0:
             if sayori_points < 0:
-                raise ValueError("Sayori's preference points must be 0 or greater.")
+                raise ValueError("Очки привязанности Сайори должны быть от 0 и выше.")
             elif yuri_points < 0:
-                raise ValueError("Yuri's preference points must be 0 or greater.")
+                raise ValueError("Очки привязанности Юри должны быть от 0 и выше.")
             elif natsuki_points < 0:
-                raise ValueError("Natsuki's preference points must be 0 or greater.")
+                raise ValueError("Очки привязанности Нацуки должны быть от 0 и выше.")
 
         self.sPoint = sayori_points
         self.yPoint = yuri_points
@@ -56,21 +56,21 @@ class PoemWord:
 
     def __str__(self):
         """
-        Returns a string representation of the PoemWord instance.
+        Возвращает строковое представление экземпляра класса PoemWord.
 
-        :return str: The word itself.
+        :return str: Искомое слово.
         """
         return self.word
 
 
 class PoemWordDB:
     """
-    A class to handle the database of words used in the poem game.
+    Класс, отвечающий за базу данных слов, используемых в мини-игре.
     """
 
     def __init__(self):
         """
-        Initializes the PoemWordDB instance with an empty list of words.
+        Инициализирует экземпляр класса PoemWordDB с пустым списком слов.
         """
         self.words: list[PoemWord] = []
 
@@ -83,13 +83,13 @@ class PoemWordDB:
         glitch_word: bool = False,
     ):
         """
-        Adds a new word to the PoemWord database.
+        Добавляет новое слово в базу данных PoemWord.
 
-        :param word: The word to add.
-        :param sayori_points: Sayori's preference towards the word.
-        :param yuri_points: Yuri's preference towards the word.
-        :param natsuki_points: Natsuki's preference towards the word.
-        :param glitch_word: Whether the word is a glitch word.
+        :param word: Слово, которое нужно добавить.
+        :param sayori_points: Сколько очков это слово даст Сайори.
+        :param yuri_points: Сколько очков это слово даст Юри.
+        :param natsuki_points: Сколько очков это слово даст Нацуки.
+        :param glitch_word: Является ли это слово искажением.
 
         :type word: str
         :type sayori_points: int
@@ -97,7 +97,7 @@ class PoemWordDB:
         :type natsuki_points: int
         :type glitch_word: bool
 
-        :raises ValueError: If any of the points are negative.
+        :raises ValueError: Если какая-то из прибавок отрицательная.
         """
         new_word = PoemWord(
             word, sayori_points, natsuki_points, yuri_points, glitch_word
@@ -106,276 +106,276 @@ class PoemWordDB:
 
     def get_words(self):
         """
-        Returns the list of words in the PoemWord database.
+        Возвращает список слов в базе данных PoemWord.
 
-        :return list[PoemWord]: List of PoemWord instances.
+        :return list[PoemWord]: Список экземпляров класса PoemWord.
         """
         return self.words.copy()
-    
+
     def get_words_str(self) -> list[str]:
         """
-        Returns a list of words as strings from the PoemWord database.
+        Возвращает список слов в базе данных PoemWord в виде строк.
 
-        :return list[str]: List of words as strings.
+        :return list[str]: Список слов в виде строк.
         """
         return [word.word for word in self.words]
 
     def get_word(self, word: str) -> PoemWord:
         """
-        Retrieves a word from the PoemWord database by its string representation.
+        Выдаёт слово из базы данных PoemWord по его строковому представлению.
 
-        :param word: The word to retrieve.
+        :param word: Искомое слово.
         :type word: str
-        :return: The PoemWord instance if found.
+        :return: Экземпляр класса PoemWord, если такое слово есть.
         :rtype: PoemWord
 
-        :raises ValueError: If the word is not found in the database.
+        :raises ValueError: Если такого слова нет в базе данных.
         """
         for poem_word in self.words:
             if poem_word.word == word:
                 return poem_word
 
-        raise ValueError(f"Word '{word}' not found in the poem word database.")
+        raise ValueError(f"Слово '{word}' не было найдено в базе данных слов для мини-игры.")
 
 
-## Adds the words to the database.
+## Добавляет слова в базу данных.
 poem_word_db = PoemWordDB()
 
-## Glitch Word
-glitch_word = PoemWord("", 0, 0, 0, glitch_word=True)  # Empty word for glitch purposes
-## Monika Word
-monika_word = PoemWord("", 0, 0, 0)  # Empty word for Monika purposes
+## Искажённое слово
+glitch_word = PoemWord("", 0, 0, 0, glitch_word=True)  # Строка намеренно оставлена пустой
+## Слово «Моника»
+monika_word = PoemWord("", 0, 0, 0)  # Строка намеренно оставлена пустой
 
-## Sayori Words
-poem_word_db.add_word("happiness", 3, 2, 1)
-poem_word_db.add_word("sadness", 3, 2, 1)
-poem_word_db.add_word("death", 3, 1, 2)
-poem_word_db.add_word("tragedy", 3, 1, 2)
-poem_word_db.add_word("alone", 3, 1, 2)
-poem_word_db.add_word("love", 3, 2, 1)
-poem_word_db.add_word("adventure", 3, 2, 1)
-poem_word_db.add_word("sweet", 3, 2, 1)
-poem_word_db.add_word("excitement", 3, 2, 1)
-poem_word_db.add_word("fireworks", 3, 2, 1)
-poem_word_db.add_word("romance", 3, 2, 1)
-poem_word_db.add_word("tears", 3, 1, 2)
-poem_word_db.add_word("depression", 3, 1, 2)
-poem_word_db.add_word("heart", 3, 2, 1)
-poem_word_db.add_word("marriage", 3, 2, 1)
-poem_word_db.add_word("passion", 3, 2, 1)
-poem_word_db.add_word("childhood", 3, 2, 1)
-poem_word_db.add_word("fun", 3, 2, 1)
-poem_word_db.add_word("color", 3, 2, 1)
-poem_word_db.add_word("hope", 3, 1, 2)
-poem_word_db.add_word("friends", 3, 2, 1)
-poem_word_db.add_word("family", 3, 2, 1)
-poem_word_db.add_word("party", 3, 2, 1)
-poem_word_db.add_word("vacation", 3, 2, 1)
-poem_word_db.add_word("lazy", 3, 2, 1)
-poem_word_db.add_word("daydream", 3, 1, 2)
-poem_word_db.add_word("pain", 3, 1, 2)
-poem_word_db.add_word("holiday", 3, 2, 1)
-poem_word_db.add_word("bed", 3, 2, 1)
-poem_word_db.add_word("feather", 3, 2, 1)
-poem_word_db.add_word("shame", 3, 1, 2)
-poem_word_db.add_word("fear", 3, 1, 2)
-poem_word_db.add_word("warm", 3, 2, 1)
-poem_word_db.add_word("flower", 3, 2, 1)
-poem_word_db.add_word("comfort", 3, 2, 1)
-poem_word_db.add_word("dance", 3, 2, 1)
-poem_word_db.add_word("sing", 3, 2, 1)
-poem_word_db.add_word("cry", 3, 1, 2)
-poem_word_db.add_word("laugh", 3, 2, 1)
-poem_word_db.add_word("dark", 3, 1, 2)
-poem_word_db.add_word("sunny", 3, 2, 1)
-poem_word_db.add_word("raincloud", 3, 2, 1)
-poem_word_db.add_word("calm", 3, 1, 2)
-poem_word_db.add_word("silly", 3, 2, 1)
-poem_word_db.add_word("flying", 3, 2, 1)
-poem_word_db.add_word("wonderful", 3, 2, 1)
-poem_word_db.add_word("unrequited", 3, 1, 2)
-poem_word_db.add_word("rose", 3, 1, 2)
-poem_word_db.add_word("together", 3, 2, 1)
-poem_word_db.add_word("promise", 3, 2, 1)
-poem_word_db.add_word("charm", 3, 2, 1)
-poem_word_db.add_word("beauty", 3, 2, 1)
-poem_word_db.add_word("cheer", 3, 2, 1)
-poem_word_db.add_word("smile", 3, 2, 1)
-poem_word_db.add_word("broken", 3, 1, 2)
-poem_word_db.add_word("precious", 3, 2, 1)
-poem_word_db.add_word("prayer", 3, 1, 2)
-poem_word_db.add_word("clumsy", 3, 2, 1)
-poem_word_db.add_word("forgive", 3, 1, 2)
-poem_word_db.add_word("nature", 3, 2, 1)
-poem_word_db.add_word("ocean", 3, 2, 1)
-poem_word_db.add_word("dazzle", 3, 2, 1)
-poem_word_db.add_word("special", 3, 2, 1)
-poem_word_db.add_word("music", 3, 2, 1)
-poem_word_db.add_word("lucky", 3, 2, 1)
-poem_word_db.add_word("misfortune", 3, 1, 2)
-poem_word_db.add_word("loud", 3, 2, 1)
-poem_word_db.add_word("peaceful", 3, 1, 2)
-poem_word_db.add_word("joy", 3, 1, 2)
-poem_word_db.add_word("sunset", 3, 2, 1)
-poem_word_db.add_word("fireflies", 3, 2, 1)
-poem_word_db.add_word("rainbow", 3, 2, 1)
-poem_word_db.add_word("hurt", 3, 1, 2)
-poem_word_db.add_word("play", 3, 2, 1)
-poem_word_db.add_word("sparkle", 3, 2, 1)
-poem_word_db.add_word("scars", 3, 1, 2)
-poem_word_db.add_word("empty", 3, 1, 2)
-poem_word_db.add_word("amazing", 3, 2, 1)
-poem_word_db.add_word("grief", 3, 1, 2)
-poem_word_db.add_word("embrace", 3, 1, 2)
-poem_word_db.add_word("extraordinary", 3, 2, 1)
-poem_word_db.add_word("awesome", 3, 2, 1)
-poem_word_db.add_word("defeat", 3, 1, 2)
-poem_word_db.add_word("hopeless", 3, 1, 2)
-poem_word_db.add_word("misery", 3, 1, 2)
-poem_word_db.add_word("treasure", 3, 2, 1)
-poem_word_db.add_word("bliss", 3, 2, 1)
-poem_word_db.add_word("memories", 3, 2, 1)
+## Слова Сайори
+poem_word_db.add_word("счастье", 3, 2, 1)
+poem_word_db.add_word("печаль", 3, 2, 1)
+poem_word_db.add_word("смерть", 3, 1, 2)
+poem_word_db.add_word("трагедия", 3, 1, 2)
+poem_word_db.add_word("одиночество", 3, 1, 2)
+poem_word_db.add_word("любовь", 3, 2, 1)
+poem_word_db.add_word("приключение", 3, 2, 1)
+poem_word_db.add_word("сладкий", 3, 2, 1)
+poem_word_db.add_word("ажиотаж", 3, 2, 1)
+poem_word_db.add_word("фейерверк", 3, 2, 1)
+poem_word_db.add_word("романтика", 3, 2, 1)
+poem_word_db.add_word("слёзы", 3, 1, 2)
+poem_word_db.add_word("депрессия", 3, 1, 2)
+poem_word_db.add_word("сердце", 3, 2, 1)
+poem_word_db.add_word("свадьба", 3, 2, 1)
+poem_word_db.add_word("страсть", 3, 2, 1)
+poem_word_db.add_word("детство", 3, 2, 1)
+poem_word_db.add_word("радость", 3, 2, 1)
+poem_word_db.add_word("цвет", 3, 2, 1)
+poem_word_db.add_word("надежда", 3, 1, 2)
+poem_word_db.add_word("друзья", 3, 2, 1)
+poem_word_db.add_word("семья", 3, 2, 1)
+poem_word_db.add_word("вечеринка", 3, 2, 1)
+poem_word_db.add_word("каникулы", 3, 2, 1)
+poem_word_db.add_word("лень", 3, 2, 1)
+poem_word_db.add_word("грёзы", 3, 1, 2)
+poem_word_db.add_word("боль", 3, 1, 2)
+poem_word_db.add_word("праздник", 3, 2, 1)
+poem_word_db.add_word("кровать", 3, 2, 1)
+poem_word_db.add_word("перо", 3, 2, 1)
+poem_word_db.add_word("стыд", 3, 1, 2)
+poem_word_db.add_word("страх", 3, 1, 2)
+poem_word_db.add_word("теплота", 3, 2, 1)
+poem_word_db.add_word("цветок", 3, 2, 1)
+poem_word_db.add_word("уют", 3, 2, 1)
+poem_word_db.add_word("танец", 3, 2, 1)
+poem_word_db.add_word("пение", 3, 2, 1)
+poem_word_db.add_word("крик", 3, 1, 2)
+poem_word_db.add_word("смех", 3, 2, 1)
+poem_word_db.add_word("тьма", 3, 1, 2)
+poem_word_db.add_word("солнечный", 3, 2, 1)
+poem_word_db.add_word("тучи", 3, 2, 1)
+poem_word_db.add_word("покой", 3, 1, 2)
+poem_word_db.add_word("глупый", 3, 2, 1)
+poem_word_db.add_word("летающий", 3, 2, 1)
+poem_word_db.add_word("чудесный", 3, 2, 1)
+poem_word_db.add_word("безответный", 3, 1, 2)
+poem_word_db.add_word("роза", 3, 1, 2)
+poem_word_db.add_word("вместе", 3, 2, 1)
+poem_word_db.add_word("обещание", 3, 2, 1)
+poem_word_db.add_word("обаяние", 3, 2, 1)
+poem_word_db.add_word("красота", 3, 2, 1)
+poem_word_db.add_word("приободрение", 3, 2, 1)
+poem_word_db.add_word("улыбка", 3, 2, 1)
+poem_word_db.add_word("сломанный", 3, 1, 2)
+poem_word_db.add_word("дорогой", 3, 2, 1)
+poem_word_db.add_word("молитва", 3, 1, 2)
+poem_word_db.add_word("неуклюжий", 3, 2, 1)
+poem_word_db.add_word("прощение", 3, 1, 2)
+poem_word_db.add_word("природа", 3, 2, 1)
+poem_word_db.add_word("океан", 3, 2, 1)
+poem_word_db.add_word("очаровывать", 3, 2, 1)
+poem_word_db.add_word("особый", 3, 2, 1)
+poem_word_db.add_word("музыка", 3, 2, 1)
+poem_word_db.add_word("счастливый", 3, 2, 1)
+poem_word_db.add_word("неудача", 3, 1, 2)
+poem_word_db.add_word("громкий", 3, 2, 1)
+poem_word_db.add_word("мирный", 3, 1, 2)
+poem_word_db.add_word("веселье", 3, 1, 2)
+poem_word_db.add_word("закат", 3, 2, 1)
+poem_word_db.add_word("светлячки", 3, 2, 1)
+poem_word_db.add_word("радуга", 3, 2, 1)
+poem_word_db.add_word("обида", 3, 1, 2)
+poem_word_db.add_word("играть", 3, 2, 1)
+poem_word_db.add_word("блеск", 3, 2, 1)
+poem_word_db.add_word("шрамы", 3, 1, 2)
+poem_word_db.add_word("пустой", 3, 1, 2)
+poem_word_db.add_word("удивительный", 3, 2, 1)
+poem_word_db.add_word("горе", 3, 1, 2)
+poem_word_db.add_word("объятия", 3, 1, 2)
+poem_word_db.add_word("необычайный", 3, 2, 1)
+poem_word_db.add_word("потрясающий", 3, 2, 1)
+poem_word_db.add_word("поражение", 3, 1, 2)
+poem_word_db.add_word("безнадёжный", 3, 1, 2)
+poem_word_db.add_word("страдание", 3, 1, 2)
+poem_word_db.add_word("сокровище", 3, 2, 1)
+poem_word_db.add_word("блаженство", 3, 2, 1)
+poem_word_db.add_word("воспоминания", 3, 2, 1)
 
-## Natsuki Words
-poem_word_db.add_word("cute", 2, 3, 1)
-poem_word_db.add_word("fluffy", 2, 3, 1)
-poem_word_db.add_word("pure", 1, 3, 2)
-poem_word_db.add_word("candy", 2, 3, 1)
-poem_word_db.add_word("shopping", 2, 3, 1)
-poem_word_db.add_word("puppy", 2, 3, 1)
-poem_word_db.add_word("kitty", 2, 3, 1)
-poem_word_db.add_word("clouds", 2, 3, 1)
-poem_word_db.add_word("lipstick", 1, 3, 2)
-poem_word_db.add_word("parfait", 2, 3, 1)
-poem_word_db.add_word("strawberry", 2, 3, 1)
-poem_word_db.add_word("pink", 2, 3, 1)
-poem_word_db.add_word("chocolate", 2, 3, 1)
-poem_word_db.add_word("heartbeat", 1, 3, 2)
-poem_word_db.add_word("kiss", 1, 3, 2)
-poem_word_db.add_word("melody", 2, 3, 1)
-poem_word_db.add_word("ribbon", 2, 3, 1)
-poem_word_db.add_word("jumpy", 2, 3, 1)
-poem_word_db.add_word("doki-doki", 2, 3, 1)
-poem_word_db.add_word("kawaii", 2, 3, 1)
-poem_word_db.add_word("skirt", 2, 3, 1)
-poem_word_db.add_word("cheeks", 2, 3, 1)
-poem_word_db.add_word("email", 2, 3, 1)
-poem_word_db.add_word("sticky", 2, 3, 1)
-poem_word_db.add_word("bouncy", 2, 3, 1)
-poem_word_db.add_word("shiny", 2, 3, 1)
-poem_word_db.add_word("nibble", 2, 3, 1)
-poem_word_db.add_word("fantasy", 1, 3, 2)
-poem_word_db.add_word("sugar", 2, 3, 1)
-poem_word_db.add_word("giggle", 2, 3, 1)
-poem_word_db.add_word("marshmallow", 2, 3, 1)
-poem_word_db.add_word("hop", 2, 3, 1)
-poem_word_db.add_word("skipping", 2, 3, 1)
-poem_word_db.add_word("peace", 2, 3, 1)
-poem_word_db.add_word("spinning", 2, 3, 1)
-poem_word_db.add_word("twirl", 2, 3, 1)
-poem_word_db.add_word("lollipop", 2, 3, 1)
-poem_word_db.add_word("poof", 2, 3, 1)
-poem_word_db.add_word("bubbles", 2, 3, 1)
-poem_word_db.add_word("whisper", 2, 3, 1)
-poem_word_db.add_word("summer", 2, 3, 1)
-poem_word_db.add_word("waterfall", 1, 3, 2)
-poem_word_db.add_word("swimsuit", 2, 3, 1)
-poem_word_db.add_word("vanilla", 2, 3, 1)
-poem_word_db.add_word("headphones", 2, 3, 1)
-poem_word_db.add_word("games", 2, 3, 1)
-poem_word_db.add_word("socks", 2, 3, 1)
-poem_word_db.add_word("hair", 2, 3, 1)
-poem_word_db.add_word("playground", 2, 3, 1)
-poem_word_db.add_word("nightgown", 1, 3, 2)
-poem_word_db.add_word("blanket", 1, 3, 2)
-poem_word_db.add_word("milk", 2, 3, 1)
-poem_word_db.add_word("pout", 2, 3, 1)
-poem_word_db.add_word("anger", 2, 3, 1)
-poem_word_db.add_word("papa", 2, 3, 1)
-poem_word_db.add_word("valentine", 2, 3, 1)
-poem_word_db.add_word("mouse", 1, 3, 2)
-poem_word_db.add_word("whistle", 2, 3, 1)
-poem_word_db.add_word("boop", 2, 3, 1)
-poem_word_db.add_word("bunny", 2, 3, 1)
-poem_word_db.add_word("anime", 2, 3, 1)
-poem_word_db.add_word("jump", 2, 3, 1)
+## Слова Нацуки
+poem_word_db.add_word("милый", 2, 3, 1)
+poem_word_db.add_word("пушистый", 2, 3, 1)
+poem_word_db.add_word("чистый", 1, 3, 2)
+poem_word_db.add_word("конфеты", 2, 3, 1)
+poem_word_db.add_word("покупки", 2, 3, 1)
+poem_word_db.add_word("щенок", 2, 3, 1)
+poem_word_db.add_word("котёнок", 2, 3, 1)
+poem_word_db.add_word("облака", 2, 3, 1)
+poem_word_db.add_word("помада", 1, 3, 2)
+poem_word_db.add_word("парфе", 2, 3, 1)
+poem_word_db.add_word("клубника", 2, 3, 1)
+poem_word_db.add_word("розовый", 2, 3, 1)
+poem_word_db.add_word("шоколад", 2, 3, 1)
+poem_word_db.add_word("сердцебиение", 1, 3, 2)
+poem_word_db.add_word("поцелуй", 1, 3, 2)
+poem_word_db.add_word("мелодия", 2, 3, 1)
+poem_word_db.add_word("бантик", 2, 3, 1)
+poem_word_db.add_word("резвый", 2, 3, 1)
+poem_word_db.add_word("тук-тук", 2, 3, 1)
+poem_word_db.add_word("кавайный", 2, 3, 1)
+poem_word_db.add_word("юбка", 2, 3, 1)
+poem_word_db.add_word("щёки", 2, 3, 1)
+poem_word_db.add_word("е-мейл", 2, 3, 1)
+poem_word_db.add_word("липкий", 2, 3, 1)
+poem_word_db.add_word("энергичный", 2, 3, 1)
+poem_word_db.add_word("блестящий", 2, 3, 1)
+poem_word_db.add_word("грызть", 2, 3, 1)
+poem_word_db.add_word("фантазия", 1, 3, 2)
+poem_word_db.add_word("сахар", 2, 3, 1)
+poem_word_db.add_word("хихикать", 2, 3, 1)
+poem_word_db.add_word("зефир", 2, 3, 1)
+poem_word_db.add_word("скакать", 2, 3, 1)
+poem_word_db.add_word("классики", 2, 3, 1)
+poem_word_db.add_word("мир", 2, 3, 1)
+poem_word_db.add_word("вращение", 2, 3, 1)
+poem_word_db.add_word("вертеть", 2, 3, 1)
+poem_word_db.add_word("леденец", 2, 3, 1)
+poem_word_db.add_word("пуф", 2, 3, 1)
+poem_word_db.add_word("пузырьки", 2, 3, 1)
+poem_word_db.add_word("шёпот", 2, 3, 1)
+poem_word_db.add_word("лето", 2, 3, 1)
+poem_word_db.add_word("водопад", 1, 3, 2)
+poem_word_db.add_word("купальник", 2, 3, 1)
+poem_word_db.add_word("ваниль", 2, 3, 1)
+poem_word_db.add_word("наушники", 2, 3, 1)
+poem_word_db.add_word("игры", 2, 3, 1)
+poem_word_db.add_word("носки", 2, 3, 1)
+poem_word_db.add_word("волосы", 2, 3, 1)
+poem_word_db.add_word("песочница", 2, 3, 1)
+poem_word_db.add_word("пижама", 1, 3, 2)
+poem_word_db.add_word("одеяло", 1, 3, 2)
+poem_word_db.add_word("молоко", 2, 3, 1)
+poem_word_db.add_word("губки", 2, 3, 1)
+poem_word_db.add_word("злость", 2, 3, 1)
+poem_word_db.add_word("папа", 2, 3, 1)
+poem_word_db.add_word("валентинка", 2, 3, 1)
+poem_word_db.add_word("мышь", 1, 3, 2)
+poem_word_db.add_word("свист", 2, 3, 1)
+poem_word_db.add_word("жмяк", 2, 3, 1)
+poem_word_db.add_word("кролик", 2, 3, 1)
+poem_word_db.add_word("аниме", 2, 3, 1)
+poem_word_db.add_word("прыгать", 2, 3, 1)
 
-## Yuri Words
-poem_word_db.add_word("determination", 1, 1, 3)
-poem_word_db.add_word("suicide", 2, 1, 3)
-poem_word_db.add_word("imagination", 2, 1, 3)
-poem_word_db.add_word("secretive", 2, 1, 3)
-poem_word_db.add_word("vitality", 1, 1, 3)
-poem_word_db.add_word("existence", 2, 1, 3)
-poem_word_db.add_word("effulgent", 1, 1, 3)
-poem_word_db.add_word("crimson", 1, 1, 3)
-poem_word_db.add_word("whirlwind", 1, 1, 3)
-poem_word_db.add_word("afterimage", 1, 1, 3)
-poem_word_db.add_word("vertigo", 1, 1, 3)
-poem_word_db.add_word("disoriented", 1, 1, 3)
-poem_word_db.add_word("essence", 2, 1, 3)
-poem_word_db.add_word("ambient", 2, 1, 3)
-poem_word_db.add_word("starscape", 2, 1, 3)
-poem_word_db.add_word("disarray", 1, 1, 3)
-poem_word_db.add_word("contamination", 1, 1, 3)
-poem_word_db.add_word("intellectual", 1, 1, 3)
-poem_word_db.add_word("analysis", 1, 1, 3)
-poem_word_db.add_word("entropy", 1, 1, 3)
-poem_word_db.add_word("vivacious", 1, 1, 3)
-poem_word_db.add_word("uncanny", 2, 1, 3)
-poem_word_db.add_word("incongruent", 1, 1, 3)
-poem_word_db.add_word("wrath", 2, 1, 3)
-poem_word_db.add_word("heavensent", 2, 1, 3)
-poem_word_db.add_word("massacre", 2, 1, 3)
-poem_word_db.add_word("philosophy", 1, 1, 3)
-poem_word_db.add_word("fickle", 1, 1, 3)
-poem_word_db.add_word("tenacious", 1, 1, 3)
-poem_word_db.add_word("aura", 2, 1, 3)
-poem_word_db.add_word("unstable", 1, 1, 3)
-poem_word_db.add_word("inferno", 2, 1, 3)
-poem_word_db.add_word("incapable", 2, 1, 3)
-poem_word_db.add_word("destiny", 2, 1, 3)
-poem_word_db.add_word("infallible", 1, 1, 3)
-poem_word_db.add_word("agonizing", 2, 1, 3)
-poem_word_db.add_word("variance", 1, 1, 3)
-poem_word_db.add_word("uncontrollable", 2, 1, 3)
-poem_word_db.add_word("extreme", 1, 1, 3)
-poem_word_db.add_word("flee", 2, 1, 3)
-poem_word_db.add_word("dream", 2, 2, 3)
-poem_word_db.add_word("disaster", 2, 1, 3)
-poem_word_db.add_word("vivid", 2, 1, 3)
-poem_word_db.add_word("vibrant", 1, 2, 3)
-poem_word_db.add_word("question", 1, 2, 3)
-poem_word_db.add_word("fester", 2, 1, 3)
-poem_word_db.add_word("judgment", 1, 1, 3)
-poem_word_db.add_word("cage", 1, 2, 3)
-poem_word_db.add_word("explode", 1, 2, 3)
-poem_word_db.add_word("pleasure", 1, 2, 3)
-poem_word_db.add_word("lust", 1, 2, 3)
-poem_word_db.add_word("sensation", 1, 2, 3)
-poem_word_db.add_word("climax", 1, 2, 3)
-poem_word_db.add_word("electricity", 1, 2, 3)
-poem_word_db.add_word("disown", 1, 1, 3)
-poem_word_db.add_word("despise", 2, 1, 3)
-poem_word_db.add_word("infinite", 2, 1, 3)
-poem_word_db.add_word("eternity", 2, 1, 3)
-poem_word_db.add_word("time", 2, 1, 3)
-poem_word_db.add_word("universe", 2, 1, 3)
-poem_word_db.add_word("unending", 2, 1, 3)
-poem_word_db.add_word("raindrops", 2, 1, 3)
-poem_word_db.add_word("covet", 1, 1, 3)
-poem_word_db.add_word("unrestrained", 1, 1, 3)
-poem_word_db.add_word("landscape", 2, 1, 3)
-poem_word_db.add_word("portrait", 2, 1, 3)
-poem_word_db.add_word("journey", 2, 1, 3)
-poem_word_db.add_word("meager", 1, 1, 3)
-poem_word_db.add_word("anxiety", 2, 1, 3)
-poem_word_db.add_word("frightening", 2, 1, 3)
-poem_word_db.add_word("horror", 2, 1, 3)
-poem_word_db.add_word("melancholy", 2, 1, 3)
-poem_word_db.add_word("insight", 2, 1, 3)
-poem_word_db.add_word("atone", 2, 1, 3)
-poem_word_db.add_word("breathe", 1, 2, 3)
-poem_word_db.add_word("captive", 2, 1, 3)
-poem_word_db.add_word("desire", 1, 2, 3)
-poem_word_db.add_word("graveyard", 2, 1, 3)
+## Слова Юри
+poem_word_db.add_word("решимость", 1, 1, 3)
+poem_word_db.add_word("самоубийство", 2, 1, 3)
+poem_word_db.add_word("воображение", 2, 1, 3)
+poem_word_db.add_word("скрытный", 2, 1, 3)
+poem_word_db.add_word("жизненность", 1, 1, 3)
+poem_word_db.add_word("существование", 2, 1, 3)
+poem_word_db.add_word("сверкающий", 1, 1, 3)
+poem_word_db.add_word("багровый", 1, 1, 3)
+poem_word_db.add_word("вихрь", 1, 1, 3)
+poem_word_db.add_word("послеобраз", 1, 1, 3)
+poem_word_db.add_word("головокружение", 1, 1, 3)
+poem_word_db.add_word("дезориентация", 1, 1, 3)
+poem_word_db.add_word("сущность", 2, 1, 3)
+poem_word_db.add_word("атмосфера", 2, 1, 3)
+poem_word_db.add_word("небосвод", 2, 1, 3)
+poem_word_db.add_word("смятение", 1, 1, 3)
+poem_word_db.add_word("загрязнение", 1, 1, 3)
+poem_word_db.add_word("интеллектуальный", 1, 1, 3)
+poem_word_db.add_word("анализ", 1, 1, 3)
+poem_word_db.add_word("энтропия", 1, 1, 3)
+poem_word_db.add_word("оживлённый", 1, 1, 3)
+poem_word_db.add_word("сверхъестественный", 2, 1, 3)
+poem_word_db.add_word("несовместимый", 1, 1, 3)
+poem_word_db.add_word("гнев", 2, 1, 3)
+poem_word_db.add_word("ниспосланный", 2, 1, 3)
+poem_word_db.add_word("бойня", 2, 1, 3)
+poem_word_db.add_word("философия", 1, 1, 3)
+poem_word_db.add_word("непостоянный", 1, 1, 3)
+poem_word_db.add_word("настойчивый", 1, 1, 3)
+poem_word_db.add_word("аура", 2, 1, 3)
+poem_word_db.add_word("неустойчивый", 1, 1, 3)
+poem_word_db.add_word("инферно", 2, 1, 3)
+poem_word_db.add_word("неспособный", 2, 1, 3)
+poem_word_db.add_word("судьба", 2, 1, 3)
+poem_word_db.add_word("непогрешимый", 1, 1, 3)
+poem_word_db.add_word("мучительный", 2, 1, 3)
+poem_word_db.add_word("расхождение", 1, 1, 3)
+poem_word_db.add_word("неконтролируемый", 2, 1, 3)
+poem_word_db.add_word("экстремальный", 1, 1, 3)
+poem_word_db.add_word("убегать", 2, 1, 3)
+poem_word_db.add_word("мечта", 2, 2, 3)
+poem_word_db.add_word("катастрофа", 2, 1, 3)
+poem_word_db.add_word("живописный", 2, 1, 3)
+poem_word_db.add_word("пышущий", 1, 2, 3)
+poem_word_db.add_word("вопрос", 1, 2, 3)
+poem_word_db.add_word("нагноение", 2, 1, 3)
+poem_word_db.add_word("предосуждение", 1, 1, 3)
+poem_word_db.add_word("клетка", 1, 2, 3)
+poem_word_db.add_word("взрываться", 1, 2, 3)
+poem_word_db.add_word("наслаждение", 1, 2, 3)
+poem_word_db.add_word("похоть", 1, 2, 3)
+poem_word_db.add_word("ощущение", 1, 2, 3)
+poem_word_db.add_word("кульминация", 1, 2, 3)
+poem_word_db.add_word("электричество", 1, 2, 3)
+poem_word_db.add_word("отрекаться", 1, 1, 3)
+poem_word_db.add_word("презирать", 2, 1, 3)
+poem_word_db.add_word("бесконечный", 2, 1, 3)
+poem_word_db.add_word("вечность", 2, 1, 3)
+poem_word_db.add_word("время", 2, 1, 3)
+poem_word_db.add_word("вселенная", 2, 1, 3)
+poem_word_db.add_word("нескончаемый", 2, 1, 3)
+poem_word_db.add_word("капли", 2, 1, 3)
+poem_word_db.add_word("жаждать", 1, 1, 3)
+poem_word_db.add_word("несдержанный", 1, 1, 3)
+poem_word_db.add_word("пейзаж", 2, 1, 3)
+poem_word_db.add_word("портрет", 2, 1, 3)
+poem_word_db.add_word("путешествие", 2, 1, 3)
+poem_word_db.add_word("скудный", 1, 1, 3)
+poem_word_db.add_word("беспокойство", 2, 1, 3)
+poem_word_db.add_word("пугающий", 2, 1, 3)
+poem_word_db.add_word("ужас", 2, 1, 3)
+poem_word_db.add_word("меланхолия", 2, 1, 3)
+poem_word_db.add_word("проницательность", 2, 1, 3)
+poem_word_db.add_word("искупление", 2, 1, 3)
+poem_word_db.add_word("дышать", 1, 2, 3)
+poem_word_db.add_word("пленник", 2, 1, 3)
+poem_word_db.add_word("желание", 1, 2, 3)
+poem_word_db.add_word("кладбище", 2, 1, 3)

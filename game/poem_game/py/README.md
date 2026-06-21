@@ -1,9 +1,9 @@
-# Contents of the `poem_game/py` folder
+# Содержание папки `poem_game/py`
 
-## Folders
-- **\_\_pycache\_\_**: Contains the compiled Python files for the Poem Game. This should normally not appear in your mod nor in packaged mod templates, but if it exists, ignore it.
+## Папки
+- **\_\_pycache\_\_**: Содержит скомпилированные аналоги скриптов Python, отвечающих за мини-игру про сочинение стихотворений. Как правило, этой папки не должно быть ни в вашей модификации, ни в упакованном мод-шаблоне, но если она есть, не обращайте внимания.
 
-## Files
-- **[poemgame_chibi_ren.py](./poemgame_ren.py)**: Contains the Python code for the Poem Game Chibis.
-- **[poemgame_ren.py](./poemgame_ren.py)**: Contains the Python code for the main Poem Game.
-- **[poemwords_ren.py](./poemwords_ren.py)**: Contains the wordlist for the Poem Game, now stored in a Python file than the prior *poemwords.txt* file.
+## Файлы
+- **[poemgame_chibi_ren.py](./poemgame_ren.py)**: Содержит код Python для чибиков персонажей слева.
+- **[poemgame_ren.py](./poemgame_ren.py)**: Содержит код Python, отвечающий за основную логику мини-игры.
+- **[poemwords_ren.py](./poemwords_ren.py)**: Содержит перечень слов для стихотворения, его содержание практически идентично устаревшему файлу *poemwords.txt*.

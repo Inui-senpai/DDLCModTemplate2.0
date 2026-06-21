@@ -1,7 +1,7 @@
-# Copyright 2019-2025 Azariel Del Carmen (bronya_rand). All rights reserved.
-# This file defines the placements and animations in DDLC.
+# Авторские права 2019-наст. вр. Азариель Дель Кармен (bronya_rand). Все права защищены.
+# В этом файле прописаны все переходы и анимации, используемые игрой.
 
-# This transform sizes the character properly at the given X position.
+# Придаёт спрайту корректный размер в указанной координате X.
 transform tcommon(x=640, z=0.80):
     yanchor 1.0 subpixel True
     on show:
@@ -10,7 +10,6 @@ transform tcommon(x=640, z=0.80):
         xcenter x yoffset -20
         easein .25 yoffset 0 zoom z*1.00 alpha 1.00
     on replace:
-
         alpha 1.00
         parallel:
             easein .25 xcenter x zoom z*1.00
@@ -20,11 +19,10 @@ transform tcommon(x=640, z=0.80):
 transform tinstant(x=640, z=0.80):
     xcenter x yoffset 0 zoom z*1.00 alpha 1.00 yanchor 1.0 ypos 1.03
 
-# This transform makes the character zoom in when they talk.
+# Приближает персонажа, когда тот говорит.
 transform focus(x=640, z=0.80):
     yanchor 1.0 ypos 1.03 subpixel True
     on show:
-
         zoom z*0.95 alpha 0.00
         xcenter x yoffset -20
         easein .25 yoffset 0 zoom z*1.05 alpha 1.00
@@ -36,31 +34,31 @@ transform focus(x=640, z=0.80):
         parallel:
             easein .15 yoffset 0
 
-# This transform causes the character to sink down on the screen.
+# Заставляет персонажа слегка опуститься вниз.
 transform sink(x=640, z=0.80):
     xcenter x yoffset 0 yanchor 1.0 ypos 1.03 zoom z*1.00 alpha 1.00 subpixel True
     easein .5 ypos 1.06
 
-# This transform makes the character jump for a bit
+# Заставляет персонажа подпрыгнуть.
 transform hop(x=640, z=0.80):
     xcenter x yoffset 0 yanchor 1.0 ypos 1.03 zoom z*1.00 alpha 1.00 subpixel True
     easein .1 yoffset -20
     easeout .1 yoffset 0
 
-# This transform makes the character jump and be in focus at the same time.
+# Заставляет персонажа подпрыгнуть и оказаться в фокусе.
 transform hopfocus(x=640, z=0.80):
     xcenter x yoffset 0 yanchor 1.0 ypos 1.03 zoom z*1.05 alpha 1.00 subpixel True
     easein .1 yoffset -21
     easeout .1 yoffset 0
 
-# This causes the character to sink down from the screen then come back up.
+# Заставляет персонажа слегка опуститься вниз и вернуться в исходное положение.
 transform dip(x=640, z=0.80):
     xcenter x yoffset 0 yanchor 1.0 ypos 1.03 zoom z*1.00 alpha 1.00 subpixel True
     easein .25 yoffset 25
     easeout .25 yoffset 0
 
-# This transform causes the character to wobble on-screen.
-# This might be a left-over transform from DDLC's development for Natsuki's Closet CG.
+# Заставляет персонажа качаться.
+# Скорее всего, это остатки кода из ранней версии DDLC для сценки с Нацуки в кладовке.
 transform panic(x=640, z=0.80):
     xcenter x yoffset 0 yanchor 1.0 ypos 1.03 zoom z*1.00 alpha 1.00 subpixel True
     parallel:
@@ -73,39 +71,38 @@ transform panic(x=640, z=0.80):
         easeout .3 xoffset 0
         repeat
 
-# This transform causes the character to "fly in" (enter the scene) from the left.
+# Заставляет персонажа «влететь» (оказаться на сцене) слева.
 transform leftin(x=640, z=0.80):
     xcenter -300 yoffset 0 yanchor 1.0 ypos 1.03 zoom z*1.00 alpha 1.00 subpixel True
     easein .25 xcenter x
 
-# This transform causes the character to "fly in" (enter the scene) from the right.
+# Заставляет персонажа «влететь» (оказаться на сцене) справа.
 transform rightin(x=640, z=0.80):
     xcenter 2000 yoffset 0 yanchor 1.0 ypos 1.03 zoom z*1.00 alpha 1.00 subpixel True
     easein .25 xcenter x
 
-# This transform hides the character from the screen.
+# Убирает спрайт персонажа с экрана.
 transform thide(z=0.80):
     subpixel True
     transform_anchor True
     on hide:
-
         easein .25 zoom z*0.95 alpha 0.00 yoffset -20
 
-# This transform hides the character by moving them to the left.
+# Убирает спрайт персонажа, перемещая его влево.
 transform lhide:
     subpixel True
     on hide:
         easeout .25 xcenter -300
 
-# This transform hides the character by moving them to the left.
+# Убирает спрайт персонажа, перемещая его вправо.
 transform rhide:
     subpixel True
     on hide:
         easeout .25 xcenter 2000
 
-# These transforms have the characters stand still at a given position given
-# how many characters are on screen and which character number they are.
-#     Example for Monika with 2 other girls; being in between them: t32
+# Эти трансформации расставляют спрайты в заданной позиции исходя из того,
+# сколько сейчас персонажей на экране и какой индекс им присвоен.
+#     Допустим, Моника должна встать между двумя другими девушками; мы «передаём» Монике `at t32`
 transform t41:
     tcommon(200)
 transform t42:
@@ -127,7 +124,7 @@ transform t22:
 transform t11:
     tcommon(640)
 
-# These transforms makes the character pop in.
+# Эти трансформации заставляют персонажа появиться без анимации.
 transform i41:
     tinstant(200)
 transform i42:
@@ -149,7 +146,7 @@ transform i22:
 transform i11:
     tinstant(640)
 
-# These transforms makes the character be the main focus on-screen.
+# Эти трансформации приближают говорящего к экрану.
 transform f41:
     focus(200)
 transform f42:
@@ -171,7 +168,7 @@ transform f22:
 transform f11:
     focus(640)
 
-# These transforms makes the character sink downwards.
+# Эти трансформации заставляют персонажа слегка опуститься вниз.
 transform s41:
     sink(200)
 transform s42:
@@ -193,7 +190,7 @@ transform s22:
 transform s11:
     sink(640)
 
-# These transforms makes the character hop.
+# Эти трансформации заставляют персонажа подпрыгнуть.
 transform h41:
     hop(200)
 transform h42:
@@ -215,7 +212,7 @@ transform h22:
 transform h11:
     hop(640)
 
-# These transforms makes the character hop and be in focus at the same time.
+# Эти трансформации заставляют персонажа подпрыгнуть и оказаться в фокусе.
 transform hf41:
     hopfocus(200)
 transform hf42:
@@ -237,7 +234,7 @@ transform hf22:
 transform hf11:
     hopfocus(640)
 
-# These transforms makes the character dip down the screen, then come back up.
+# Эти трансформации заставляют персонажа слегка опуститься вниз и вернуться в исходное положение.
 transform d41:
     dip(200)
 transform d42:
@@ -259,7 +256,7 @@ transform d22:
 transform d11:
     dip(640)
 
-# These transforms makes the character fly in from the left.
+# Эти трансформации заставляют персонажа «влететь» слева.
 transform l41:
     leftin(200)
 transform l42:
@@ -281,7 +278,7 @@ transform l22:
 transform l11:
     leftin(640)
 
-# These transforms makes the character fly in from the right.
+# Эти трансформации заставляют персонажа «влететь» справа.
 transform r41:
     rightin(200)
 transform r42:
@@ -303,7 +300,7 @@ transform r22:
 transform r11:
     rightin(640)
 
-# This transform acts as in your eyes are opening up to see where you are at.
+# Сильно приближает лицо персонажа к экрану.
 transform face(z=0.80, y=500):
     subpixel True
     xcenter 640
@@ -311,7 +308,7 @@ transform face(z=0.80, y=500):
     yoffset y
     zoom z*2.00
 
-# This transform fades the screen for CGs to be shown/hidden.
+# Придаёт эффект растворения элементам сценки, которые должны появиться/скрыться.
 transform cgfade:
     on show:
         alpha 0.0
@@ -320,7 +317,7 @@ transform cgfade:
         alpha 1.0
         linear 0.5 alpha 0.0
 
-# This transform causes Natsuki to wiggle on screen when she panics in her closet CG.
+# Использовалась в сценке с Нацуки в кладовке; заставляет Нацуки качаться, когда та паникует.
 transform n_cg2_wiggle:
     subpixel True
     xoffset 0
@@ -333,82 +330,81 @@ transform n_cg2_wiggle:
     easein 0.15 xoffset -5
     ease 0.15 xoffset 0
 
-# This transform loop repeats the wiggle effect each second.
+# Воспроизводит качание каждую секунду.
 transform n_cg2_wiggle_loop:
     n_cg2_wiggle
     1.0
     repeat
 
-# This transform causes Natsuki's face to be very close to your face during her 
-# closet CG route.
+# Использовалась в сценке с Нацуки в кладовке; заставляет Нацуки влететь лицом в экран.
 transform n_cg2_zoom:
     subpixel True
     truecenter
     xoffset 0
     easeout 0.20 zoom 2.5 xoffset 200
 
-# This variable defines the effect used by 'dissolve' by characters.
+# Указывает эффект, используемый объявлением «dissolve» персонажами.
 define dissolve = Dissolve(0.25)
 
-# These variables define Dissolve(X) for CGs and scenes.
+# Закрепляет Dissolve(X) за эффектами для сценок и обычных сцен.
 define dissolve_cg = Dissolve(0.75)
 define dissolve_scene = Dissolve(1.0)
 
-# This variable makes the screen dissolve itself to black to show another scene later.
+# Заставляет экран плавно перейти в чёрный, чтобы позже показать другую сцену.
 define dissolve_scene_full = MultipleTransition([
     False, Dissolve(1.0),
     Solid("#000"), Pause(1.0),
     Solid("#000"), Dissolve(1.0),
     True])
 
-# This variable dissolves the screen for a bit then shows the next scene afterwards.
+# Растворяет экран на какое-то время, а затем показывает следующую сцену.
 define dissolve_scene_half = MultipleTransition([
     Solid("#000"), Pause(1.0),
     Solid("#000"), Dissolve(1.0),
     True])
 
-# This variable makes the screen shut to black; like your eyes closing themselves.
+# Заставляет экран плавно «погрузиться во мрак», как будто игрок сам закрыл свои глаза.
 define close_eyes = MultipleTransition([
     False, Dissolve(0.5),
     Solid("#000"), Pause(0.25),
     True])
 
-# This variable makes the screen show the scene in return; like your eyes opening themselves.
+# Возвращает происходящее на экране, как будто игрок открыл свои глаза.
 define open_eyes = MultipleTransition([
     False, Dissolve(0.5),
     True])
 
-# This variable makes the screen instantly hide to black.
+# Мгновенно «погружает» экран «во мрак».
 define trueblack = MultipleTransition([
     Solid("#000"), Pause(0.25),
     Solid("#000")
     ])
 
-# This variable makes the current character hide by wiping their sprite off-screen to the left.
+# Удаляет спрайт персонажа с экрана «стиранием» с левого края.
 define wipeleft = ImageDissolve("images/menu/wipeleft.png", 0.5, ramplen=64)
 
-# This variable makes the current scene wipe to black from the left, then shows another scene.
+# Удаляет происходящее на сцене «стиранием» с левого края, оставляя только «мрак», а затем показывает другую сцену.
 define wipeleft_scene = MultipleTransition([
     False, ImageDissolve("images/menu/wipeleft.png", 0.5, ramplen=64),
     Solid("#000"), Pause(0.25),
     Solid("#000"), ImageDissolve("images/menu/wipeleft.png", 0.5, ramplen=64),
     True])
 
-# This variable makes the current character hide by wiping their sprite off-screen to the right.
+# Удаляет спрайт персонажа с экрана «стиранием» с правого края.
 define wiperight = ImageDissolve("images/menu/wipeleft.png", 0.5, ramplen=64, reverse=True)
 
-# This variable makes the current scene wipe to black from the right, then shows another scene.
+# Удаляет происходящее на сцене «стиранием» с правого края, оставляя только «мрак», а затем показывает другую сцену.
 define wiperight_scene = MultipleTransition([
     False, ImageDissolve("images/menu/wipeleft.png", 0.5, ramplen=64, reverse=True),
     Solid("#000"), Pause(0.25),
     Solid("#000"), ImageDissolve("images/menu/wipeleft.png", 0.5, ramplen=64, reverse=True),
     True])
 
-# This variable is possibly a left-over from DDLC's development.
-# This variable pauses the game for .25 seconds.
+# Скорее всего, это остатки кода из ранней версии DDLC.
+# Приостанавливает действие игры на четверть секунды.
 define tpause = Pause(0.25)
 
-# This image transform causes a noise animation to play out.
+# Это изображение с трансформациями выводит на экран анимированный белый шум.
 image noise:
     truecenter
     "images/bg/noise1.jpg"
@@ -449,28 +445,28 @@ image noise:
     yzoom 1
     repeat
 
-# This transform causes the noise effect to appear 25% transparent.
+# Делает анимированный шум прозрачным на четверть.
 transform noise_alpha:
     alpha 0.25
 
-# This transform causes the noise effect to appear for a bit then disappear.
+# Заставляет анимированный шум появиться на мгновение, а затем исчезнуть.
 transform noisefade(t=0):
     alpha 0.0
     t
     linear 5.0 alpha 0.40
 
-# This image adds a vignette image for a vignette effect.
+# Добавляет виньетку для создания эффекта виньетирования.
 image vignette:
     truecenter
     "images/bg/vignette.png"
 
-# This transform has the vignette effect fade in.
+# Заставляет виньетку плавно проявиться.
 transform vignettefade(t=0):
     alpha 0.0
     t
     linear 25.0 alpha 1.00
 
-# This transform has the vignette effect flicker on-screen.
+# Заставляет виньетку моргать.
 transform vignetteflicker(t=0):
     alpha 0.0
     t + 2.030
@@ -486,7 +482,7 @@ transform vignetteflicker(t=0):
     parallel:
         easeout 20 zoom 3.0
 
-# This transform causes the screen layer to flicker.
+# Заставляет экранный слой моргать.
 transform layerflicker(t=0):
     truecenter
     t + 2.030
@@ -504,7 +500,7 @@ transform layerflicker(t=0):
         easeout_bounce 0.3 xalign 0.4
         repeat
 
-# This transform applies the rewind effect seen in Act 2.
+# Накладывает эффект обратной перемотки, который можно было видеть во втором акте.
 transform rewind:
     truecenter
     zoom 1.20
@@ -517,8 +513,7 @@ transform rewind:
         easeout_bounce 0.33 yalign 0.45
         repeat
 
-# These transforms applies a heartbeat effect on-the screen in some random
-# playthroughs of DDLC.
+# Эти трансформации накладывают эффект сердцебиения по воле случая во втором акте.
 transform heartbeat:
     heartbeat2(1)
 
@@ -537,8 +532,7 @@ transform heartbeat2(m):
         easeout_bounce 0.3 xalign 0.5 - 0.02 * m
         repeat
 
-# This transform and function controls the animation of Yuri's eyes
-# moving during Act 2.
+# Эти трансформация и функция отвечают за анимацию движения глаз Юри во втором акте.
 transform yuripupils_move:
     function yuripupils_function
 
@@ -548,8 +542,8 @@ init python:
         trans.yoffset = 3 + random.random() * 6 - 3
         return random.random() * 1.2 + 0.3
 
-# This transform makes the character appear on top with a transparency 
-# for a bit during Act 2.
+# Накладывает спрайт персонажа поверх всего и заставляет его проявляться постепенно
+# во втором акте.
 transform malpha(a=1.00):
     i11
     alpha a

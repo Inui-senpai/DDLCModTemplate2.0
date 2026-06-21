@@ -1,12 +1,12 @@
-# This file contains the Python code for the Discord Rich Presence integration.
-# This requires the pypresence library to be included in your mod's `python-packages` folder.
+# Этот файл содержит код Python для интеграции с сервисом Discord.
+# Данный код зависит от библиотеки «pypresence», она должна находиться в каталоге «python-packages» вашей модификации.
 
-# Before starting, make a new application on Discord's Developer Portal:    
+# Перед началом работы создайте новое приложение на Портале разработчиков Discord:
 # https://discord.com/developers/applications
-# Follow the comments inside of `set_defaults` in order to set up RPC to your liking.
+# Чтобы настроить интеграцию под себя, следуйте инструкциям в комментариях внутри функции `set_defaults`.
 
-## This import is not used when the game is running, but exists so IDEs reports
-## one warning than multiple.
+## Эти импорты не используются во время запуска игры, но нужны для того, чтобы IDE
+## не выдавали кучу предупреждений.
 import renpy # type: ignore
 from renpy import NoRollback # type: ignore
 from game.definitions.py.core_ren import persistent
@@ -31,9 +31,9 @@ import time
 class DiscordRPC(NoRollback):
     def __init__(self, client_id: str) -> None:
         """
-        Initializes the DiscordRPC with the given client ID.
+        Инициализирует DiscordRPC с переданным ИД клиента.
 
-        :param client_id: The Discord application client ID.
+        :param client_id: ИД клиента приложения Discord.
         :type client_id: str
         """
 
@@ -41,7 +41,7 @@ class DiscordRPC(NoRollback):
         self.rpc_connected = False
         self.rpc: Presence | None = None
 
-        # Discord Status Data
+        # Данные статуса Discord
         self.start: float = 0.0
         self.details: str = ""
         self.state: str = ""
@@ -54,76 +54,77 @@ class DiscordRPC(NoRollback):
 
     def set_defaults(self) -> None:
         """
-        Sets the default values for the Discord Rich Presence status.
-        Modify these values to customize the default status.
+        Задаёт значения по умолчанию для статуса интеграции с Discord.
+        Меняйте эти значения, чтобы кастомизировать статус по умолчанию.
         """
 
-        # Details indicates what the player is doing in the mod.
-        # Example: In Main Menu
+        # Подробности, описывающие то, чем игрок сейчас занимается.
+        # Пример: В главном меню
         self.details = renpy.version()
 
-        # State indicates additional information to details.
-        # Example: Browsing Settings
-        self.state = "Bronya... :o"
+        # Состояние, отражающее дополнительную информацию в подробностях.
+        # Пример: Просматривает настройки
+        self.state = "Броня... :o"
 
-        # Sets the largest image to use in rich presence
+        # Крупное изображение для отображения в интеграции.
         self.large_image = "ddlcmodtemplatelogo"
 
-        # Sets the text when a user hovers on the large image
-        self.large_text = renpy.config.name # Uses the name of the mod defined in-game.
+        # Текст, который отобразится, если пользователь наведёт курсор на крупное изображение.
+        self.large_text = renpy.config.name # здесь используется название модификации
 
-        # Sets the smallest image to use in rich presence
+        # Маленькое изображение для отображения в интеграции.
         self.small_image = "test"
-        
-        # Sets the text when a user hovers on the small image
-        self.small_text = renpy.config.version # Uses the version name of the mod
+
+        # Текст, который отобразится, если пользователь наведёт курсор на маленькое изображение.
+        self.small_text = renpy.config.version # здесь используется номер версии модификации
 
         self.original_state = self.__dict__()
 
     def initialize_rpc(self) -> None:
         """
-        Initializes the Discord RPC connection.
+        Инициализирует соединение интеграции.
         """
         if not persistent.enable_discord:
             return
-        
+
         try:
             self.rpc = Presence(self.client_id)
         except (DiscordError, DiscordNotFound):
-            renpy.exports.write_log("Discord client not found.")
+            renpy.exports.write_log("Клиент Discord не найден.")
             return
-    
+
     def connect(self, reset: bool = False) -> None:
         """
-        Connects to the Discord Rich Presence service.
-        :param reset: Whether to reset the status data upon connection.
+        Подключается к службе интеграции с Discord.
+
+        :param reset: Нужно ли сбросить данные статуса перед соединением.
         :type reset: bool
         """
 
         if not persistent.enable_discord:
             return
         if self.rpc_connected:
-            return # Already connected
+            return # Интеграция уже подключена
         if self.rpc is None:
             self.initialize_rpc()
             if self.rpc is None:
                 return
-        
+
         if reset:
             self.reset()
             self.start = time.time()
         else:
             self.set(**self.__dict__())
-        
+
         try:
             self.rpc.connect()
             self.rpc_connected = True
         except InvalidPipe:
             self.rpc = None
-    
+
     def disconnect(self) -> None:
         """
-        Disconnects from the Discord Rich Presence service.
+        Отключается от службы интеграции с Discord.
         """
 
         if self.rpc is None:
@@ -133,16 +134,16 @@ class DiscordRPC(NoRollback):
 
     def set(self, **kwargs) -> None:
         """
-        Sets the Discord Rich Presence status.
+        Задаёт статус интеграции.
 
-        :param kwargs: Key-value pairs for the status data. 
+        :param kwargs: Пары «ключ-значение» для данных статуса.
         """
         if not persistent.enable_discord:
             return
         if self.rpc is None or not self.rpc_connected:
             return
 
-        # Update the status data with provided keyword arguments.
+        # Обновляет данные статуса, используя предоставленные ключевые аргументы.
         valid_keys = {
             "state", "details", "large_image", "large_text",
             "small_image", "small_text"
@@ -157,20 +158,20 @@ class DiscordRPC(NoRollback):
 
     def reset(self) -> None:
         """
-        Resets the Discord Rich Presence status to the original state.
+        Сбрасывает статус интеграции.
         """
         self.set(**self.original_state)
 
     def record_to_rollback(self) -> None:
         """
-        Records the current status data for rollback purposes.
+        Записывает текущие данные статуса для отката.
         """
         global last_reported_status_data
         last_reported_status_data = deepcopy(self.__dict__())
 
     def rollback_check(self) -> None:
         """
-        Checks if the status data has changed and updates it if necessary.
+        Проверяет, изменились ли данные, и обновляет статус при необходимости.
         """
 
         global last_reported_status_data
@@ -178,14 +179,14 @@ class DiscordRPC(NoRollback):
             return
         if self.rpc is None or not self.rpc_connected:
             return
-        
+
         current_data = self.__dict__()
         if current_data != last_reported_status_data:
             self.set(**last_reported_status_data)
 
     def on_load(self) -> None:
         """
-        Updates the Discord Rich Presence status after loading a saved game.
+        Обновляет статус после загрузки сохранения.
         """
 
         global last_reported_status_data
@@ -193,7 +194,7 @@ class DiscordRPC(NoRollback):
             return
         if self.rpc is None or not self.rpc_connected:
             return
-        
+
         self.set(**last_reported_status_data)
 
     def __dict__(self) -> dict:
@@ -207,7 +208,7 @@ class DiscordRPC(NoRollback):
             "start": self.start,
         }
 
-# Place your Discord RPC token inside the ""'s
+# Вставьте свой токен внутри кавычек
 RPC = DiscordRPC("979471077187125248")
 RPC.initialize_rpc()
 RPC.connect(True)

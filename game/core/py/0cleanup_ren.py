@@ -1,4 +1,4 @@
-# This file contains code that removes deprecated or migrated features from either DDLC or the mod template.
+# В этом файле прописан код, который удаляет устаревший/перенесённый функционал из DDLC или мод-шаблона.
 
 import os
 import renpy  # type: ignore
@@ -12,10 +12,10 @@ RENPY_PYTHON_PACKAGES = "python-packages"
 
 def cleanup_deprecated_features():
     """
-    Cleans up deprecated or migrated features by disabling them.
+    Удаляет устаревший и перенесённый функционал.
     """
 
-    # Remove old singleton implementation if it exists
+    # Удаляет старую реализацию singleton, если она есть
     python_packages_dir = os.path.join(renpy.config.gamedir, RENPY_PYTHON_PACKAGES)
     if os.path.exists(os.path.join(python_packages_dir, "singleton.py")):
         try:

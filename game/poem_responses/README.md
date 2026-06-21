@@ -1,7 +1,7 @@
-# Contents
+# Содержание
 
 ## poems.rpy
-This file contains the poems that are shown to the player during the Poem Sharing portion of DDLC.
+В этом файле прописаны стихотворения, демонстрируемые игроку во время обмена между персонажами.
 
 ## script-poemresponses.rpy
-This file contains the code for the poem responses that occur in Act One and Two of the game.
+В этом файле прописаны реакции на стихи игрока, которые имеют место быть в первом и втором актах.

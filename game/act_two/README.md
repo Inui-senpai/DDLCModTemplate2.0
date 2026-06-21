@@ -1,14 +1,14 @@
-# Contents of the `act_two` folder
+# Содержание папки `act_two`
 
-## Folders
+## Папки
 
-- **[py](./py)**: Contains the Python code for the code used in Act Two of DDLC.
-- **\_\_pycache\_\_**: Contains the compiled Python files for the code used in Act Two - Four of DDLC. This should normally not appear in your mod nor in packaged mod templates, but if it exists, ignore it.
+- **[py](./py)**: Содержит скрипты Python, используемые в актах с третий по четвёртый.
+- **\_\_pycache\_\_**: Содержит скомпилированные аналоги вышеописанных скриптов. Как правило, этой папки не должно быть ни в вашей модификации, ни в упакованном мод-шаблоне, но если она есть, не обращайте внимания.
 
-## Files
-- **README.md**: This file, which provides an overview of the contents of the `act_two` folder.
-- **\_\_init\_\_.py**: An empty file used for testing purposes.
-- **[poems_special.rpy](./poems_special.rpy)**: Defines the special poems that the player can see during Act Two. Only three poems are ever shown to the player which are selected at random by *[splash.rpy](../splash.rpy)*.
+## Файлы
+- **README.md**: Файл, который вы сейчас читаете.
+- **\_\_init\_\_.py**: Пустой файл, используемый в целях тестирования.
+- **[poems_special.rpy](./poems_special.rpy)**: Определяет особые стихи, которые игрок может увидеть во время прохождения второго акта. Во время прохождения появится только три особых стиха, их номера определяются случайным образом в *[splash.rpy](../splash.rpy)*.
 
-## Moved Files
-- **glitchtext.rpy**: This file was moved from the `game/act_two/py` folder as *[glitchtext_ren.py](./py/glitchtext_ren.py)* as this is purely a Ren'Py file with a Python function.
+## Перемещённые файлы
+- **glitchtext.rpy**: Код этого файла был переписан в файл *[glitchtext_ren.py](./py/glitchtext_ren.py)*, поскольку этот скрипт Ren'Py содержал только код Python.

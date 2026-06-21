@@ -1,9 +1,9 @@
-# Copyright 2019-2025 Azariel Del Carmen (bronya_rand). All rights reserved.
-# This file contains the major Python code for DDLC and the Mod Template + Features.
-# Altering this file may break the game or mod functionality.
+# Авторские права 2019-наст. вр. Азариель Дель Кармен (bronya_rand). Все права защищены.
+# В этом файле содержится основной код Python для DDLC, мод-шаблона и его необязательного функционала.
+# Редактирование этого файла может сломать игру полностью или частично.
 
-## This import is not used when the game is running, but exists so IDEs reports
-## one warning than multiple.
+## Эти импорты не используются во время запуска игры, но нужны для того, чтобы IDE
+## не выдавали кучу предупреждений.
 import os
 import subprocess
 import sys
@@ -13,34 +13,34 @@ import renpy  # type: ignore
 """renpy
 init -3 python:
 """
-# These are used so that IDEs don't report errors and Python code can access Ren'Py's store and persistent.
+# Эти переменные нужны, чтобы IDE не выдавали ошибки, код Python и без того имеет доступ к хранилищу и постоянным данным Ren'Py.
 persistent = renpy.store.persistent
 store = renpy.store
 
-# The default splash message for the game that players will see when launching your mod.
+# Стандартное сообщение во время заставки игры, которое игроки увидят, запустив вашу модификацию.
 splash_message_default = (
-    "This mod is an unofficial fan game that is unaffiliated with Team Salvato."
+    "Данная игра является фанатской модификацией,\nкоторая никак не связана с Team Salvato."
 )
 
-# Stores multiple splash messages that can be used in the game.
+# Кастомные сообщения, которые тоже могут отобразиться во время заставки.
 splash_messages = [
     ":o",
-    "Bronya... :o",
+    "Броня... :o",
 ]
 
 
-## DDLC Functions
+## Функции DDLC
 
 def _get_android_data_directory() -> str | None:
     """
-    Returns the Android data directory path.
+    Возвращает путь к каталогу данных на Android.
 
-    :return: The Android data directory path or None if it cannot be determined.
+    :return: Путь к каталогу Android/data, либо None, если путь нельзя определить.
     :rtype: str | None
     """
     if not renpy.android:
         return None
-    
+
     import jnius  # type: ignore
     activity = jnius.autoclass("org.renpy.android.PythonSDLActivity")
     current_activity = jnius.cast("android.app.Activity", activity.mActivity)
@@ -50,9 +50,9 @@ def _get_android_data_directory() -> str | None:
 
 def get_characters_folder():
     """
-    Returns the path to the characters folder.
+    Возвращает путь к папке файлов персонажей.
 
-    :return: The path to the characters folder or None if it cannot be determined.
+    :return: Путь к папке файлов персонажей, либо None, если путь нельзя определить.
     :rtype: str | None
     """
     characters_folder = None
@@ -68,17 +68,17 @@ def get_characters_folder():
 
 def restore_character(characters: list[str]):
     """
-    Restores the specified characters to the 'characters' folder
-    and removes any characters not in the list.
+    Восстанавливает конкретных персонажей в папке «characters»
+    и удаляет тех, кого нет в списке.
 
-    :param characters: A list of character names to restore.
+    :param characters: Перечень персонажей, которых надо восстановить.
     :type characters: list[str]
     """
     characters_folder = get_characters_folder()
     if characters_folder is None:
-        raise FileNotFoundError("Characters folder could not be determined.")
+        raise FileNotFoundError("Невозможно найти папку с файлами персонажей.")
 
-    # Remove existing character files not in the restore list
+    # Удаляет файлы персонажей, которых нет в переданном списке
     for existing_file in os.listdir(characters_folder):
         if existing_file.endswith(".chr"):
             character_name = os.path.splitext(existing_file)[0]
@@ -86,9 +86,9 @@ def restore_character(characters: list[str]):
                 try:
                     os.remove(os.path.join(characters_folder, existing_file))
                 except OSError:
-                    pass  # Ignore if the file does not exist
+                    pass  # если файла нет – пропуск
 
-    # Restore specified character files
+    # Восстанавливает файлы указанных персонажей
     for character in characters:
         character_file_path = os.path.join(characters_folder, f"{character}.chr")
         if not os.path.exists(character_file_path):
@@ -102,14 +102,11 @@ def restore_character(characters: list[str]):
 
 def restore_characters():
     """
-    Restores all characters depending on the current playthrough.
+    Восстанавливает конкретных персонажей (или всех) в зависимости от текущего акта игры.
     """
     if renpy.store.persistent.playthrough == 0:
         restore_character(["monika", "natsuki", "sayori", "yuri"])
-    elif (
-        renpy.store.persistent.playthrough == 1
-        or renpy.store.persistent.playthrough == 2
-    ):
+    elif renpy.store.persistent.playthrough in (1, 2):
         restore_character(["monika", "natsuki", "yuri"])
     elif renpy.store.persistent.playthrough == 3:
         restore_character(["monika"])
@@ -119,31 +116,31 @@ def restore_characters():
 
 def delete_character(name: str):
     """
-    Deletes a character file from the 'characters' folder.
+    Удаляет файл персонажа из папки «characters».
 
-    :param name: The name of the character to delete.
+    :param name: Персонаж, которого надо удалить.
     :type name: str
     """
     characters_folder = get_characters_folder()
     if characters_folder is None:
-        raise FileNotFoundError("Characters folder could not be determined.")
+        raise FileNotFoundError("Невозможно найти папку с файлами персонажей.")
 
     try:
         os.remove(os.path.join(characters_folder, f"{name}.chr"))
     except OSError:
-        pass  # Ignore if the file does not exist
+        pass  # если файла нет – пропуск
 
 
 def initialize_characters_folder():
     """
-    Initializes the characters folder by creating it if it does not exist.
+    Создаёт папку для файлов персонажей, если её нет.
 
-    :return: The path to the characters folder.
+    :return: Путь к искомой папке.
     :rtype: str
     """
     characters_folder = get_characters_folder()
     if characters_folder is None:
-        raise FileNotFoundError("Characters folder could not be determined.")
+        raise FileNotFoundError("Невозможно определить путь к папке.")
 
     if not os.path.exists(characters_folder):
         os.makedirs(characters_folder)
@@ -153,7 +150,7 @@ def initialize_characters_folder():
 
 def delete_all_saves():
     """
-    Deletes all save files in the game.
+    Удаляет все сохранения игры.
     """
     for savegame in renpy.list_saved_games(fast=True):
         renpy.unlink_save(savegame)
@@ -163,12 +160,12 @@ def delete_all_saves():
 
 def get_pos(channel: str = "music"):
     """
-    Returns the current position of the specified music channel.
+    Возвращает текущую позицию конкретного канала.
 
-    :param channel: The name of the music channel.
+    :param channel: Имя нужного канала.
     :type channel: str
 
-    :return: The current position of the music channel or 0 if not playing.
+    :return: Текущая позиция канала, либо 0, если на канале ничего не играет.
     :rtype: int
     """
     pos = renpy.music.get_pos(channel)
@@ -179,9 +176,9 @@ def get_pos(channel: str = "music"):
 
 def pause(time=None):
     """
-    Pauses the game for a specified amount of time or indefinitely.
+    Приостанавливает игру на какое-то время или пока игрок не нажмёт кнопку.
 
-    :param time: The time to pause in seconds. If None, pauses indefinitely.
+    :param time: Время (в секундах). Если None, пауза будет прервана только по нажатию кнопки.
     """
     global _windows_hidden
 
@@ -198,19 +195,19 @@ def pause(time=None):
     _windows_hidden = False
 
 
-## OS Functions
+## Функции ОС
 
 
 def get_process_list():
     """
-    Retrieves the list of currently running processes on the system.
+    Выдаёт перечень запущенных процессов в системе.
 
-    :return: A list of process names.
+    :return: Перечень имён процессов.
     :rtype: set[str]
     """
     if renpy.android: 
-        return set()  # Process listing is not supported on Android
-    
+        return set()  # Забор перечня процессов не поддерживается на Android
+
     process_list: set[str] = set()
     if renpy.windows:
         try:
@@ -222,7 +219,7 @@ def get_process_list():
             ).stdout.splitlines()
 
             for _, process in enumerate(subprocess_list):
-                process_list.add(process.strip().lower() + ".exe")
+                process_list.add(f"{process.strip().lower()}.exe")
         except subprocess.CalledProcessError:
             pass
     else:
@@ -234,8 +231,8 @@ def get_process_list():
             for process in subprocess_list:
                 process = process.strip().split()[
                     0
-                ]  # Get the first part of the command
-                if process:  # Ensure it's not empty
+                ]  # Получаем первую часть команды
+                if process:  # Убеждаемся, что она не пустая
                     process_list.add(process.lower())
         except subprocess.CalledProcessError:
             pass
@@ -245,36 +242,36 @@ def get_process_list():
 
 def process_check(stream_list: list[str]):
     """
-    Checks whether the given application stream list is running on the current system.
+    Проверяем, запущено ли у игрока какое-то приложение из нашего перечня.
 
-    :param stream_list: A list of application streams to check.
+    :param stream_list: Перечень приложений для проверки.
 
     :type stream_list: list[str]
 
-    :return bool: True if the application is running, False otherwise.
+    :return bool: True, если что-то из перечня запущено, в противном случае – False.
     """
     if not renpy.windows:
-        # Adjust for non-Windows systems
+        # Коррекция для не-Windows систем
         for index, process in enumerate(stream_list):
             stream_list[index] = process.replace(".exe", "")
 
     process_list = get_process_list()
     for process in stream_list:
         for running_process in process_list:
-            # Check if the process name matches exactly or is a prefix of the running process (followed by '/') [Linux/macOS]
-            if running_process == process or running_process.startswith(process + "/"):
+            # Проверяем, есть ли совпадения с искомым именем или с оным в качестве префикса запущенного процесса (имеет слэш в конце) [Linux/macOS]
+            if running_process == process or running_process.startswith(f"{process}/"):
                 return True
     return False
 
 
 def is_user_streaming() -> bool:
     """
-    Checks if any known streaming applications are currently running.
+    Проверяем, запущено ли какое-то из популярных приложений для стриминга.
 
-    :return: True if a streaming application is running, False otherwise.
+    :return: True, если такое приложение запущено, в противном случае – False.
     :rtype: bool
     """
-    # List of common streaming application process names
+    # Перечень распространённых имён приложений для стриминга
     streaming_apps = [
         "obs.exe",
         "obs64.exe",
@@ -285,28 +282,28 @@ def is_user_streaming() -> bool:
         "elgato.streamdeck.exe",
         "nvidia.share.exe",  # NVIDIA ShadowPlay
         "amd.raptr.exe",  # AMD ReLive
-        "zoom.exe",  # Zoom (for video conferencing)
-        "teams.exe",  # Microsoft Teams (for video conferencing)
+        "zoom.exe",  # Zoom (для видеоконференций)
+        "teams.exe",  # Microsoft Teams (для видеоконференций)
     ]
     return process_check(streaming_apps)
 
 
 def get_user_account_name():
     """
-    Retrieves the current user's account name.
+    Выдаёт имя учётной записи игрока.
 
-    :return: The username of the current user or None if it cannot be determined.
+    :return: Имя пользователя, либо None, если его нельзя получить.
     :rtype: str | None
     """
     if renpy.android:
-        return None # User account retrieval is not supported on Android
-    
-    # Reject if streaming to protect privacy
+        return None # На ОС Android нельзя узнать имя пользователя
+
+    # Прерываем процесс, если игрок стримит, чтобы защитить его конфиденциальность
     if is_user_streaming():
         return None
 
     if renpy.windows:
-        # `whoami` and split name (DOMAIN\Username -> Username)
+        # `whoami` и разделение имени (ДОМЕН\Пользователь -> Пользователь)
         return (
             subprocess.run("whoami", shell=True, capture_output=True, text=True)
             .stdout.strip()
@@ -324,9 +321,9 @@ def get_user_account_name():
 
 def get_windows_version() -> tuple[int, int, int] | None:
     """
-    Retrieves the current Windows version.
+    Выдаёт установленную версию ОС Windows.
 
-    :return: The Windows version or None if it cannot be determined or not on Windows.
+    :return: Версия Windows, либо None, если нельзя получить или если у игрока не Windows.
     :rtype: tuple[int, int, int] | None
     """
     if not renpy.windows:
@@ -338,9 +335,9 @@ def get_windows_version() -> tuple[int, int, int] | None:
 
 def get_macos_version() -> tuple[int, int, int] | None:
     """
-    Retrieves the current macOS version.
+    Выдаёт установленную версию ОС macOS.
 
-    :return: A tuple containing the major, minor, and patch version numbers or None if it cannot be determined or not on macOS.
+    :return: Кортеж вида `(мажорная.минорная.патч)`, либо None, если нельзя получить или если у игрока не macOS.
     :rtype: tuple[int, int, int] | None
     """
     if not renpy.macintosh:
@@ -355,14 +352,14 @@ def get_macos_version() -> tuple[int, int, int] | None:
             patch = int(version_parts[2]) if len(version_parts) > 2 else 0
             return (major, minor, patch)
 
-    return None  # Unknown or unsupported version
+    return None  # Неизвестно или неподдерживаемая версия
 
 
 def ddlc_under_steam() -> bool:
     """
-    Checks if the game is running through Steam.
+    Проверяем, запущена ли игра через Steam.
 
-    :return: True if running through Steam, False otherwise.
+    :return: True, если запущена через Steam, в противном случае – False.
     :rtype: bool
     """
     return "steamapps" in renpy.config.basedir.lower()
@@ -370,27 +367,27 @@ def ddlc_under_steam() -> bool:
 
 currentuser = get_user_account_name()
 
-## Template Functions
+## Функции мод-шаблона
 
 
-## TODO: Adjust to maybe Transform and MatrixColor
+## TODO: Попытаться адаптировать под Transform и MatrixColor
 def recolorize(
     path: str, blackCol: str = "#ffbde1", whiteCol: str = "#ffe6f4", contr: float = 1.29
 ):
     """
-    Recolorizes the image at the given path with the specified colors and contrast.
+    Перекрашивает конкретное изображение, используя указанные цвета и контрастность.
 
-    :param path: The path to the image file.
-    :param blackCol: The color to use for black areas.
-    :param whiteCol: The color to use for white areas.
-    :param contr: The contrast level to apply.
+    :param path: Путь к искомому изображению.
+    :param blackCol: Цвет для тёмных участков.
+    :param whiteCol: Цвет для светлых участков.
+    :param contr: Желаемый уровень контрастности.
 
     :type path: str
     :type blackCol: str
     :type whiteCol: str
     :type contr: float
 
-    :return: The recolorized image.
+    :return: Перекрашенное изображение.
     """
     return renpy.im.MatrixColor(
         renpy.im.MatrixColor(
@@ -403,13 +400,13 @@ def recolorize(
     )
 
 
-### Dynamic Super Positioning
+### Динамическое суперпозиционирование
 def dsp(original_position_value: int | float) -> int:
     """
-    Dynamically adjusts the position value of an element based on the
-    original game's screen size (1280x720) against the set screen size.
+    Динамически подгоняет положение элемента исходя из разрешения
+    оригинальной игры (1280x720) относительно пользовательского.
 
-    This assumes that the original position value is set for a 1280x720 resolution.
+    Предполагается, что исходное значение положения установлено для разрешения 1280x720.
     """
     valueIsInt = isinstance(original_position_value, int)
     scale_position_by = renpy.config.screen_width / 1280.0
@@ -418,13 +415,13 @@ def dsp(original_position_value: int | float) -> int:
     return original_position_value * scale_position_by
 
 
-### Dynamic Super Resolution
+### Динамическое суперразрешение
 def dsr(image_path: str):
     """
-    Dynamically adjusts the size of the image based on the original game's
-    screen size (1280x720) against the set screen size.
+    Динамически подгоняет размер изображения исходя из разрешения
+    оригинальной игры (1280x720) относительно пользовательского.
 
-    (It is recommended to use high-res images and use DSP than DSR.)
+    (Настоятельно рекомендуется использовать изображения высокого разрешения и использовать DSP вместо DSR.)
     """
     image_bounds = renpy.image_size(image_path)
     return renpy.Transform(
@@ -432,19 +429,19 @@ def dsr(image_path: str):
     )
 
 
-## Initialize Core Code
+## Инициализация основного кода
 
-# Setup mapping for the game menu and hide windows.
+# Настройка горячих клавиш для игрового меню и скрытия окон.
 renpy.config.keymap["game_menu"].remove("mouseup_3")
 renpy.config.keymap["hide_windows"].append("mouseup_3")
 renpy.config.keymap["self_voicing"] = []
 renpy.config.keymap["clipboard_voicing"] = []
 renpy.config.keymap["toggle_skip"] = []
 
-# Register the music channel for the poem game.
+# Регистрация музыкального канала для мини-игры про обмен стихами.
 renpy.music.register_channel("music_poem", mixer="music", tight=True)
 
-# Initialize gesture mapping for Android devices.
+# Инициализация жестов для устройств на ОС Android.
 if renpy.android:
     renpy.config.keymap["rollback"] = []
     renpy.config.keymap["history"] = [ 'K_PAGEUP', 'repeat_K_PAGEUP', 'K_AC_BACK', 'mousedown_4' ]

@@ -1,8 +1,8 @@
-# This file contains the Python code to handle Mod Template specific exceptions
-# and checks for Ren'Py 8 at bootstrap.
+# В этом файле прописан код Python для обработки особых исключений мод-шаблона
+# и проверки версии Ren'Py во время запуска.
 
-## This import is not used when the game is running, but exists so IDEs reports
-## one warning than multiple.
+## Этот импорт не используется во время запуска игры, но нужен для того, чтобы IDE
+## не выдавали кучу предупреждений.
 import renpy  # type: ignore
 
 """renpy
@@ -12,7 +12,7 @@ python early:
 
 class NotRenPyEight(Exception):
     def __str__(self):
-        return "This version of the mod template is designed for Ren'Py 8.\nEither build/run your mod on Ren'Py 8, or install the 'py2' mod template using Ren'Py 6/7."
+        return "Данная версия мод-шаблона предназначена для Ren'Py 8.\nСкачайте последнюю версию SDK с официального сайта, или, если оная у вас уже есть, соберите свою модификацию на ней."
 
 
 class DDLCRPAsMissing(Exception):
@@ -20,19 +20,12 @@ class DDLCRPAsMissing(Exception):
         self.archive = archive
 
     def __str__(self):
-        return (
-            "'"
-            + self.archive
-            + ".rpa' was not found in the game folder. Check your DDLC installation for missing RPAs and try again."
-        )
+        return f"Файл «{self.archive}.rpa» не был найден в папке игры.\nПроверьте правильность установки модификации на оригинальную DDLC и повторите попытку."
 
 
 class IllegalModLocation(Exception):
     def __str__(self):
-        return (
-            "DDLC mods/mod projects cannot be run from this folder as it is a OneDrive or another cloud folder.\n"
-            "Move your mod/mod project to another location and try again."
-        )
+        return "Модификации для DDLC и проекты оных не могут быть запущены из этой папки, т.к. это папка OneDrive или иного облачного хранилища.\nПереместите папку модификации/проекта в другую директорию и повторите попытку."
 
 
 if renpy.version_tuple < (8, 0, 0, 22062402):

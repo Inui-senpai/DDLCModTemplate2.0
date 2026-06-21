@@ -1,17 +1,17 @@
-# Contents of the `core` folder
+# Содержание папки `core`
 > [!DANGER]
-> The following files and folders in the `core` folder are crucial to DDLC and/or the mod template itself. **DO NOT** delete or edit these files unless you know what you are doing except for *[credits.rpy](./credits.rpy)*.
+> Файлы и папки внутри папки `core` необходимы для работы оригинальной игры и/или мод-шаблона. **НИ В КОЕМ СЛУЧАЕ** не удаляйте и не изменяйте эти файлы, если вы не уверены в том, что делаете; файла *[credits.rpy](./credits.rpy)* это не касается.
 
-## Folders
+## Папки
 
-- **[py](./py)**: Contains the Python code for the core features of DDLC and the mod template.
-- **\_\_pycache\_\_**: Contains the compiled Python files for the code used in the core features of DDLC and the mod template. This should normally not appear in your mod nor in packaged mod templates, but if it exists, ignore it.
+- **[py](./py)**: Содержит скрипты Python, отвечающие за основные функции оригинальной игры и мод-шаблона.
+- **\_\_pycache\_\_**: Содержит скомпилированные аналоги вышеописанных скриптов. Как правило, этой папки не должно быть ни в вашей модификации, ни в упакованном мод-шаблоне, но если она есть, не обращайте внимания.
 
-## Files
-- **[0imports.rpy](./0imports.rpy)**: This file imports certain python modules after bootstrap but before game boot for DDLC and template features.
-- **[credits.rpy](./credits.rpy)**: This file defines the code for the credits screen that plays at the end of Act Four.
+## Файлы
+- **[0imports.rpy](./0imports.rpy)**: В этом файле прописаны импорты конкретных модулей Python, необходимых для работы опциональных функций мод-шаблона.
+- **[credits.rpy](./credits.rpy)**: В этом файле прописан код экрана титров, который появляется в конце четвёртого акта.
 
-## Moved Files/Contents
-- **[0imports.rpy](./py/0imports_ren.py)**: The `python early` imports were moved from the `game/core` folder to the `game/core/py` folder for organizational purposes. Contains the imports for the core features of DDLC and the mod template to import at bootstrap.
-- **[renpy_patches.rpy](./py/renpy_patches_ren.py)**: This file was moved from the `game/core` folder to the `game/core/py` folder as this is purely a Ren'Py file with Python patches. Contains several patches in order for DDLC to run properly on Ren'Py 8.
-- **[exceptions.rpy](./py/template_checks_ren.py)** and **lockdown_check.rpy** - These files were combined into *template_checks_ren.py* file as they were purely Ren'Py files with Python code and exceptions. Contains custom exceptions and checks for the Mod Template to look for before DDLc boots up.
+## Перемещённые файлы/содержимое
+- **[0imports.rpy](./py/0imports_ren.py)**: Блок `python early` был переписан в файл-аналог в `game/core/py` в организационных целях. Содержит импорты для работы основных функций оригинальной игры и мод-шаблона.
+- **[renpy_patches.rpy](./py/renpy_patches_ren.py)**: Код этого файла был полностью переписан в файл-аналог в `game/core/py`, поскольку этот скрипт Ren'Py содержал только код Python, вносящий определённые правки. Содержит некоторые патчи, необходимые для корректной работы оригинальной игры на Ren'Py 8.
+- **[exceptions.rpy](./py/template_checks_ren.py)** и **lockdown_check.rpy**: Эти файлы были объединены в один файл *template_checks_ren.py*, поскольку эти скрипты Ren'Py содержали только код Python и исключения. Содержит кастомные исключения и проверки мод-шаблона для корректной работы последнего.

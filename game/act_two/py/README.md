@@ -1,10 +1,10 @@
-# Contents of the `act_two/py` folder
+# Содержание папки `act_two/py`
 
-## Folders
-- **\_\_pycache\_\_**: Contains the compiled Python files for the specific Python code features used in Act Two - Four of DDLC. This should normally not appear in your mod nor in packaged mod templates, but if it exists, ignore it.
+## Папки
+- **\_\_pycache\_\_**: Содержит скомпилированные аналоги скриптов Python, используемых в актах с третий по четвёртый. Как правило, этой папки не должно быть ни в вашей модификации, ни в упакованном мод-шаблоне, но если она есть, не обращайте внимания.
 
-## Files
-- **README.md**: This file, which provides an overview of the contents of the `py` folder.
-- **\_\_init\_\_.py**: An empty file used for testing purposes.
-- **[glitchtext_ren.py](./glitchtext_ren.py)**: Contains the `glitchtext` function which generates glitched/corrupted text in DDLC. Replaces the old *glitchtext.rpy* file that was located in the `game/act_two` folder.
-- **[console_ren.py](./console_ren.py)**: Contains the Python code for Monika's console in Act Two of DDLC that has been separated from the original *console.rpy* file.
+## Файлы
+- **README.md**: Файл, который вы сейчас читаете.
+- **\_\_init\_\_.py**: Пустой файл, используемый в целях тестирования.
+- **[glitchtext_ren.py](./glitchtext_ren.py)**: Содержит функцию `glitchtext`, которая генерирует искажённый текст. Заменяет старый файл *glitchtext.rpy*, который был в папке `game/act_two`.
+- **[console_ren.py](./console_ren.py)**: Содержит код Python для консоли Моники во втором акте, который был отделён от оригинального файла *console.rpy*.

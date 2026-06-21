@@ -1,10 +1,11 @@
-# Copyright 2019-2025 Azariel Del Carmen (bronya_rand). All rights reserved.
-# This file contains the Python code for the Gallery Menu.
-# The code is designed to work with Ren'Py 8 and uses the `_ren.py` approach for Python code.
+# Авторские права 2019-наст. вр. Азариель Дель Кармен (bronya_rand). Все права защищены.
+# Этот файл содержит код Python экрана Галереи.
+# Код адаптирован под Ren'Py 8 и использует подход `_ren.py` для кода на Python.
 
-# For the Ren'Py code, see `gallery.rpy` in the `extras` directory.
+# Чтобы просмотреть код Ren'Py, откройте файл `gallery.rpy` в каталоге `extras`.
 
-## Not included in the original game, but used for IDEs to avoid multiple warnings.
+## Эти импорты не используются во время запуска игры, но нужны для того, чтобы IDE
+## не выдавали кучу предупреждений.
 import os
 import renpy  # type: ignore
 from game.definitions.py.core_ren import persistent
@@ -18,7 +19,7 @@ init python:
 
 class GalleryBase:
     """
-    A class representing a base for gallery images.
+    Класс, представляющий собой базу для изображений в галерее.
     """
 
     def __init__(
@@ -38,7 +39,7 @@ class GalleryBase:
         self.artist = artist
         self.description = description
 
-        # Unlock if in persistent or by default.
+        # Открыть доступ, если добавлено в постоянный перечень или должно быть открыто изначально.
         if img in persistent.unlocked_gallery_images or unlock_by_default:
             if unlock_by_default and img not in persistent.unlocked_gallery_images:
                 persistent.unlocked_gallery_images.append(img)
@@ -65,9 +66,9 @@ class GalleryBase:
     ):
         bg = bg if bg else "black"
         if sprite:
-            # Sprite Gallery Image
-            ## From Ren'Py Discord: While you can access this via renpy.display.layout.Composite,
-            ## better to use store in case of overrides/deprecations.
+            # Спрайт в галерее
+            ## С Discord-сервера Ren'Py: Хотя к ним можно обращаться через renpy.display.layout.Composite,
+            ## лучше использовать store на случай переопределений/устаревания.
             full_img = renpy.store.Composite(
                 (renpy.config.screen_width, renpy.config.screen_height),
                 (0, 0),
@@ -83,7 +84,7 @@ class GalleryBase:
                 renpy.store.Transform(img, zoom=0.137),
             )
         else:
-            # Background Gallery Image
+            # Фон в галерее
             full_img = renpy.store.Transform(
                 img,
                 size=(renpy.config.screen_width, renpy.config.screen_height),
@@ -101,14 +102,14 @@ class GalleryBase:
 
     def unlock(self):
         """
-        Unlocks the gallery image for viewing.
+        Открывает изображение для просмотра.
         """
         self.unlocked = True
         persistent.unlocked_gallery_images.append(self.img)
 
     def lock(self):
         """
-        Locks the gallery image, preventing viewing.
+        Закрывает изображение, не давая его просматривать.
         """
         self.unlocked = False
         if self.img in persistent.unlocked_gallery_images:
@@ -116,38 +117,38 @@ class GalleryBase:
 
     def get_image(self) -> str:
         """
-        Returns the full image path.
+        Возвращает полный путь к изображению.
         """
         return self.img
 
     def get_image_name(self) -> str:
         """
-        Returns the name of the image.
+        Возвращает название изображения.
         """
         return self.name
 
     def get_small_image(self) -> str:
         """
-        Returns the small image path.
+        Возвращает путь к маленькому изображению.
         """
         return self.small_img or "mod_assets/mod_extra_images/galleryLock.png"
         # return self.small_img
 
     def get_image_artist(self) -> str | None:
         """
-        Returns the artist of the image.
+        Возвращает имя художника.
         """
         return self.artist
 
     def get_image_description(self) -> str | None:
         """
-        Returns the description of the image.
+        Возвращает описание изображения.
         """
         return self.description
 
     def get_image_background(self):
         """
-        Returns the background of the image.
+        Возвращает задний план изображения.
         """
         return self.bg
 
@@ -159,32 +160,32 @@ class GalleryBase:
 
     def export_image(self):
         """
-        Exports the gallery image to the user's file system.
+        Сохраняет изображение из галереи на физический носитель пользователя.
         """
         if not self.exportable:
             renpy.show_screen(
                 "dialog",
-                message="This image is not exportable.",
+                message=renpy.store._("Это изображение нельзя экспортировать."),
                 ok_action=renpy.store.Hide(),
             )
             return
-        # Block sprite images from being exported.
+        # Предотвращаем экспорт спрайтов.
         if self.sprite:
             renpy.show_screen(
                 "dialog",
-                message="Sprite images are not exportable.",
+                message=renpy.store._("Спрайты нельзя экспортировать."),
                 ok_action=renpy.store.Hide(),
             )
             return
 
-        # Get gallery export directory.
+        # Получаем каталог для экспорта.
         export_dir = None
         if renpy.android:
             android_public_dir = os.environ.get("ANDROID_PUBLIC_DIRECTORY")
             if not android_public_dir:
                 renpy.show_screen(
                     "dialog",
-                    message="Unable to access Android public directory for exporting images.",
+                    message=renpy.store._("Невозможно получить доступ к общедоступному каталогу Android для сохранения изображений."),
                     ok_action=renpy.store.Hide(),
                 )
                 return
@@ -195,14 +196,14 @@ class GalleryBase:
         if export_dir is None:
             renpy.show_screen(
                 "dialog",
-                message="Unable to determine export directory.",
+                message=renpy.store._("Невозможно определить каталог для экспорта."),
                 ok_action=renpy.store.Hide(),
             )
             return
         if not os.path.exists(export_dir):
             os.makedirs(export_dir)
 
-        # Get the image file path.
+        # Получаем путь к файлу изображения.
         try:
             renpy.open_file(self.img_file)
             renpy_img = self.img_file
@@ -214,12 +215,12 @@ class GalleryBase:
         if not renpy_img:
             renpy.show_screen(
                 "dialog",
-                message="Unable to locate image file for export.",
+                message=renpy.store._("Невозможно найти файл изображения для экспорта."),
                 ok_action=renpy.store.Hide(),
             )
             return
 
-        # Determine export filename.
+        # Определяем имя экспортируемого файла.
         original_ext = os.path.splitext(renpy_img)[1]
 
         export_filename = None
@@ -233,17 +234,17 @@ class GalleryBase:
         if not export_filename:
             renpy.show_screen(
                 "dialog",
-                message="Unable to determine export filename.",
+                message=renpy.store._("Невозможно определить имя экспортируемого файла."),
                 ok_action=renpy.store.Hide(),
             )
             return
 
-        # Export the image file.
+        # Экспортируем изображение.
         img_export_file = os.path.join(export_dir, export_filename)
         if os.path.exists(img_export_file):
             renpy.show_screen(
                 "dialog",
-                message="This image has already been exported.",
+                message=renpy.store._("Вы уже экспортировали это изображение."),
                 ok_action=renpy.store.Hide(),
             )
             return
@@ -253,28 +254,28 @@ class GalleryBase:
                 outfile.write(renpy.open_file(renpy_img).read())
             except FileNotFoundError:
                 try:
-                    # For RPA access? Seems to work for images in images.rpa compared to open_file.
+                    # Для доступа к RPA? Вроде работает с изображениями, упакованными в images.rpa, в отличие от open_file.
                     outfile.write(
                         renpy.loader.load(renpy_img, directory="images").read()
                     )
                 except Exception as e:
                     renpy.show_screen(
                         "dialog",
-                        message=f"Failed to export image: {str(e)}",
+                        message=renpy.store._("Ошибка экспорта:") + f" {str(e)}", # если удалить f-string, почему-то начинает ругаться на незакрытую скобку...
                         ok_action=renpy.store.Hide(),
                     )
                     return
 
         renpy.show_screen(
             "dialog",
-            message="Image exported to the 'gallery' folder in the base directory.",
+            message=renpy.store._("Изображение было сохранено в папку «gallery» в рабочей папке игры."),
             ok_action=renpy.store.Hide(),
         )
 
 
 class GalleryAltImage(GalleryBase):
     """
-    A class representing an alternative gallery image.
+    Класс, представляющий собой альтернативную версию изображения в галерее.
     """
 
     def __init__(
@@ -306,7 +307,7 @@ class GalleryAltImage(GalleryBase):
 
 class GalleryImage(GalleryBase):
     """
-    A class representing a gallery image with additional attributes.
+    Класс, представляющий собой изображение в галерее с дополнительными атрибутами.
     """
 
     def __init__(
@@ -343,13 +344,13 @@ class GalleryImage(GalleryBase):
 
     def has_alt_images(self) -> bool:
         """
-        Checks if the gallery image has alternative images.
+        Проверяет, есть ли у изображения альтернативные версии.
         """
         return len(self.alts) > 0
 
     def unlock_alt_image(self, img_index: int) -> None:
         """
-        Unlocks a specific alternative image for viewing.
+        Открывает конкретную альтернативную версию для просмотра.
         """
         if 0 <= img_index < len(self.alts):
             self.alts[img_index].unlock()
@@ -360,7 +361,7 @@ class GalleryImage(GalleryBase):
 
     def lock_alt_image(self, img_index: int) -> None:
         """
-        Locks a specific alternative image, preventing viewing.
+        Закрывает конкретную альтернативную версию, не давая её просматривать.
         """
         if 0 <= img_index < len(self.alts):
             self.alts[img_index].lock()
@@ -372,7 +373,7 @@ class GalleryImage(GalleryBase):
 
 class GalleryDB:
     """
-    A class to manage a database of gallery images.
+    Класс для управления базой данных галереи.
     """
 
     def __init__(self):
@@ -382,15 +383,17 @@ class GalleryDB:
 
     def add_image(self, image: GalleryImage) -> None:
         """
-        Adds a gallery image to the database.
-        :param image: The GalleryImage to add.
+        Добавляет изображение в базу.
+
+        :param image: Объект GalleryImage, который нужно добавить.
         """
         self.images.append(image)
 
     def set_image_index(self, index: int) -> None:
         """
-        Sets the current image index.
-        :param index: The index of the image to set.
+        Устанавливает индекс изображения.
+
+        :param index: Индекс, который необходимо задать.
         """
         if 0 <= index < len(self.images):
             self.image_index = index
@@ -398,54 +401,55 @@ class GalleryDB:
 
     def get_alt_image_index(self) -> int:
         """
-        Returns the current alternative image index for the current gallery image.
+        Возвращает текущий индекс альтернативной версии для конкретного изображения.
         """
         return self.alt_index
 
     def set_alt_image_index(self, index: int) -> None:
         """
-        Sets the alternative image index for the current gallery image.
-        :param index: The index of the alternative image to set.
+        Устанавливает индекс альтернативной версии для конкретного изображения.
+
+        :param index: Индекс, который необходимо задать альтернативной версии.
         """
         try:
             image = self.get_image()
             if 0 <= index < len(image.alts):
                 self.alt_index = index
         except IndexError:
-            raise IndexError("Invalid image index; cannot set alternative image index.")
+            raise IndexError("Неверный индекс изображения; невозможно задать индекс альтернативной версии.")
 
     def get_image(self) -> GalleryImage:
         """
-        Returns the current gallery image.
+        Возвращает конкретное изображение в галерее.
         """
         if len(self.images) == 0:
-            raise IndexError("No gallery images available.")
+            raise IndexError("Нет изображений в галерее.")
         try:
             return self.images[self.image_index]
         except IndexError:
-            raise IndexError("Invalid image index.")
+            raise IndexError("Неверный индекс изображения.")
 
     def get_alt_image(self) -> GalleryAltImage:
         """
-        Returns the current alternative image for the current gallery image.
+        Возвращает конкретную альтернативную версию конкретного изображения.
         """
         image = self.get_image()
         if len(image.alts) == 0:
-            raise IndexError("No alternative images available for this gallery image.")
+            raise IndexError("У этого изображения нет альтернативных версий.")
         try:
             return image.alts[self.alt_index]
         except IndexError:
-            raise IndexError("Invalid alternative image index.")
+            raise IndexError("Неверный индекс альтернативной версии.")
 
     def has_next_image(self) -> bool:
         """
-        Checks if there is a next image after the current image.
+        Проверяет, есть ли следующее изображение после текущего.
         """
         return len(self.images) > 0 and self.image_index < len(self.images) - 1
 
     def has_prev_image(self) -> bool:
         """
-        Checks if there is a previous image before the current image.
+        Проверяет, есть ли предыдущее изображение перед текущим.
         """
         return len(self.images) > 0 and self.image_index > 0
 
@@ -465,18 +469,20 @@ class GalleryDB:
 
     def _find_next_unlocked(self) -> int | None:
         """
-        Finds the next unlocked image from the current index.
-        :return: The index of the next unlocked image, or None if none found.
+        Ищет следующее открытое изображение относительно текущего индекса.
+
+        :return: Индекс следующего открытого изображения, либо None, если такого изображения нет.
+        :rtype: int | None
         """
         if len(self.images) == 0:
             return None
 
-        # Search forward from the current index.
+        # Ищем после текущего индекса.
         for i in range(self.image_index + 1, len(self.images)):
             if self.images[i].is_unlocked():
                 return i
 
-        # Wrap around and search from the beginning.
+        # Заворачиваем и ищем с начала.
         for i in range(0, self.image_index + 1):
             if self.images[i].is_unlocked():
                 return i
@@ -485,18 +491,20 @@ class GalleryDB:
 
     def _find_prev_unlocked(self) -> int | None:
         """
-        Finds the previous unlocked image from the current index.
-        :return: The index of the previous unlocked image, or None if none found.
+        Ищет предыдущее открытое изображение относительно текущего индекса.
+
+        :return: Индекс предыдущего открытого изображения, либо None, если такого изображения нет.
+        :rtype: int | None
         """
         if len(self.images) == 0:
             return None
 
-        # Search backward from the current index.
+        # Ищем перед текущим индексом.
         for i in range(self.image_index - 1, -1, -1):
             if self.images[i].is_unlocked():
                 return i
 
-        # Wrap around and search from the end.
+        # Заворачиваем и ищем с конца.
         for i in range(len(self.images) - 1, self.image_index - 1, -1):
             if self.images[i].is_unlocked():
                 return i
@@ -505,8 +513,10 @@ class GalleryDB:
 
     def _find_next_alt_unlocked(self) -> int | None:
         """
-        Finds the next unlocked alternative image from the current alt index.
-        :return: The index of the next unlocked alternative image, or None if none found.
+        Ищет следующую открытую альтернативную версию относительно текущего индекса альт. версии.
+
+        :return: Индекс следующей альтернативной версии, либо None, если такого изображения нет.
+        :rtype: int | None
         """
         try:
             image = self.get_image()
@@ -516,12 +526,12 @@ class GalleryDB:
         if len(image.alts) == 0:
             return None
 
-        # Search forward from the current alt index.
+        # Ищем после текущего индекса альт. версии.
         for i in range(self.alt_index + 1, len(image.alts)):
             if image.alts[i].is_unlocked():
                 return i
 
-        # Wrap around and search from the beginning.
+        # Заворачиваем и ищем с начала.
         for i in range(0, self.alt_index + 1):
             if image.alts[i].is_unlocked():
                 return i
@@ -530,8 +540,10 @@ class GalleryDB:
 
     def _find_prev_alt_unlocked(self) -> int | None:
         """
-        Finds the previous unlocked alternative image from the current alt index.
-        :return: The index of the previous unlocked alternative image, or None if none found.
+        Ищет предыдущую открытую альтернативную версию относительно текущего индекса альт. версии.
+
+        :return: Индекс предыдущей альтернативной версии, либо None, если такого изображения нет.
+        :rtype: int | None
         """
         try:
             image = self.get_image()
@@ -541,12 +553,12 @@ class GalleryDB:
         if len(image.alts) == 0:
             return None
 
-        # Search backward from the current alt index.
+        # Ищем перед текущим индексом альт. версии.
         for i in range(self.alt_index - 1, -1, -1):
             if image.alts[i].is_unlocked():
                 return i
 
-        # Wrap around and search from the end.
+        # Заворачиваем и ищем с конца.
         for i in range(len(image.alts) - 1, self.alt_index - 1, -1):
             if image.alts[i].is_unlocked():
                 return i
@@ -555,7 +567,7 @@ class GalleryDB:
 
     def next_image(self) -> None:
         """
-        Gets the next image in the gallery that is unlocked.
+        Получает следующее открытое изображение в галерее.
         """
         next_index = self._find_next_unlocked()
         if next_index is not None:
@@ -564,7 +576,7 @@ class GalleryDB:
 
     def prev_image(self) -> None:
         """
-        Gets the previous image in the gallery that is unlocked.
+        Получает предыдущее открытое изображение в галерее.
         """
         prev_index = self._find_prev_unlocked()
         if prev_index is not None:
@@ -573,7 +585,7 @@ class GalleryDB:
 
     def next_alt_image(self) -> None:
         """
-        Gets the next alternative image for the current gallery image that is unlocked.
+        Получает следующую открытую альтернативную версию изображения.
         """
         next_index = self._find_next_alt_unlocked()
         if next_index is not None:
@@ -581,7 +593,7 @@ class GalleryDB:
 
     def prev_alt_image(self) -> None:
         """
-        Gets the previous alternative image for the current gallery image that is unlocked.
+        Получает предыдущую открытую альтернативную версию изображения.
         """
         prev_index = self._find_prev_alt_unlocked()
         if prev_index is not None:
@@ -589,31 +601,31 @@ class GalleryDB:
 
     def reset_navigation(self) -> None:
         """
-        Resets the navigation indices to the beginning.
+        Сбрасывает индексы навигации в начало.
         """
         self.image_index = 0
         self.alt_index = 0
 
     def get_images(self) -> list[GalleryImage]:
         """
-        Returns the list of gallery images.
+        Возвращает список изображений в галерее.
         """
         return self.images
 
     def get_image_count(self) -> int:
         """
-        Returns the total number of gallery images.
+        Возвращает количество изображений в галерее.
         """
         return len(self.images)
 
 
-## Initialize the global gallery database
+## Инициализирует глобальную базу данных галереи.
 gallery_db = GalleryDB()
 
-## Example Images - Replace or extend these as needed.
+## Изображения для примера. Замените или дополните их при необходимости.
 residential = GalleryImage("bg residential_day", unlock_by_default=True)
 s1a = GalleryImage("sayori 1", sprite=True, unlock_by_default=True)
-m1a = GalleryImage("monika 1", name="Monika", artist="Satchely", sprite=True)
+m1a = GalleryImage("monika 1", name=renpy.store._("Моника"), artist="Satchely", sprite=True)
 
 n2a = GalleryAltImage("natsuki 2", sprite=True, unlock_by_default=True)
 n3a = GalleryAltImage("natsuki 3", sprite=True)

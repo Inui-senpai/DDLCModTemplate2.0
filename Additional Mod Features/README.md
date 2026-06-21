@@ -1,24 +1,24 @@
-# Added Optional Features of the DDLC Mod Template
-This section contains optional code that you can use in your mod.
+# Необязательный доп. функционал мод-шаблона DDLC
+В этом разделе содержится опциональный код, который вы можете использовать в своей модификации.
 
-## Installation
-For most code here, all you need to do is copy the files within the feature folders to your projects' game folder. Everything should work out of the box once you run DDLC again.
+## Установка
+Как правило, вам достаточно скопировать всё, что лежит в искомой папке, в папку `game` своего проекта. Добавленный функционал включится сразу же, как только вы снова запустите DDLC.
 > [!NOTE]
-> If a file contains its own README, please refer to it.
+> Если к функционалу приложен свой файл README, выполните приведённые в нём шаги.
 
-## Contents
+## Содержание
 
-### Better BSODs (Blue Screen of Death)
-> This folder contains the code to call a more realistic fake Blue Screen of Death/Kernel Panic to the players' computer, compatible with Windows 7 to 11, OS X -> macOS Tahoe and Linux/Android.
+### Улучшенные BSOD (Синие экраны смерти)
+> В этой папке содержится код для вызова более реалистичных ложных Синих экранов смерти/Экранов паники ядра на компьютере игрока; код совместим с ОС Windows (7-11), OS X -> macOS Tahoe, а также Linux/Android.
 
-### Better Screen Tear
-> This folder contains the code for a improved tear effect for glitches (made by Elckarow).
+### Улучшенный эффект разрыва экрана
+> В этой папке содержится код улучшенного эффекта разрыва экрана для глитчей (автор – Elckarow).
 
 ### Discord
-> This folder contains the code to use Discord's Rich Presence in DDLC.
+> В этой папке содержится код для отображения Игровой активности в Discord.
 
-### Extras Screen
-> This folder contains the code for the extras menu that allows multiple screens to be selected without cluttering the main options.
+### Экран доп. контента
+> В этой папке содержится код экрана доп. контента, куда можно поместить несколько кнопок и тем самым разгрузить навигацию в основном меню.
 
-### Gallery
-> This folder contains the code for the gallery menu that shows backgrounds and sprites from your mod.
+### Галерея
+> В этой папке содержится код экрана галереи, где можно демонстрировать фоны и спрайты, использованные в вашей модификации.

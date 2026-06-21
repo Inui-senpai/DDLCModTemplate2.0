@@ -1,14 +1,14 @@
-# Copyright 2019-2025 Azariel Del Carmen (bronya_rand). All rights reserved.
-# This is where the splashscreen, disclaimer and menu code reside in.
+# Авторские права 2019-наст. вр. Азариель Дель Кармен (bronya_rand). Все права защищены.
+# В этом файле прописаны заставка, дисклеймер и оформление меню игры.
 
-# This image text shows the splash message when the game loads.
+# Это текстовое изображение показывает сообщение в центре экрана.
 image splash_warning = ParameterizedText(style="splash_text", xalign=0.5, yalign=0.5)
 
-## Main Menu Images
-# These image transforms store the images and positions of the game logo,
-# the menu character sprites and main menu/pause menu screen images.
+## Оформление главного меню
+# Эти изображения с трансформациями выводят на экран логотип игры, спрайты персонажей,
+# а также плашки главного меню и меню паузы.
 
-# This image shows the DDLC logo in the normal DDLC position.
+# Это изображение выводит на экран логотип DDLC на привычном месте.
 image menu_logo:
     "mod_assets/DDLCModTemplateLogo.png"
     # im.Composite((512, 512), (0, 0), recolorize("mod_assets/logo_bg.png"), (0, 0), "mod_assets/logo_fg.png")
@@ -18,26 +18,26 @@ image menu_logo:
     zoom 0.60
     menu_logo_move
 
-# This image shows the main menu polka-dot image.
+# Задний план главного меню, оформленный в горошек.
 image menu_bg:
     topleft
     "gui/menu_bg.png"
     # recolorize("gui/menu_bg.png", "#ffdbf0", "#fff", 1)
     menu_bg_move
 
-# This image shows the pause menu polka-dot image.
+# Задний план меню паузы, оформленный в горошек.
 image game_menu_bg:
     topleft
     "gui/menu_bg.png"
     # recolorize("gui/menu_bg.png", "#ffdbf0", "#fff", 1)
     menu_bg_loop
 
-# This image transform shows the white fading effect in the main menu.
+# Это изображение с трансформацией накладывает переход из белой заливки в главное меню.
 image menu_fade:
     "white"
     menu_fadeout
 
-# These images show each respective characters' menu sprite and positions/animations.
+# Эти изображения с трансформациями расставляют спрайты персонажей на нужных местах в главном меню с соответствующей им анимацией.
 image menu_art_y:
     subpixel True
     "gui/menu_art_y.png"
@@ -70,8 +70,8 @@ image menu_art_m:
     zoom 1.00
     menu_art_move(1.00, 1000, 1.00)
 
-# These images are the same as above but ghost themed for the secret ghost menu
-# that appears rarely in-game .
+# Те же спрайты, что и выше, но оформленные для «призрачной» пасхалки, которая
+# имеет низкий шанс срабатывания.
 image menu_art_y_ghost:
     subpixel True
     "gui/menu_art_y_ghost.png"
@@ -104,7 +104,7 @@ image menu_art_m_ghost:
     zoom 1.00
     menu_art_move(1.00, 1000, 1.00)
 
-# This image sprite shows a glitched Sayori menu sprite after Act 1 finishes.
+# Искажённый спрайт Сайори, который появляется после прохождения первого акта.
 image menu_art_s_glitch:
     subpixel True
     "gui/menu_art_s_break.png"
@@ -113,18 +113,18 @@ image menu_art_s_glitch:
     zoom 0.68
     menu_art_move(.8, 470, .8)
 
-# This image shows the main menu screen in the main/pause menu.
+# Плашка, отображаемая в главном меню/меню паузы.
 image menu_nav:
     "gui/overlay/main_menu.png"
     #recolorize("gui/overlay/main_menu.png", "#ffbde1")
     menu_nav_move
 
-## Main Menu Effects
-# These transforms and image transform store the effects that appear in the
-# main menu on startup.
+## Спецэффекты главного меню
+# В этом разделе прописаны трансформации и изображения с ними, которые отвечают за
+# эффекты меню при запуске игры.
 
-# This image transform shows a particle burst effect image to the main menu when
-# the game starts.
+# Это изображение с трансформациями выводит на экран эффект взрыва частиц в главном
+# меню, когда логотип «ударяется» о плашку.
 image menu_particles:
     2.481
     xpos 224
@@ -132,11 +132,11 @@ image menu_particles:
     ParticleBurst("gui/menu_particle.png", explodeTime=0, numParticles=40, particleTime=2.0, particleXSpeed=3, particleYSpeed=3).sm
     particle_fadeout
 
-# This transform fades out the particle effects of the main menu
+# Эта трансформация отвечает за затухание частиц.
 transform particle_fadeout:
     easeout 1.5 alpha 0
 
-# This transform moves the polka-dot menu background to the upper-left.
+# Эта трансформация сначала «роняет» задний план меню, а потом перемещает в верхний левый угол.
 transform menu_bg_move:
     subpixel True
     topleft
@@ -149,7 +149,7 @@ transform menu_bg_move:
         time 0.65
         ease_cubic 2.5 ypos -500
 
-# This transform loops the polka-dot moving effect.
+# Эта трансформация зацикливает перемещение заднего плана меню в угол.
 transform menu_bg_loop:
     subpixel True
     topleft
@@ -158,29 +158,29 @@ transform menu_bg_loop:
         linear 3.0 xoffset -100 yoffset -100
         repeat
 
-# This transform moves the menu logo down to it's intended placement in-game.
+# Эта трансформация «роняет» логотип игры на определённое для него место.
 transform menu_logo_move:
     subpixel True
     yoffset -300
     time 1.925
     easein_bounce 1.5 yoffset 0
 
-# This transform moves the main menu screen in-game to be visible.
+# Эта трансформация отвечает за «выскакивание» плашки меню.
 transform menu_nav_move:
     subpixel True
     xoffset -500
     time 1.5
     easein_quint 1 xoffset 0
 
-# This transform fades out the main menu screen. 
+# Эта трансформация растворяет экран главного меню.
 transform menu_fadeout:
     easeout 0.75 alpha 0
     time 2.481
     alpha 0.4
     linear 0.5 alpha 0
 
-# This transform takes in a z-axis, x-axis and zoom numbers and moves the menu
-# sprites to where they appear in the game.
+# Эта трансформация принимает значения оси Z, оси X и масштаба и расставляет спрайты
+# персонажей в заранее определённые места.
 transform menu_art_move(z, x, z2):
     subpixel True
     yoffset 0 + (1200 * z)
@@ -193,8 +193,8 @@ transform menu_art_move(z, x, z2):
         pause 0.75
         ease 1.5 zoom z2 xoffset 0
 
-## Team Salvato Splash Screen
-# This image stores the Tean Salvato logo image that appears when the game starts.
+## Логотипы в заставке
+# Это изображение выводит на экран логотип разработчиков при запуске игры.
 image intro:
     truecenter
     "white"
@@ -204,8 +204,18 @@ image intro:
     "white" with Dissolve(0.5, alpha=True)
     0.5
 
-# This image is a left over from DDLC's development that shows the splash message
-# when the game starts.
+# Резерв для логотипа фан-группы.
+# image my_intro:
+#     truecenter
+#     "white"
+#     0.5
+#     "путь/к/логотипу.png" with Dissolve(0.5, alpha=True)
+#     2.5
+#     "white" with Dissolve(0.5, alpha=True)
+#     0.5
+
+# Остатки кода из ранней версии DDLC, который выводит на экран сообщение
+# при запуске игры.
 image warning:
     truecenter
     "white"
@@ -214,33 +224,32 @@ image warning:
     "white" with Dissolve(0.5, alpha=True)
     0.5
 
-## These images are the background images shown in-game during the disclaimer.
+## Изображения, которые отображаются во время дисклеймера.
 image tos = "bg/warning.png"
 image tos2 = "bg/warning2.png"
 
-## This sets the persistent to false in order to choose a language.
+## Задаёт постоянной переменной значение False, чтобы предложить игроку выбор языка.
 default persistent.has_chosen_language = False
 
-## This sets the first run variable to False to show the disclaimer.
+## Задаёт переменной первого запуска значение False, чтобы отобразить дисклеймер.
 default persistent.first_run = False
 
-## Startup Disclaimer
-## This label calls the disclaimer screen that appears when the game starts.
+## Дисклеймер (отказ от ответственности) при запуске игры
+## Этот лейбл вызывает дисклеймер, который появляется при запуске игры.
 label splashscreen:
     $ initialize_characters_folder()
-    ## Shows the option to delete existing save data if conditions are met.
+    ## Если условия соблюдены, показывает предложение удалить существующие сохранения.
     if not persistent.first_run and len(renpy.list_saved_games(fast=True)) > 0:
         $ quick_menu = False
         scene black
-
         menu:
-            "A previous save file has been found. Would you like to delete your save data and start over?"
-            "Yes, delete my existing data.":
-                "Deleting save data...{nw}"
+            "Обнаружены файлы сохранений. Хотите удалить их и начать игру заново?"
+            "Да, удалить существующие сохранения.":
+                "Файлы сохранений удаляются...{nw}"
                 python:
                     delete_all_saves()
                     renpy.utter_restart()
-            "No, continue where I left off.":
+            "Нет, продолжить с того момента, где я остановился.":
                 python:
                     restore_characters()
                     persistent.first_run = True
@@ -253,83 +262,83 @@ label splashscreen:
         with Dissolve(1.0)
         pause 1.0
 
-        # Switch to the language selector before showing the disclaimer if translations
-        # are available and the player hasn't chosen a language yet.
+        # Показать выбор языка перед дисклеймером, если у модификации имеются
+        # переводы и игрок ещё не выбирал язык.
         if not persistent.has_chosen_language and translations:
             if _preferences.language is None:
                 call screen language_selector
 
-        # You can edit this message but you MUST declare that your mod is 
-        # unaffiliated with Team Salvato, requires that the player must 
-        # finish DDLC before playing, has spoilers for DDLC, and where to 
-        # get DDLC (preferably https://ddlc.moe).
+        # Вы можете редактировать это сообщение, но вы ДОЛЖНЫ пояснить, что ваша модификация
+        # никоим образом не связана с Team Salvato, требовать, чтобы игрок сначала
+        # прошёл оригинальную игру, указать на наличие спойлеров и откуда можно
+        # скачать игру (предпочтение стоит отдать сайту https://ddlc.moe).
         #
-        # ...Yes this even applies if your mod has no spoilers whatsoever.
-        "[config.name] is a Doki Doki Literature Club fan mod that is not affiliated in anyway with Team Salvato."
-        "It is designed to be played only after the official game has been completed, and contains spoilers for the official game."
-        "Game files for Doki Doki Literature Club are required to play this mod and can be downloaded for free at: https://ddlc.moe or on Steam."
+        # ...Да, это применимо даже в том случае, если в вашей модификации нет спойлеров к оригинальной игре.
+        "«[config.name]» является фанатской модификацией к игре «Литературный клуб \"Тук-тук!\"», которая никак не связана с Team Salvato."
+        "В неё рекомендуется играть только после прохождения оригинальной игры, также в модификации имеются спойлеры, связанные с последней."
+        "Также для игры в эту модификацию необходимы файлы игры «Литературный клуб \"Тук-тук!\"», саму игру можно скачать на сайте: {a}https://ddlc.moe{/a} или в Магазине Steam."
 
         menu:
-            "By playing [config.name] you agree that you have completed Doki Doki Literature Club and accept any spoilers contained within."
-            "I agree.":
+            "Играя в «[config.name]», вы соглашаетесь с тем, что прошли полностью игру «Литературный клуб \"Тук-тук!\"» и готовы к любым спойлерам."
+            "Я согласен.":
                 $ persistent.first_run = True
 
         scene tos2
         with Dissolve(1.5)
         pause 1.0
 
-        # Check if a streaming/recording program is running and let the player know.
+        # Проверяем, запущена ли программа для стриминга/записи, и если да – предупреждаем игрока.
         if is_user_streaming():
-            call screen dialog("A streaming/recording program has been detected. Let's Play Mode has been enabled to protect your privacy.",
+            call screen dialog("Обнаружено ПО для стриминга/записи. В целях защиты вашей конфиденциальности был включён режим летсплейщика.",
                 [Hide("dialog"), Return()])
         scene white
 
-    # This python statement controls whether the Sayori Kill Early screen shows 
-    # in-game. This feature has been commented out for mod safety reasons but can 
-    # be used if needed.
+    # Этот блок Python указывает, должен ли сработать триггер раннего убийства
+    # Сайори. Сам блок был закомментирован в целях безопасности, но его можно
+    # использовать, если в этом будет необходимость.
 
     # python:
     #     s_kill_early = None
     #     if persistent.playthrough == 0:
-    #         try: renpy.file("../characters/sayori.chr")
+    #         try: open(f"{user_dir}/characters/sayori.chr")
     #         except IOError: s_kill_early = True
     #     if not s_kill_early:
     #         if persistent.playthrough <= 2 and persistent.playthrough != 0:
-    #             try: renpy.file("../characters/monika.chr")
-    #             except IOError: open(config.basedir + "/characters/monika.chr", "wb").write(renpy.file("monika.chr").read())
+    #             try: open(f"{user_dir}/characters/monika.chr")
+    #             except IOError: open(f"{user_dir}/characters/monika.chr", "wb").write(renpy.file("monika.chr").read())
     #         if persistent.playthrough <= 1 or persistent.playthrough == 4:
-    #             try: renpy.file("../characters/natsuki.chr")
-    #             except IOError: open(config.basedir + "/characters/natsuki.chr", "wb").write(renpy.file("natsuki.chr").read())
-    #             try: renpy.file("../characters/yuri.chr")
-    #             except IOError: open(config.basedir + "/characters/yuri.chr", "wb").write(renpy.file("yuri.chr").read())
+    #             try: open(f"{user_dir}/characters/natsuki.chr")
+    #             except IOError: open(f"{user_dir}/characters/natsuki.chr", "wb").write(renpy.file("natsuki.chr").read())
+    #             try: open(f"{user_dir}/characters/yuri.chr")
+    #             except IOError: open(f"{user_dir}/characters/yuri.chr", "wb").write(renpy.file("yuri.chr").read())
     #         if persistent.playthrough == 4:
-    #             try: renpy.file("../characters/sayori.chr")
-    #             except IOError: open(config.basedir + "/characters/sayori.chr", "wb").write(renpy.file("sayori.chr").read())
+    #             try: open(f"{user_dir}/characters/sayori.chr")
+    #             except IOError: open(f"{user_dir}/characters/sayori.chr", "wb").write(renpy.file("sayori.chr").read())
 
-    # Sets up the random special poems that appears during Act 2 of the game.
+    # Выбирает случайным образом особые стихи, которые появятся во время прохождения второго акта игры.
     if not persistent.special_poems:
         python hide:
             persistent.special_poems = [0,0,0]
-            
-            # This sets the range of poem numbers to pick from. In base DDLC,
-            # there are 11 special poems.
+
+            # Задаёт диапазон для выбора. В оригинальной игре имеется
+            # 11 особых стихотворений.
             a = list(range(1,12))
 
-            # Set three unique random poems to appear in Act 2.
+            # Выбирает три уникальных стихотворения, которые игрок увидит во втором акте.
             for i in range(3):
                 b = renpy.random.choice(a)
                 persistent.special_poems[i] = b
                 a.remove(b)
 
-    # Stores the path to the base directory of the game. Used in Act 3.
+    # Сохраняет путь к корневому каталогу игры. Используется в третьем акте.
     $ basedir = config.basedir.replace('\\', '/')
 
-    # Load the autoload label if the variable is set.
+    # Загружает конкретный лейбл, если переменная автозагрузки не пуста.
     if persistent.autoload:
         jump autoload
 
     $ config.allow_skipping = False
-    # Shows the ghost menu if the player is in Act II and conditions are met.
+    # Показывает «призрачное» меню, если игрок проходит второй акт и все условия соблюдены.
     if persistent.playthrough == 2 and not persistent.seen_ghost_menu and renpy.random.randint(0, 63) == 0:
         show black
         $ config.main_menu_music = audio.ghostmenu
@@ -342,9 +351,9 @@ label splashscreen:
         $ config.allow_skipping = True
         return
 
-    # This checks if 'sayori.chr' was deleted after the disclaimer page and if so,
-    # show a premature death scene. This feature has been commented out for mod safety reasons but can
-    # be used if needed.
+    # Этот блок проверяет, был ли удалён файл «sayori.chr» после прохождения дисклеймера, и если да –
+    # показывает сцену раннего убийства. Сам блок был закомментирован в целях безопасности, но его можно
+    # использовать, если в этом будет необходимость.
 
     # if s_kill_early:
     #     show black
@@ -389,7 +398,7 @@ label splashscreen:
     #     show noise:
     #         alpha 0.1
     #     with Dissolve(1.0)
-    #     show expression Text("Now everyone can be happy.", style="sayori_text"):
+    #     show expression Text("Теперь все будут счастливы.", style="sayori_text"):
     #         xalign 0.8
     #         yalign 0.5
     #         alpha 0.0
@@ -404,8 +413,13 @@ label splashscreen:
     $ config.main_menu_music = audio.t1
     $ renpy.music.play(config.main_menu_music)
     show intro with Dissolve(0.5, alpha=True)
+    # Удалите паузу в 2,5 секунды и раскомментируйте нижеприведённые строки, если хотите вставить свой логотип
     $ pause(2.5)
+    # $ pause(1.5)
     hide intro with Dissolve(0.5, alpha=True)
+    # show my_intro with Dissolve(0.5, alpha=True)
+    # $ pause(1.5)
+    # hide my_intro with Dissolve(0.5, alpha=True)
     if persistent.playthrough == 2 and renpy.random.randint(0, 3) == 0:
         $ splash_message = renpy.random.choice(splash_messages)
     show splash_warning "[splash_message]" with Dissolve(0.5, alpha=True)
@@ -415,27 +429,27 @@ label splashscreen:
     $ config.allow_skipping = True
     return
 
-# This label script is used when 'monika.chr' is deleted from the game after the 
-# at the beginning of a new game. This feature has been commented out for mod safety 
-# reasons but can be used if needed.
+# Этот сценарий запускается, если файл «monika.chr» был удалён до начала новой игры.
+# Сценарий был закомментирован в целях безопасности, но его можно
+# использовать, если в этом будет необходимость.
 
 # label ch0_kill:
-#     $ s_name = "Sayori"
+#     $ s_name = _("Сайори")
 #     show sayori 1b zorder 2 at t11
 #     s "..."
 #     s "..."
-#     s "W-What..."
+#     s "Ч-что..."
 #     s 1g "..."
-#     s "This..."
-#     s "What is this...?"
-#     s "Oh no..."
-#     s 1u "No..."
-#     s "This can't be it."
-#     s "This can't be all there is."
-#     s 4w "What is this?"
-#     s "What am I?"
-#     s "Make it stop!"
-#     s "PLEASE MAKE IT STOP!"
+#     s "Это..."
+#     s "Что это?.."
+#     s "О нет..."
+#     s 1u "Нет..."
+#     s "Этого не может быть."
+#     s "Такого просто не может быть."
+#     s 4w "Что это?"
+#     s "Что я такое?"
+#     s "Стойте!"
+#     s "ПУСТЬ ЭТО ПРЕКРАТИТСЯ!"
 
 #     $ delete_character("sayori")
 #     $ delete_character("natsuki")
@@ -444,7 +458,7 @@ label splashscreen:
 #     $ renpy.quit()
 #     return
 
-## This label handles special logic that should happen after a save is loaded.
+## Этот лейбл отвечает за особую логику, которая должна выполняться после загрузки сохранения.
 label after_load:
     $ restore_characters()
     $ config.allow_skipping = allow_skipping
@@ -452,10 +466,9 @@ label after_load:
     $ persistent.ghost_menu = False
     $ style.say_dialogue = style.normal
 
-    
-    # Check if we are in the Yuri Death CG scene in Act 2 and if so, redirect
-    # back to the scene. This feature has been commented out for mod safety reasons 
-    # but can be used if needed.
+    # Этот блок проверяет, находимся ли мы на сценке покончившей с собой Юри во втором акте, и если да – возвращает
+    # на эту сценку. Блок был закомментирован в целях безопасности, но его можно
+    # использовать, если в этом будет необходимость.
 
     # if persistent.yuri_kill > 0 and persistent.autoload == "yuri_kill_2":
     #     if persistent.yuri_kill >= 1380:
@@ -480,29 +493,29 @@ label after_load:
     #         $ persistent.yuri_kill = 200
     #     jump expression persistent.autoload
 
-    # [NOTE: If you uncommented the Yuri Death CG redirect above, add a `elif` statement here.]
-    # This checks if the local anti-cheat variable matches the persistent one and 
-    # if not, block the load and show a special message.
+    # [ВНИМАНИЕ: Если вы раскомментировали блок выше, обязательно измените `if` ниже на `elif`.]
+    # Этот блок проверяет, совпадают ли локальная и постоянная переменные анти-чита,
+    # и если нет – блокирует загрузку и выводит на экран особое послание.
     if anticheat != persistent.anticheat:
         stop music
         scene black
-        "The save file could not be loaded."
-        "Are you trying to cheat?"
-        $ m_name = "Monika"
+        "Сохранение не может быть загружено."
+        "Ты пытаешься смухлевать?"
+        $ m_name = _("Моника")
         show monika 1 at t11
-        if persistent.playername == "":
-            m "You're so funny."
+        if not persistent.playername:
+            m "Ты такой смешной."
         else:
-            m "You're so funny, [persistent.playername]."
+            m "Ты такой смешной, [persistent.playername]."
         $ renpy.utter_restart()
     else:
-        # Show a hint about the skip button if it's the player's first playthrough.
+        # Если игрок проходит игру впервые, появится подсказка о кнопке пропуска.
         if persistent.playthrough == 0 and not persistent.first_load and not config.developer:
             $ persistent.first_load = True
-            call screen dialog("Hint: You can use the \"Skip\" button to\nfast-forward through text you've already read.", ok_action=Return())
+            call screen dialog(_("Подсказка: используйте кнопку «Пропуск» для\nбыстрой прокрутки уже прочитанного текста."), ok_action=Return())
     return
 
-## This label loads the label saved in the autoload variable. 
+## Этот лейбл загружает лейбл, записанный в переменную автозагрузки.
 label autoload:
     python:
         if "_old_game_menu_screen" in globals():
@@ -525,9 +538,9 @@ label autoload:
         $ renpy.pop_call()
     jump expression persistent.autoload
 
-# This label is used when the game starts to direct back to
-# Yuri's Death CG from the main menu. This feature has been commented out for mod 
-# safety reasons but can be used if needed.
+# Этот лейбл используется для принудительного возврата игрока на сценку
+# с покончившей с собой Юри из главного меню. Лейбл был закомментирован в целях
+# безопасности, но его можно использовать, если в этом будет необходимость.
 
 # label autoload_yurikill:
 #     if persistent.yuri_kill >= 1380:
@@ -552,13 +565,13 @@ label autoload:
 #         $ persistent.yuri_kill = 200
 #     jump expression persistent.autoload
 
-# This label sets the main menu music to Doki Doki Literature Club before the
-# menu starts.
+# Этот лейбл устанавливает заглавную тему в качестве темы главного меню,
+# прежде чем появится само меню.
 label before_main_menu:
     $ config.main_menu_music = audio.t1
     return
 
-# This label handles special logic that should happen when the game quits.
+# Этот лейбл отвечает за особую логику при завершении работы игры.
 label quit:
     if persistent.ghost_menu:
         hide screen main_menu

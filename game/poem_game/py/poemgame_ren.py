@@ -1,11 +1,12 @@
-# Copyright 2019-2025 Azariel Del Carmen (bronya_rand). All rights reserved.
-# This file contains the Python code for DDLC's poem game.
+# Авторские права 2019-наст. вр. Азариель Дель Кармен (bronya_rand). Все права защищены.
+# Этот файл содержит код логики мини-игры на Python.
 
-# The code logic has been rewritten to use the Ren'Py `_ren.py` approach for Python code.
+# Код логики был переписан с использованием подхода `_ren.py` для кода на Python.
 
-# For the Ren'Py code, see `script-poemgame.rpy` in the `poem_game` directory.
+# Чтобы просмотреть код Ren'Py, откройте файл `script-poemgame.rpy` в каталоге `poem_game`.
 
-## Not included in the game, but used for IDEs to avoid multiple warnings.
+## Эти импорты не используются во время запуска игры, но нужны для того, чтобы IDE
+## не выдавали кучу предупреждений.
 from game.poem_game.py.poemgame_chibi_ren import chibis, chibi_s, chibi_n, chibi_y
 from game.poem_game.py.poemwords_ren import poem_word_db, glitch_word, monika_word
 from game.definitions.py.core_ren import persistent, store
@@ -34,14 +35,14 @@ POEM_CLICK_SOUND = store.gui.activate_sound
 
 class PoemGame:
     """
-    This class handles the logic for the poem game in DDLC.
+    Этот класс отвечает за логику мини-игры про сочинение стихотворений.
     """
 
     def __init__(self, testing: bool = False):
         """
-        Initializes the poem game with default values.
+        Инициализирует мини-игру со значениями по умолчанию.
 
-        :param testing: If True, bypasses Ren'Py functions and screens for testing purposes. Unused in DDLC. Used for Github Actions to test code logic.
+        :param testing: Обход системы экранов и функций Ren'Py в целях тестирования. Не используется в DDLC. Используется системой GitHub Actions для проверки логики кода.
         :type testing: bool
         """
         self.played_baa = False
@@ -52,7 +53,7 @@ class PoemGame:
 
     def reset(self):
         """
-        Resets the poem game to its initial state.
+        Сбрасывает состояние мини-игры.
         """
         self.played_baa = False
         self.poemgame_glitch = False
@@ -60,18 +61,18 @@ class PoemGame:
 
     def start(self):
         """
-        Starts the poem game.
-        This method should be called to initiate the poem game logic.
+        Запускает мини-игру.
+        Этот метод должен вызываться для инициализации логики мини-игры.
         """
         self.reset()
 
-        # Resets the points for each character.
+        # Сбрасывает очки у всех персонажей.
         chibis.reset()
 
         wordList = poem_word_db.get_words()
         if len(wordList) == 0:
             raise ValueError(
-                "No words found in the poem word database. Please check `poemwords_ren.py` for poem word declarations."
+                "В базе данных слов для стихотворения отсутствуют слова. Проверьте файл 'poemwords_ren.py' на наличие объявленных слов."
             )
 
         while self.poem_progress <= 20:
@@ -81,14 +82,14 @@ class PoemGame:
                     word = renpy.random.choice(wordList)
                 except IndexError:
                     raise IndexError(
-                        "Not enough words in the poem word database. Add more words to `poemwords_ren.py`."
+                        "В базе данных слов недостаточно слов. Добавьте ещё пару слов в файл 'poemwords_ren.py'."
                     )
                 random_words.append(word.__str__())
                 wordList.remove(
                     word
-                )  # Remove the word to avoid duplicates in the same poem game.
+                )  # Удаляет слово во избежание появления дубликатов в ходе одного сеанса.
 
-            # Display the poem game screen with the random words.
+            # Показывает экран мини-игры со случайными словами.
             if self.testing:
                 if renpy.persistent.playthrough == 2:
                     act_two_words = random_words[:9]
@@ -109,7 +110,7 @@ class PoemGame:
                     poemgame_glitch=self.poemgame_glitch,
                 )
 
-            # Checks if the word exists in the word database.
+            # Проверяем, есть ли слово в базе.
             if poemword_str in poem_word_db.get_words_str():
                 selected_poemword = poem_word_db.get_word(poemword_str)
             else:
@@ -128,7 +129,7 @@ class PoemGame:
                     elif persistent.playthrough != 3:
                         renpy.play(POEM_CLICK_SOUND)
 
-                        # Act 1
+                        # Акт 1
                         if persistent.playthrough == 0:
                             if selected_poemword.sPoint >= 3:
                                 renpy.show("s_sticker hop")
@@ -137,7 +138,7 @@ class PoemGame:
                             elif selected_poemword.yPoint >= 3:
                                 renpy.show("y_sticker hop")
                         else:
-                            # Act 2
+                            # Акт 2
                             if (
                                 persistent.playthrough == 2
                                 and store.chapter == 2
@@ -145,11 +146,11 @@ class PoemGame:
                             ):
                                 renpy.show(
                                     "m_sticker hop"
-                                )  # 1/10 chance to see Monika hopping under the game screen.
+                                )  # Шанс 1/10, что Моника выпрыгнет из нижней части экрана.
                             elif selected_poemword.nPoint > selected_poemword.yPoint:
                                 renpy.show(
                                     "n_sticker hop"
-                                )  # In Act 2, Natsuki hops if she has more points than Yuri.
+                                )  # Во втором акте, если у Нацуки больше очков, чем у Юри, то прыгает первая.
                             elif (
                                 persistent.playthrough == 2
                                 and not persistent.seen_sticker
@@ -157,18 +158,18 @@ class PoemGame:
                             ):
                                 renpy.show(
                                     "y_sticker hopg"
-                                )  # "y_sticker_2g.png". 1/100 chance to see it, if we haven't seen it already.
+                                )  # "y_sticker_2g.png". Шанс 1/100, чтобы увидеть его, если ещё не видели.
                                 renpy.persistent.seen_sticker = True
                             elif persistent.playthrough == 2 and store.chapter == 2:
                                 renpy.show(
                                     "y_sticker_cut hop"
-                                )  # Yuri's cut arms sticker
+                                )  # Стикер Юри с изрезанными руками.
                             else:
                                 renpy.show("y_sticker hop")
                 else:
                     r = renpy.random.randint(
                         0, 10
-                    )  # 1/10 chance to hear a "baa" sound.
+                    )  # Шанс 1/10, чтобы услышать звук «ба-а».
                     if r == 0 and not self.played_baa:
                         renpy.play("gui/sfx/baa.ogg")
                         self.played_baa = True
@@ -182,34 +183,34 @@ class PoemGame:
 
     def finish(self):
         """
-        Finishes the poem game.
-        This method should be called to conclude the poem game logic.
+        Завершает мини-игру.
+        Этот метод должен вызываться для завершения работы логики мини-игры.
         """
         chapter = store.chapter
 
         if persistent.playthrough == 0:
-            # Add 5 points to whoever we side with in Act 1 - Chapter 1.
+            # Добавляет 5 очков той девушке, на сторону которой мы встали в первой главе первого акта.
             if chapter == 1:
                 chibi = chibis.get_chibi(store.ch1_choice)
                 chibi.add_points(5)
 
-        # Determine the poem winner.
+        # Определяет «победителя» мини-игры.
         if persistent.playthrough == 0:
-            # Act 1 Calculations
+            # Подсчёты первого акта.
             poemwinner[chapter] = max(
                 chibis.chibis, key=lambda c: c.charPointTotal
             ).name
         else:
-            # Act 2 Calculations
+            # Подсчёты второго акта.
             if chibi_n.charPointTotal > chibi_y.charPointTotal:
                 poemwinner[chapter] = "natsuki"
             else:
                 poemwinner[chapter] = "yuri"
 
-        # Add appeal point based on poem winner.
+        # Добавляет привязку к «победителю» мини-игры.
         poemwinner_chibi = chibis.get_chibi(poemwinner[chapter])
 
-        # Set poem appeal
+        # Установка степени привязанности.
         if persistent.playthrough == 0 and poemwinner_chibi.name != "sayori":
             poemappeal["sayori"][chapter] += chibi_s.calculate_appeal()
         if poemwinner_chibi.name != "natsuki":
@@ -217,7 +218,7 @@ class PoemGame:
         if poemwinner_chibi.name != "yuri":
             poemappeal["yuri"][chapter] += chibi_y.calculate_appeal()
 
-        # Poem winner always gets +1 appeal.
+        # «Победитель» мини-игры всегда получает +1 к привязанности.
         poemappeal[poemwinner_chibi.name][chapter] += 1
 
 
@@ -226,10 +227,11 @@ poem_game = PoemGame()
 
 def get_appeal(chibi_name: str) -> int:
     """
-    Returns the appeal of the specified character.
-    :param chibi_name: The name of the character.
+    Возвращает степень привязанности указанного персонажа.
+
+    :param chibi_name: Имя персонажа.
     :type chibi_name: str
-    :return: The appeal of the character.
+    :return: Степень привязанности персонажа.
     :rtype: int
     """
     chibi = chibis.get_chibi(chibi_name)
@@ -241,18 +243,18 @@ def get_appeal(chibi_name: str) -> int:
 
 def get_exclusive_scene(chapter: int) -> str:
     """
-    Returns the exclusive scene string based on the poem winner and their appeal.
+    Возвращает лейбл эксклюзивной сцены исходя из имени «победителя» и степени его привязанности.
 
-    :param chapter: The current chapter number.
+    :param chapter: Номер текущей главы.
     :type chapter: int
-    :return: The exclusive scene string.
+    :return: Строка эксклюзивной сцены.
     :rtype: str
     """
     winner = chibis.get_chibi(poemwinner[chapter])
     name = winner.name
 
-    # Normally in DDLC Act II, Sayori code redirects to
-    # Yuri so we do it here.
+    # Во втором акте DDLC вместо Сайори подставлялась Юри,
+    # так что и тут мы сделаем то же самое.
     if persistent.playthrough == 2 and winner.name == "sayori":
         name = "yuri"
 
@@ -265,11 +267,11 @@ def get_exclusive_scene(chapter: int) -> str:
 
 def get_monika_scene(chapter: int) -> str:
     """
-    Returns the Monika scene string based on the chapter number.
+    Возвращает лейбл сцены с Моникой исходя из номера главы.
 
-    :param chapter: The current chapter number.
+    :param chapter: Номер текущей главы.
     :type chapter: int
-    :return: The Monika scene string.
+    :return: Строка сцены с Моникой.
     :rtype: str
     """
     winner = chibis.get_chibi(poemwinner[chapter])
@@ -287,14 +289,14 @@ def get_monika_scene(chapter: int) -> str:
 
 def _character_poem_appeal_exists(character: str, chapter: int) -> bool:
     """
-    Check if the poem appeal value exists for a given character and chapter.
+    Проверяет, существует ли значение привязанности у конкретного персонажа и главы.
 
-    :param character: The character's name as a string.
+    :param character: Имя персонажа в виде строки.
     :type character: str
-    :param chapter: The chapter number as an integer starting from 1 onwards.
+    :param chapter: Номер главы в виде целого числа, отсчёт начинается с 1.
     :type chapter: int
 
-    :return: True if the poem appeal value exists, False otherwise.
+    :return: True, если значение привязанности существует, в противном случае – False.
     :rtype: bool
     """
 
@@ -309,23 +311,23 @@ def _character_poem_appeal_exists(character: str, chapter: int) -> bool:
 
 def get_character_poem_appeal(character: str, chapter: int) -> int:
     """
-    Get the poem appeal value for a given character and chapter.
+    Возвращает значение привязанности конкретного персонажа и главы.
 
-    :param character: The character's name as a string.
+    :param character: Имя персонажа в виде строки.
     :type character: str
-    :param chapter: The chapter number as an integer starting from 1 onwards.
+    :param chapter: Номер главы в виде целого числа, отсчёт начинается с 1.
     :type chapter: int
 
-    :return: The poem appeal value as an integer.
+    :return: Значение привязанности в виде целого числа.
     :rtype: int
 
-    :raises ValueError: If the character and/or chapter is not found in the poem appeal data.
+    :raises ValueError: Если персонаж и/или глава не были найдены в данных привязанности.
     """
     character = character.lower()
-    chapter = chapter - 1  # Adjust chapter to be zero-indexed.
+    chapter = chapter - 1  # Делает так, чтобы отсчёт глав начинался с нуля.
     if not _character_poem_appeal_exists(character, chapter):
         raise ValueError(
-            f"Poem appeal value for character '{character}' and/or chapter '{chapter}' not found."
+            f"Не удалось найти значение привязанности персонажа '{character}' и/или главы '{chapter}'."
         )
 
     return poemappeal[character][chapter]
@@ -333,23 +335,23 @@ def get_character_poem_appeal(character: str, chapter: int) -> int:
 
 def set_character_poem_appeal(character: str, chapter: int, value: int) -> None:
     """
-    Set the poem appeal value for a given character and chapter.
+    Задаёт значение привязанности конкретному персонажу в конкретной главе.
 
-    :param character: The character's name as a string.
+    :param character: Имя персонажа в виде строки.
     :type character: str
-    :param chapter: The chapter number as an integer starting from 1 onwards.
+    :param chapter: Номер главы в виде целого числа, отсчёт начинается с 1.
     :type chapter: int
-    :param value: The poem appeal value to set as an integer.
+    :param value: Значение привязанности в виде целого числа.
     :type value: int
 
-    :raises ValueError: If the character and/or chapter is not found in the poem appeal data.
+    :raises ValueError: Если персонаж и/или глава не были найдены в данных привязанности.
     """
     character = character.lower()
-    chapter = chapter - 1  # Adjust chapter to be zero-indexed.
+    chapter = chapter - 1  # Делает так, чтобы отсчёт глав начинался с нуля.
 
     if not _character_poem_appeal_exists(character, chapter):
         raise ValueError(
-            f"Poem appeal value for character '{character}' and/or chapter '{chapter}' not found."
+            f"Не удалось найти значение привязанности персонажа '{character}' и/или главы '{chapter}'."
         )
 
     poemappeal[character][chapter] = value

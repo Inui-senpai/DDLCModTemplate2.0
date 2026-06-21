@@ -1,6 +1,6 @@
-# Copyright 2019-2025 Azariel Del Carmen (bronya_rand). All rights reserved.
-# This file handles locking the game to ensure that only one instance is running at a time.
-# This is basically a revamped version of `singleton.py` to allow enabling/disabling singleton behavior.
+# Авторские права 2019-наст. вр. Азариель Дель Кармен (bronya_rand). Все права защищены.
+# Этот файл отвечает за блокировку игры в целях предотвращения запуска двух и более копий игры.
+# По сути, это переработанная версия `singleton.py`, позволяющая включать/отключать поведение модуля «одиночки».
 
 """renpy
 python early:
@@ -11,19 +11,19 @@ import tempfile
 import sys
 
 if sys.platform == "win32":
-    import msvcrt  # For Windows systems
+    import msvcrt  # для ОС семейства Windows
 else:
-    import fcntl  # For Unix/Linux systems
+    import fcntl  # для ОС семейства Unix/Linux
 
-# Enables/Disables running only one instance of the game at a time.
-# Set to False to allow multiple instances.
-# Note: This is not recommended for most DDLC mods.
+# Включает/отключает ограничение числа работающих экземпляров игры.
+# Чтобы разрешить запуск нескольких экземпляров, измените True на False.
+# Примечание: изменение этого поведения нежелательно для некоторых модификаций.
 ENABLE_SINGLETON = True
 
 
 class SingleInstance:
     """
-    A class to ensure that only one instance of the game is running at a time.
+    Класс, который отвечает за ограничение числа работающих экземпляров игры.
     """
 
     def __init__(self):
@@ -38,9 +38,9 @@ class SingleInstance:
 
     def acquire_lock(self):
         """
-        Acquire a lock on the lock file to ensure only one instance runs.
+        Блокирует файл блокировки, чтобы гарантировать запуск только одного экземпляра игры.
 
-        :return bool: True if the lock was acquired, False otherwise.
+        :return bool: True, если блокировка удалась, в противном случае – False.
         """
         if not ENABLE_SINGLETON:
             return True
@@ -60,7 +60,7 @@ class SingleInstance:
 
     def release_lock(self):
         """
-        Release the lock on the lock file.
+        Снимает блокировку с файла блокировки.
         """
         if not ENABLE_SINGLETON:
             return
@@ -73,7 +73,7 @@ class SingleInstance:
             self.lock_fd.close()
             try:
                 os.remove(self.lock_file)
-            except OSError:  # Someone removed it...
+            except OSError:  # Кто-то удалил это...
                 pass
         self.lock_fd = None
 
@@ -81,7 +81,7 @@ class SingleInstance:
         self.release_lock()
 
 
-# Create a singleton instance to enforce single instance behavior.
-# Do not remove this line. If you wish to disable singleton behavior, set
-# `ENABLE_SINGLETON` to False above.
+# Создаёт экземпляр «одиночки», чтобы обеспечить работу только одного процесса игры.
+# Не удаляйте эту строку. Если вы хотите отключить вышеописанное поведение, измените
+# значение переменной `ENABLE_SINGLETON` выше на False.
 _singleton = SingleInstance()

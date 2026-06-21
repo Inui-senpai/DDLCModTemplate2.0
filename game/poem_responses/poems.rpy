@@ -1,7 +1,7 @@
-# Copyright 2019-2025 Azariel Del Carmen (bronya_rand). All rights reserved.
-# This file contains the Ren'Py code for displaying poems in DDLC.
+# Авторские права 2019-наст. вр. Азариель Дель Кармен (bronya_rand). Все права защищены.
+# Этот файл содержит код Ren'Py для отображения стихотворений в DDLC.
 
-# For the Python code, see `poems_ren.py` in the `py` directory.
+# Чтобы просмотреть код Python, откройте файл `poems_ren.py` в каталоге `py`.
 
 screen poem(poem):
     style_prefix "poem"
@@ -16,7 +16,7 @@ screen poem(poem):
 
         frame:
             background None
-            
+
             hbox:
                 viewport id "poem_vp":
                     draggable True
@@ -25,10 +25,10 @@ screen poem(poem):
                     add poem
 
                 vbar value YScrollValue("poem_vp")
-        
+
     if not persistent.first_poem:
         add "gui/poem_dismiss.png" xpos 1050 ypos 590
-    
+
     key ["repeat_K_UP", "K_UP"] action Scroll("poem_vp", "vertical decrease", 20)
     key ["repeat_K_DOWN", "K_DOWN"] action Scroll("poem_vp", "vertical increase", 20)
 
@@ -56,43 +56,44 @@ style poem_hbox:
     xfill True
 
 style yuri_text:
-    font "gui/font/y1.ttf"
-    size 32
+    font "gui/font/Vivaldi.ttf"
+    size 28
     color "#000"
     outlines []
 
 style yuri_text_3:
-    font "gui/font/y3.ttf"
-    size 18
+    font "gui/font/ShlapakScript.otf"
+    size 20
     color "#000"
     outlines []
-    kerning -8
+    kerning -2.2
     justify True
 
 style natsuki_text:
-    font "gui/font/n1.ttf"
+    font "gui/font/ScriptC.otf"
     size 28
     color "#000"
     outlines []
-    line_leading 1
 
 style sayori_text:
-    font "gui/font/s1.ttf"
-    size 34
+    font "gui/font/StudioScriptC.otf"
+    size 28
     color "#000"
+    line_spacing 10
     outlines []
 
 style monika_text:
-    font "gui/font/m1.ttf"
-    size 46
+    font "gui/font/Adventure.ttf"
+    size 24
     color "#000"
+    line_spacing 10
     outlines []
 
 default poem_last_author = None
 
-# Depreciation Warning
+# Предупреждение об устаревшей функции
 label showpoem(poem, **properties):
     python:
-        text = "This feature is now depreciated. Please use " + ("'$ poem_db.show_poem(\"%s\", %s)'" % (poem, ", ".join("%s=%s" % (k, v) for k, v in properties.items())) if properties else "'$ poem_db.show_poem(\"%s\")'" % poem) + " instead.\nRefer to {u}poem_responses/py/poems_ren.py{/u} for more information."
+        text = "Эта функция устарела. Используйте теперь " + ("'$ poem_db.show_poem(\"%s\", %s)'" % (poem, ", ".join("%s=%s" % (k, v) for k, v in properties.items())) if properties else "'$ poem_db.show_poem(\"%s\")'" % poem) + ".\nПодробности см. в файле {u}poem_responses/py/poems_ren.py{/u}."
     $ renpy.notify(text)
     return

@@ -1,10 +1,10 @@
-
 # 0imports.rpy
-# This file imports certain python modules at runtime for DDLC and template
-# features.
+
+# В этом файле прописаны импорты модулей Python, необходимых для
+# необязательного функционала мод-шаблона.
 
 init -1 python:
-    # Achievements/Gallery
+    # Достижения/Галерея
     try:
         from store.achievements import achievementList, Achievement, AchievementCount
     except ModuleNotFoundError:

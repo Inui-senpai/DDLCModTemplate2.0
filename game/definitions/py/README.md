@@ -1,11 +1,11 @@
-# Contents of the `core/py` folder
+# Содержание папки `definitions/py`
 
-## Folders
-- **\_\_pycache\_\_**: Contains the compiled Python files for the code used in the core features of DDLC and the mod template. This should normally not appear in your mod nor in packaged mod templates, but if it exists, ignore it.
+## Папки
+- **\_\_pycache\_\_**: Содержит скомпилированные аналоги скриптов Python, отвечающих за основные функции оригинальной игры и мод-шаблона. Как правило, этой папки не должно быть ни в вашей модификации, ни в упакованном мод-шаблоне, но если она есть, не обращайте внимания.
 
-## Files
-- **README.md**: This file, which provides an overview of the contents of the `py` folder.
-- **\_\_init\_\_.py**: An empty file used for testing purposes.
-- **[0core_ren.py](./0core_ren.py)**: Contains the singleton code to prevent multiple instances of DDLC from running on the user's PC.
-- **[core_ren.py](./core_ren.py)**: Contains the major code for all of DDLC and the Mod Template + Features.
-- **[splash_ren.py](./splash_ren.py)**: Handles the checks for DDLC RPA files and Anti-Cloud folder checks.
+## Файлы
+- **README.md**: Файл, который вы сейчас читаете.
+- **\_\_init\_\_.py**: Пустой файл, используемый в целях тестирования.
+- **[0core_ren.py](./0core_ren.py)**: Содержит код «одиночки», предотвращающий запуск нескольких копий одной игры.
+- **[core_ren.py](./core_ren.py)**: Содержит базовый код для основных функций оригинальной игры и мод-шаблона, а также для опциональных функций последнего.
+- **[splash_ren.py](./splash_ren.py)**: Содержит код проверки RPA-архивов оригинальной игры и предотвращения запуска из облачного хранилища.

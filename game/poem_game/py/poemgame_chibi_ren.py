@@ -1,9 +1,10 @@
-# Copyright 2019-2025 Azariel Del Carmen (bronya_rand). All rights reserved.
-# This file contains the transform code for the Chibi animations in the DDLC poem game.
+# Авторские права 2019-наст. вр. Азариель Дель Кармен (bronya_rand). Все права защищены.
+# Этот файл содержит код трансформаций для анимации чибиков в мини-игре про сочинение стихотворений.
 
-# The code is designed to work with Ren'Py 8 and uses the `_ren.py` approach for Python code.
+# Код адаптирован под Ren'Py 8 и использует подход `_ren.py` для кода на Python.
 
-## Not included in the original game, but used for IDEs to avoid multiple warnings.
+## Эти импорты не используются во время запуска игры, но нужны для того, чтобы IDE
+## не выдавали кучу предупреждений.
 from typing import Literal
 import renpy  # type: ignore
 
@@ -14,12 +15,12 @@ init python:
 
 class ChibiTransform(object):
     """
-    This class handles the transform animations for the Chibi characters in the poem game.
+    Этот класс отвечает за трансформации чибиков в мини-игре.
     """
 
     def __init__(self) -> None:
         """
-        Initializes the animation of the Poem Game Chibi characters.
+        Инициализирует анимацию чибиков.
         """
         self.charTime: float = renpy.random.random() * 4 + 4
         self.charPos: int = 0
@@ -28,13 +29,13 @@ class ChibiTransform(object):
 
     def produce_random(self) -> float:
         """
-        Produces a random time for the character animation.
+        Генерирует случайное время для анимации персонажа.
         """
         return renpy.random.random() * 4 + 4
 
     def reset_trans(self) -> None:
         """
-        Resets the character animation to its initial state.
+        Сбрасывает анимацию персонажа.
         """
         self.charTime = self.produce_random()
         self.charPos = 0
@@ -43,7 +44,7 @@ class ChibiTransform(object):
 
     def randomPauseTime(self, trans, st, at) -> Literal[None, 0]:
         """
-        Randomly pauses the character animation based on the specified time.
+        Случайным образом приостанавливает анимацию на заданный промежуток времени.
         """
         if st > self.charTime:
             self.charTime = self.produce_random()
@@ -52,7 +53,7 @@ class ChibiTransform(object):
 
     def randomMoveTime(self, trans, st, at) -> Literal[None, 0]:
         """
-        Randomly moves the character based on the specified time.
+        Случайным образом перемещает персонажа в зависимости от указанного времени.
         """
         if st > 0.16:
             if self.charPos > 0:
@@ -76,18 +77,18 @@ class ChibiTransform(object):
 
 class Chibi(ChibiTransform):
     """
-    This class defines a Poem Game Chibi character that is used in the poem game.
+    Этот класс определяет персонажа в мини-игре.
     """
 
     def __init__(
         self, name: str, poem_dislike_threshold: int = 29, poem_like_threshold: int = 45
     ) -> None:
         """
-        Initializes the Chibi character
+        Инициализирует персонажа.
 
-        :param name: The name of the character.
-        :param poem_dislike_threshold: The threshold for a character to dislike a word in the poem.
-        :param poem_like_threshold: The threshold for a character to like a word in the poem.
+        :param name: Имя персонажа.
+        :param poem_dislike_threshold: Порог негативного отношения к слову в стихотворении.
+        :param poem_like_threshold: Порог положительного отношения к слову в стихотворении.
 
         :type name: str
         :type poem_dislike_threshold: int
@@ -102,29 +103,29 @@ class Chibi(ChibiTransform):
 
     def reset(self) -> None:
         """
-        Resets the Chibi character's point total and animation state.
+        Сбрасывает очки персонажа и его анимацию.
         """
         self.charPointTotal = 0
         self.reset_trans()
 
     def add_points(self, points: int) -> None:
         """
-        Adds points to the Chibi character's total.
+        Добавляет очки к счёту персонажа.
 
-        :param points: The number of points to add.
+        :param points: Число добавляемых очков.
         :type points: int
         """
         self.charPointTotal += points
 
     def calculate_appeal(self) -> Literal[-1, 0, 1]:
         """
-        Calculates the appeal of the Chibi character based on their point total.
+        Вычисляет степень привязанности персонажа исходя из его счёта.
 
-        If the total points are below the dislike threshold, the appeal is -1.
-        If the total points are above the like threshold, the appeal is 1 and the character wins.
-        If the total points are between the dislike and like thresholds, the appeal is 0
+        Если счёт ниже порога негативного отношения, привязанность будет равна -1.
+        Если счёт выше порога положительного отношения, привязанность будет равна 1 и персонаж становится «победителем».
+        Если же счёт оказался между обоими порогами, то привязанность будет равна 0.
 
-        :return appeal: The appeal of the character towards the player's poem.
+        :return appeal: Степень привязанности персонажа.
         :rtype: int
         """
         if self.charPointTotal < self.poem_dislike_threshold:
@@ -135,27 +136,27 @@ class Chibi(ChibiTransform):
 
     def __call__(self) -> str:
         """
-        Returns the name of the Chibi character.
+        Возвращает имя персонажа.
         """
         return self.name
 
 
 class ChibiDB(object):
     """
-    This class defines a database of Chibi characters used in the poem game.
+    Этот класс определяет базу данных персонажей, используемых в мини-игре.
     """
 
     def __init__(self) -> None:
         """
-        Initializes the ChibiDB instance with an empty list of characters.
+        Инициализирует экземпляр ChibiDB с пустым списком персонажей.
         """
         self.chibis: list[Chibi] = []
 
     def add_chibi(self, name: str) -> None:
         """
-        Adds a Chibi character to the database.
+        Добавляет персонажа в базу.
 
-        :param name: The name of the character to add.
+        :param name: Имя персонажа, которого надо добавить.
 
         :type name: str
         """
@@ -163,30 +164,30 @@ class ChibiDB(object):
 
     def get_chibi(self, name: str) -> Chibi:
         """
-        Retrieves a Chibi character by name.
+        Выдаёт персонажа по его имени.
 
-        :param name: The name of the character to retrieve.
+        :param name: Имя персонажа, которого надо выдать.
         :type name: str
-        :return: The Chibi character if found, otherwise None.
+        :return: Экземпляр персонажа, если он есть в базе, в противном случае – None.
         :rtype: Chibi
 
-        :raises ValueError: If the character with the given name does not exist in the database.
+        :raises ValueError: Если персонажа с указанным именем нет в базе.
         """
         for chibi in self.chibis:
             if chibi.name == name:
                 return chibi
 
-        raise ValueError(f"Chibi character '{name}' not found in the database.")
+        raise ValueError(f"Персонажа '{name}' нет в базе данных.")
 
     def reset(self) -> None:
         """
-        Resets all Chibi characters in the database.
+        Сбрасывает состояние всех персонажей в базе.
         """
         for chibi in self.chibis:
             chibi.reset()
 
 
-# Initialize the Chibi database and characters.
+# Инициализирует базу данных и персонажей в мини-игре.
 
 chibis = ChibiDB()
 chibis.add_chibi("sayori")
@@ -198,4 +199,4 @@ chibi_n = chibis.get_chibi("natsuki")
 chibi_y = chibis.get_chibi("yuri")
 chibi_m = (
     ChibiTransform()
-)  # Monika does not participate in the poem game. She only moves around.
+)  # Моника не участвует в мини-игре. Она только передвигается по экрану.
