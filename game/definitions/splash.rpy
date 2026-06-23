@@ -266,7 +266,7 @@ label splashscreen:
         # переводы и игрок ещё не выбирал язык.
         if not persistent.has_chosen_language and translations:
             if _preferences.language is None:
-                call screen language_selector
+                call screen choose_language
 
         # Вы можете редактировать это сообщение, но вы ДОЛЖНЫ пояснить, что ваша модификация
         # никоим образом не связана с Team Salvato, требовать, чтобы игрок сначала
