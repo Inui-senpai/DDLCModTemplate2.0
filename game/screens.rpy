@@ -16,7 +16,7 @@ init python:
         if not languages:
             return None
 
-        rv = [(i, renpy.translate_string("{#название языка и шрифт}", i)) for i in languages ]
+        rv = [(i, renpy.translate_string(_("{#название языка и шрифт}"), i)) for i in languages ]
         rv.sort(key=lambda a : renpy.filter_text_tags(a[1], allow=[]).lower())
 
         rv.insert(0, (None, "Русский"))
@@ -337,10 +337,16 @@ screen choice(items):
                     $ arg2 = kwarg[-1]
 
                     textbutton caption:
-                        idle_background Frame(im.MatrixColor(im.MatrixColor("gui/button/choice_idle_background.png", im.matrix.desaturate() * im.matrix.contrast(1.29) * im.matrix.colorize("#00f", "#fff") * im.matrix.saturation(120)), 
-                            im.matrix.desaturate() * im.matrix.colorize(arg1, arg2)), gui.choice_button_borders)
-                        hover_background Frame(im.MatrixColor(im.MatrixColor("gui/button/choice_hover_background.png", im.matrix.desaturate() * im.matrix.contrast(1.29) * im.matrix.colorize("#00f", "#fff") * im.matrix.saturation(120)), 
-                            im.matrix.desaturate() * im.matrix.colorize(arg1, "#fff")), gui.choice_button_borders)
+                        idle_background Frame(
+                            Transform(
+                                Transform("gui/button/choice_idle_background.png", matrixcolor=SaturationMatrix(0) * ContrastMatrix(1.29) * ColorizeMatrix("#00f", "#fff") * SaturationMatrix(120)), matrixcolor=SaturationMatrix(0) * ColorizeMatrix(arg1, arg2)
+                            ), gui.choice_button_borders
+                        )
+                        hover_background Frame(
+                            Transform(
+                                Transform("gui/button/choice_hover_background.png", matrixcolor=SaturationMatrix(0) * ContrastMatrix(1.29) * ColorizeMatrix("#00f", "#fff") * SaturationMatrix(120)), matrixcolor=SaturationMatrix(0) * ColorizeMatrix(arg1, "#fff")
+                            ), gui.choice_button_borders
+                        )
                         action i.action
 
                 else:
@@ -2088,7 +2094,7 @@ screen choose_language():
                                 hovered SetScreenVariable("local_lang", tlid)
                                 unhovered SetScreenVariable("local_lang", chosen_lang)
 
-            $ lang_name = renpy.translate_string("{#название языка и шрифт}", local_lang)
+            $ lang_name = renpy.translate_string(_("{#название языка и шрифт}"), local_lang)
 
             hbox:
                 xalign 0.5
