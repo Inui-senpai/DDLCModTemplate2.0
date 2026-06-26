@@ -422,7 +422,7 @@ label splashscreen:
     # hide my_intro with Dissolve(0.5, alpha=True)
     if persistent.playthrough == 2 and renpy.random.randint(0, 3) == 0:
         $ splash_message = renpy.random.choice(splash_messages)
-    show splash_warning "[splash_message]" with Dissolve(0.5, alpha=True)
+    show splash_warning "[splash_message!t]" with Dissolve(0.5, alpha=True)
     $ pause(1.5)
     hide splash_warning with Dissolve(0.5, alpha=True)
     $ pause(0.5)
