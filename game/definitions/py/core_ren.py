@@ -305,16 +305,13 @@ def get_user_account_name():
     if renpy.windows:
         # `whoami` и разделение имени (ДОМЕН\Пользователь -> Пользователь)
         return (
-            subprocess.run("whoami", shell=True, capture_output=True, text=True)
-            .stdout.strip()
-            .split("\\")[-1]
+            os.getlogin()
             or None
         )
     else:
+        import pwd
         return (
-            subprocess.run(
-                "id -un", shell=True, capture_output=True, text=True
-            ).stdout.strip()
+            pwd.getpwuid(os.getuid()).pw_gecos.strip(",")
             or None
         )
 
