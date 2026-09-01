@@ -303,7 +303,6 @@ def get_user_account_name():
         return None
 
     if renpy.windows:
-        # `whoami` и разделение имени (ДОМЕН\Пользователь -> Пользователь)
         return (
             os.getlogin()
             or None
